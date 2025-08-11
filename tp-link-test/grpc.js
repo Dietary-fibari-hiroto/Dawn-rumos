@@ -7,12 +7,17 @@ const grpcObject = grpc.loadPackageDefinition(packageDef);
 const myservice = grpcObject.myservice;
 
 function getData(call, callback) {
+  console.log("Node:リクエスト受信");
   const query = call.request.query;
   console.log("リクエストを受信:", query); // ここでログ出力
 
   if (query === "Yuzuki") {
-    powerSupply();
-    console.log("PowerSupply実行");
+    // ここで非同期実行するがawaitしないので即時に次に進む
+    powerSupply().catch((err) => {
+      console.error("powerSupply error:", err);
+    });
+
+    console.log("PowerSupply 実行指示 発行済み");
   }
 
   callback(null, { value1: `Hello, ${query}`, value2: 42 });
