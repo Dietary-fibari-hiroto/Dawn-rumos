@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "roumos-test (Package)": {
+      "commandName": "MsixPackage"
+    },
+    "roumos-test (Unpackaged)": {
+      "commandName": "Project"
+    }
+  }
+}

@@ -21,3 +21,31 @@ asp_test/secrets.json
 asp_test/packages/
 asp_test/*.nupkg
 asp_test/*.snupkg
+
+# Win UI
+
+# ビルド成果物
+bin/
+obj/
+
+# ユーザー固有設定
+*.user
+*.rsuser
+*.suo
+*.userosscache
+*.sln.docstates
+
+# VS キャッシュ・ログ
+.vs/
+*.pidb
+*.svclog
+*.pdb
+
+# パッケージ
+*.nupkg
+*.snupkg
+packages/
+
+# 一時ファイル
+*.tmp
+*.temp
