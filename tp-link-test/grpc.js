@@ -1,3 +1,4 @@
+require("dotenv").config(); // これで.envファイルを読み込む
 const grpc = require("@grpc/grpc-js");
 const protoLoader = require("@grpc/proto-loader");
 const { powerSupply } = require("./onnoff");

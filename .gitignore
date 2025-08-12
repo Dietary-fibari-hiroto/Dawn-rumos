@@ -1,3 +1,6 @@
+*.env
+
+
 #Node
 tp-link-test/node_modules/
 

@@ -1,9 +1,9 @@
 const { loginDeviceByIp } = require("tp-link-tapo-connect");
 
 exports.powerSupply = async () => {
-  const email = "hirorig12@gmail.com";
-  const password = "ulorufu1357";
-  const deviceIp = "192.168.10.13";
+  const email = process.env.TP_LINK_EMAIL;
+  const password = process.env.TP_LINK_PASSWORD;
+  const deviceIp = process.env.TP_LINK_IP;
 
   const device = await loginDeviceByIp(email, password, deviceIp);
 
