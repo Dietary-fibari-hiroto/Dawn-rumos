@@ -16,7 +16,17 @@
     <Grid VerticalAlignment="Center" HorizontalAlignment="Center">
         <StackPanel>
             <Button Click="PostSupply"
-                Content="リクエスト"
+                Content="Spリクエスト"
+                Width="100"
+                Height="50"
+                Background="#CCCCCC"/>
+            <Button Click="PostSupply2"
+                Content="Sp2リクエスト"
+                Width="100"
+                Height="50" 
+                Background="#CCCCCC"/>
+            <Button Click="PostSupply3"
+                Content="Sp3リクエスト"
                 Width="100"
                 Height="50"
                 Background="#CCCCCC"/>

@@ -27,12 +27,39 @@ namespace roumos_test
         }
 
         private async void PostSupply(object sender, RoutedEventArgs e) { 
-            Test.Text = "ボタン反応";
+            Test.Text = "psボタン反応";
             try
             {
-                string result = await _rumosApi.PostPowerSupply(ApiEndpoints.baseUrl+"/power");
+                string result = await _rumosApi.PostPowerSupply(ApiEndpoints.baseUrl+"/sp");
                 OutputTextBlock.Text = result;
             }catch(Exception ex)
+            {
+                OutputTextBlock.Text = $"エラー: {ex.Message}";
+            }
+        }
+        private async void PostSupply2(object sender, RoutedEventArgs e)
+        {
+            Test.Text = "ps2ボタン反応";
+            try
+            {
+                string result = await _rumosApi.PostPowerSupply(ApiEndpoints.baseUrl + "/sp2");
+                OutputTextBlock.Text = result;
+            }
+            catch (Exception ex)
+            {
+                OutputTextBlock.Text = $"エラー: {ex.Message}";
+            }
+        }
+
+        private async void PostSupply3(object sender, RoutedEventArgs e)
+        {
+            Test.Text = "ps3ボタン反応";
+            try
+            {
+                string result = await _rumosApi.PostPowerSupply(ApiEndpoints.baseUrl + "/sp3");
+                OutputTextBlock.Text = result;
+            }
+            catch (Exception ex)
             {
                 OutputTextBlock.Text = $"エラー: {ex.Message}";
             }
