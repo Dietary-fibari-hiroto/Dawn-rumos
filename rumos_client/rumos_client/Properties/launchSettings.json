@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "rumos_client (Package)": {
+      "commandName": "MsixPackage"
+    },
+    "rumos_client (Unpackaged)": {
+      "commandName": "Project"
+    }
+  }
+}
