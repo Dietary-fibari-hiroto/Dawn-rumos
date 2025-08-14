@@ -9,6 +9,37 @@
     mc:Ignorable="d">
 
     <Grid>
-        <TextBlock Text ="functionSelection"/>
+        <!-- 背景画像 2枚重ね -->
+        <Image x:Name="Background1" Source="/Assets/Images/IMG_7028.jpg" Stretch="UniformToFill" />
+        <Image x:Name="Background2" Source="/Assets/Images/IMG_7053.jpg" Stretch="UniformToFill" Opacity="0"/>
+
+        <!-- 文字 -->
+        <TextBlock x:Name="TextCurrent"
+               Text="最初の文字"
+               FontSize="48"
+               HorizontalAlignment="Center"
+               VerticalAlignment="Center"
+               RenderTransformOrigin="0.5,0.5">
+            <TextBlock.RenderTransform>
+                <TranslateTransform Y="0"/>
+            </TextBlock.RenderTransform>
+        </TextBlock>
+
+        <TextBlock x:Name="TextNext"
+               Text="次の文字"
+               FontSize="48"
+               HorizontalAlignment="Center"
+               VerticalAlignment="Center"
+               Opacity="0"
+               RenderTransformOrigin="0.5,0.5">
+            <TextBlock.RenderTransform>
+                <TranslateTransform Y="50"/>
+                <!-- 下から入る -->
+            </TextBlock.RenderTransform>
+        </TextBlock>
+
+        <!-- ボタンで切り替え -->
+        <Button Content="Next" HorizontalAlignment="Right" VerticalAlignment="Bottom" Click="Next_Click"/>
     </Grid>
+
 </Page>

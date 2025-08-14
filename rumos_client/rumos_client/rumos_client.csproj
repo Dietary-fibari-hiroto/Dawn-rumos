@@ -13,6 +13,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
   <ItemGroup>
+    <None Remove="Assets\Images\IMG_7028.jpg" />
+    <None Remove="Assets\Images\IMG_7053.jpg" />
     <None Remove="Assets\Images\rumos_icon.png" />
     <None Remove="Pages\FunctionSelectionPage.xaml" />
     <None Remove="Pages\Opening.xaml" />
@@ -45,6 +47,12 @@
     <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.7.250606001" />
   </ItemGroup>
   <ItemGroup>
+    <Content Update="Assets\Images\IMG_7028.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\Images\IMG_7053.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Update="Assets\Images\rumos_icon.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

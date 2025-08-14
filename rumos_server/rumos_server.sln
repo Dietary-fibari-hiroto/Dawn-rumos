@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36310.24 d17.14
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "rumos_server", "rumos_server\rumos_server.csproj", "{E92066B1-ACC5-4497-A63D-FF14A8E23CD8}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E92066B1-ACC5-4497-A63D-FF14A8E23CD8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E92066B1-ACC5-4497-A63D-FF14A8E23CD8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E92066B1-ACC5-4497-A63D-FF14A8E23CD8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E92066B1-ACC5-4497-A63D-FF14A8E23CD8}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {9F20676D-934B-4AED-BFB2-6374D267F36C}
+	EndGlobalSection
+EndGlobal
