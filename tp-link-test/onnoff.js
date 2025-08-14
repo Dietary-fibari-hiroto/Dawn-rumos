@@ -23,7 +23,16 @@ exports.spPowerSupply = async (email, password, deviceIp) => {
 
   console.log("現在の状態:", info.device_on ? "ON" : "OFF");
 
-  info.device_on ? await device.turnOff() : await device.turnOn();
-
-  console.log("On/Off切り替え");
+  try {
+    if (info.device_on) {
+      await device.turnOff();
+      return false;
+    } else {
+      await device.turnOn();
+      return true;
+    }
+  } catch (err) {
+    console.log("tp-link:ON/OFFエラー");
+    throw err;
+  }
 };

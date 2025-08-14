@@ -3,6 +3,7 @@ using Grpc.Net.Client;
 using Myservice;
 using Devicecontrol;
 using DotNetEnv;
+using Grpc.IDevice;
 
 
 
@@ -22,6 +23,13 @@ builder.WebHost.ConfigureKestrel(options =>
     {
         listenOptions.UseHttps(); // HTTPS
     });
+});
+builder.Services.ConfigureHttpJsonOptions(options =>
+{
+    // キー名の大文字小文字を気にせず受け付ける
+    options.SerializerOptions.PropertyNameCaseInsensitive = true;
+    // プロパティ名の変換をしない（PascalCaseのまま出す）
+    options.SerializerOptions.PropertyNamingPolicy = null;
 });
 
 
@@ -55,17 +63,18 @@ app.MapGet("/power", () =>
     Console.WriteLine("ASP.NET /power受信");
     ps.ChangeDevicePower(client);
 });
-app.MapGet("/sp", () =>
+app.MapPost("/sp", () =>
 {
     Console.WriteLine("ASP.NET /📡ps発信");
     ps.SpecificChangeDevicePower(sendClient);
 });
-app.MapGet("/sp2", () =>
+app.MapPost("/sp2",async () =>
 {
     Console.WriteLine("ASP.NET /📡ps2発信");
-    ps.Sp2(sendClient);
+    var res = await ps.Sp2(sendClient);
+    return Results.Ok(res);
 });
-app.MapGet("/sp3", () =>
+app.MapPost("/sp3", () =>
 {
     Console.WriteLine("ASP.NET /📡ps3発信");
     ps.Sp3(sendClient);

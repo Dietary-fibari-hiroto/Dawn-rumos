@@ -17,6 +17,7 @@ message SetPowerRequest {
 message SetPowerReply {
   bool success = 1;
   string message = 2;
+  bool is_on = 3;
 }
 
 message GetStatusRequest {

@@ -18,8 +18,9 @@ namespace rumos.Api
         public async Task<string> PostPowerSupply(string url)
         {
             Console.WriteLine($"サプライ処理実行:{url}");
-            HttpResponseMessage response = await _httpClient.GetAsync(url);
+            HttpResponseMessage response = await _httpClient.PostAsync(url,null);
             response.EnsureSuccessStatusCode();
+            //return await response.Content.ReadAsStringAsync();
             return await response.Content.ReadAsStringAsync();
         }
     }

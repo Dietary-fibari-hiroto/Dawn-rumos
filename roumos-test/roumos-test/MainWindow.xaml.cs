@@ -1,9 +1,12 @@
+using Grpc.IDevice;
+using Windows.UI;
+using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Media;
+using rumos.Api;
+using rumos.AppSetting;
 using System;
 using System.IO;
-using Microsoft.UI.Xaml;
-using rumos.AppSetting;
-using rumos.Api;
-using Microsoft.UI.Windowing;
+using System.Text.Json;
 
 
 
@@ -30,9 +33,10 @@ namespace roumos_test
             Test.Text = "psボタン反応";
             try
             {
-                string result = await _rumosApi.PostPowerSupply(ApiEndpoints.baseUrl+"/sp");
-                OutputTextBlock.Text = result;
-            }catch(Exception ex)
+                string res = await _rumosApi.PostPowerSupply(ApiEndpoints.baseUrl + "/sp");
+                OutputTextBlock.Text = res;
+            }
+            catch(Exception ex)
             {
                 OutputTextBlock.Text = $"エラー: {ex.Message}";
             }
@@ -42,8 +46,31 @@ namespace roumos_test
             Test.Text = "ps2ボタン反応";
             try
             {
-                string result = await _rumosApi.PostPowerSupply(ApiEndpoints.baseUrl + "/sp2");
-                OutputTextBlock.Text = result;
+                string resJson = await _rumosApi.PostPowerSupply(ApiEndpoints.baseUrl + "/sp2");
+                //JSON => RPowerResponse に変換
+                var options = new JsonSerializerOptions
+                {
+                    PropertyNameCaseInsensitive = true,
+                };
+                var res = JsonSerializer.Deserialize<RPowerResponse>(resJson, options);
+
+                if(res != null)
+                {
+                    OutputTextBlock.Text = $"Success: {res.Success}, Message: {res.Message}, IsOn: {res.IsOn}";
+                    if (!res.IsOn)
+                    {
+                        Panel.Background = new SolidColorBrush(Color.FromArgb(255, 255, 0, 0));
+                    }
+                    else
+                    {
+                        Panel.Background = new SolidColorBrush(Color.FromArgb(255, 70, 255, 0));
+                    }
+                }
+                else
+                {
+                    OutputTextBlock.Text = "レスポンスの変換に失敗しました。";
+                }
+
             }
             catch (Exception ex)
             {
@@ -56,8 +83,9 @@ namespace roumos_test
             Test.Text = "ps3ボタン反応";
             try
             {
-                string result = await _rumosApi.PostPowerSupply(ApiEndpoints.baseUrl + "/sp3");
-                OutputTextBlock.Text = result;
+                string res = await _rumosApi.PostPowerSupply(ApiEndpoints.baseUrl + "/sp3");
+
+                OutputTextBlock.Text = res;
             }
             catch (Exception ex)
             {

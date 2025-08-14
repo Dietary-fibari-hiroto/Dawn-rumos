@@ -2,6 +2,7 @@ using Grpc.Net.Client;
 using Myservice;
 using Devicecontrol;
 using DotNetEnv;
+using Grpc.IDevice;
 
 
 
@@ -31,19 +32,21 @@ namespace Grpc.PowerService
             var res = await client.SetPowerAsync(req);
             Console.WriteLine($"success={res.Success} message={res.Message}");
         }
-        public async void Sp2(DeviceControl.DeviceControlClient client)
+        public async Task<RPowerResponse> Sp2(DeviceControl.DeviceControlClient client)
         {
 
             var req = new SetPowerRequest
             {
                 DeviceId = "plug-02",
                 Ip = Environment.GetEnvironmentVariable("DEVICE_IP2"),
-               AccountEmail = Environment.GetEnvironmentVariable("DEVICE_EMAIL"),
+                AccountEmail = Environment.GetEnvironmentVariable("DEVICE_EMAIL"),
                 AccountPassword = Environment.GetEnvironmentVariable("DEVICE_PASSWORD")
             };
 
             var res = await client.SetPowerAsync(req);
-            Console.WriteLine($"success={res.Success} message={res.Message}");
+            Console.WriteLine("Sccess:" + res.Success + "message:" + res.Message + "is_on:" + res.IsOn);
+
+            return new RPowerResponse(res.Success, res.Message, res.IsOn);
         }
 
         public async void Sp3(DeviceControl.DeviceControlClient client)
