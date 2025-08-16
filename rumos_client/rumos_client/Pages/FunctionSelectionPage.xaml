@@ -8,38 +8,68 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <Grid>
-        <!-- 背景画像 2枚重ね -->
-        <Image x:Name="Background1" Source="/Assets/Images/IMG_7028.jpg" Stretch="UniformToFill" />
-        <Image x:Name="Background2" Source="/Assets/Images/IMG_7053.jpg" Stretch="UniformToFill" Opacity="0"/>
+    <Page.Resources>
+        <!--フェードアウト設定-->
+        <Storyboard x:Name="FadeOutStoryboard">
+            <DoubleAnimation Storyboard.TargetName="BackgroundImage"
+                             Storyboard.TargetProperty="Opacity"
+                             To="0"
+                             Duration="0:0:0.2"/>
+        </Storyboard>
+        <!--フェードイン設定-->
+        <Storyboard x:Name="FadeInStoryboard">
+            <DoubleAnimation Storyboard.TargetName="BackgroundImage"
+                             Storyboard.TargetProperty="Opacity"
+                             To="1"
+                             Duration="0:0:0.2"/>
+        </Storyboard>
+    </Page.Resources>
 
-        <!-- 文字 -->
-        <TextBlock x:Name="TextCurrent"
-               Text="最初の文字"
-               FontSize="48"
-               HorizontalAlignment="Center"
+    <Grid x:Name="RootGrid" Tapped="RootGrid_Tapped" SizeChanged="RootGrid_SizeChanged">
+        <Image x:Name="BackgroundImage"
+               Stretch="UniformToFill"
+               Opacity="1"
                VerticalAlignment="Center"
-               RenderTransformOrigin="0.5,0.5">
-            <TextBlock.RenderTransform>
-                <TranslateTransform Y="0"/>
-            </TextBlock.RenderTransform>
-        </TextBlock>
-
-        <TextBlock x:Name="TextNext"
-               Text="次の文字"
-               FontSize="48"
-               HorizontalAlignment="Center"
-               VerticalAlignment="Center"
-               Opacity="0"
-               RenderTransformOrigin="0.5,0.5">
-            <TextBlock.RenderTransform>
-                <TranslateTransform Y="50"/>
-                <!-- 下から入る -->
-            </TextBlock.RenderTransform>
-        </TextBlock>
-
-        <!-- ボタンで切り替え -->
-        <Button Content="Next" HorizontalAlignment="Right" VerticalAlignment="Bottom" Click="Next_Click"/>
+               HorizontalAlignment="Center"/>
+        <ScrollViewer x:Name="Scroller"
+                      VerticalScrollBarVisibility="Hidden"
+                      VerticalScrollMode="Enabled"
+                      HorizontalScrollMode="Disabled"
+                      ZoomMode="Disabled"
+                      ViewChanged="Scroller_ViewChanged">
+            <StackPanel x:Name="PanelStack">
+                <StackPanel Orientation="Horizontal" Height="{Binding ActualHeight,ElementName=RootGrid}">
+                    <TextBlock Text="I Control"/>
+                    <Border Width="100" Height="100" BorderBrush="White" BorderThickness="2">
+                        <Image Source="/Assets/Images/IMG_0086.jpg" />
+                    </Border>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Height="{Binding ActualHeight,ElementName=RootGrid}">
+                    <TextBlock Text="MagicRoutine"/>
+                    <Border Width="100" Height="100" BorderBrush="White" BorderThickness="2">
+                        <Image Source="/Assets/Images/IMG_0086.jpg" />
+                    </Border>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Height="{Binding ActualHeight,ElementName=RootGrid}">
+                    <TextBlock Text="Device"/>
+                    <Border Width="100" Height="100" BorderBrush="White" BorderThickness="2">
+                        <Image Source="/Assets/Images/IMG_0086.jpg" />
+                    </Border>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Height="{Binding ActualHeight,ElementName=RootGrid}">
+                    <TextBlock Text="Environment"/>
+                    <Border Width="100" Height="100" BorderBrush="White" BorderThickness="2">
+                        <Image Source="/Assets/Images/IMG_0086.jpg" />
+                    </Border>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Height="{Binding ActualHeight,ElementName=RootGrid}">
+                    <TextBlock Text="Setting"/>
+                    <Border Width="100" Height="100" BorderBrush="White" BorderThickness="2">
+                        <Image Source="/Assets/Images/IMG_0086.jpg" />
+                    </Border>
+                </StackPanel>
+            </StackPanel>
+        </ScrollViewer>
     </Grid>
 
 </Page>

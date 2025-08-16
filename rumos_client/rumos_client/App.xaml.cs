@@ -36,6 +36,7 @@ namespace rumos_client
         {
             InitializeComponent();
         }
+        public static Window MainWindow { get; private set; }
 
         /// <summary>
         /// Invoked when the application is launched.

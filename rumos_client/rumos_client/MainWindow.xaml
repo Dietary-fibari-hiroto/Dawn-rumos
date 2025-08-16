@@ -13,5 +13,5 @@
         <MicaBackdrop />
     </Window.SystemBackdrop>
 
-    <Frame x:Name="RootFrame"/>
+    <Frame x:Name="RootFrame" Background="Black"/>
 </Window>
