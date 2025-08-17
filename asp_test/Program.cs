@@ -4,6 +4,9 @@ using Myservice;
 using Devicecontrol;
 using DotNetEnv;
 using Grpc.IDevice;
+using MqTest;
+using Microsoft.AspNetCore.Mvc;
+
 
 
 
@@ -36,7 +39,7 @@ builder.Services.ConfigureHttpJsonOptions(options =>
 // Add services to the container.-
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
-
+builder.Services.AddSingleton<MQTT_Test>();
 
 var app = builder.Build();
 
@@ -79,6 +82,11 @@ app.MapPost("/sp3", () =>
     Console.WriteLine("ASP.NET /📡ps3発信");
     ps.Sp3(sendClient);
 });
-
+// ESP32に色を送るエンドポイント
+app.MapPost("/mq", async ([FromBody] LedColor color, [FromServices] MQTT_Test mqtt) =>
+{
+    await mqtt.SendLedColorAsync(color);
+    return Results.Ok(new { message = "Color sent", color });
+});
 
 app.Run();

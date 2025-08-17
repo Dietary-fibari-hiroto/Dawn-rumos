@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Windows.Web.Http.Diagnostics;
+using System.Text.Json;
 
 namespace rumos.Api
 {
@@ -23,5 +25,23 @@ namespace rumos.Api
             //return await response.Content.ReadAsStringAsync();
             return await response.Content.ReadAsStringAsync();
         }
+
+        public async Task<string> PostESP(string url)
+        {
+            var color = new LedColor { R = 255, G = 100, B = 50 };
+            string json = JsonSerializer.Serialize(color);
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+            HttpResponseMessage response = await _httpClient.PostAsync(url, content);
+            response.EnsureSuccessStatusCode();
+            return await response.Content.ReadAsStringAsync();
+
+        }
     }
+    public class LedColor
+    {
+        public int R { get; set; }
+        public int G { get; set; }
+        public int B { get; set; }
+    }
+
 }

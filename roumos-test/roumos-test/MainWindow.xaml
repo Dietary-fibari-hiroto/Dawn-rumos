@@ -30,6 +30,10 @@
                 Width="100"
                 Height="50"
                 Background="#CCCCCC"/>
+            <Button Click="PostMq"
+                                    Width="100"
+                Height="50" 
+                Background="#CCCCCC"/>
             <TextBlock x:Name="OutputTextBlock"  TextWrapping="Wrap" Foreground="White"/>
             <TextBlock x:Name="Test"/>
             <StackPanel x:Name="Panel" Width="100" Height="100" Background="Gray" />

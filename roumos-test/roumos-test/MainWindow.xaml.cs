@@ -92,5 +92,19 @@ namespace roumos_test
                 OutputTextBlock.Text = $"エラー: {ex.Message}";
             }
         }
+
+        private async void PostMq(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                string res = await _rumosApi.PostESP(ApiEndpoints.baseUrl + "/mq");
+                OutputTextBlock.Text = res;
+
+            }
+            catch (Exception ex)
+            {
+                OutputTextBlock.Text = $"エラー: {ex.Message}";
+            }
+        }
     }
 }

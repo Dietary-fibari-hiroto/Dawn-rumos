@@ -1,47 +1,43 @@
-using System;
-using System.Text;
-using System.Threading.Tasks;
 using MQTTnet;
 using MQTTnet.Client;
-using MQTTnet.Client.Options;
+using System.Text.Json;
+using DotNetEnv;
 
 namespace MqTest
 {
-    class MQTT_Test
+public class MQTT_Test
+{
+    private readonly IMqttClient _mqttClient;
+
+    public MQTT_Test()
     {
-        static async Task Req_ESP(string[] args)
-        {
-            //MQTTブローカーのアドレス
-            string brokerAddress = "localhost";
-            int brokerPort = 1883;
-            string topic = "esp32/led";
-            //クライアントオプション
+        var factory = new MqttFactory();
+        _mqttClient = factory.CreateMqttClient();
+
+        string BrokerIp = Environment.GetEnvironmentVariable("MQTTBROKER_IP");
+        string portStr = Environment.GetEnvironmentVariable("MQTTBROKER_PORT");
+        int BrokerPort = int.Parse(portStr);
             var options = new MqttClientOptionsBuilder()
-                .WithTcpServer(brokerAddress, brokerPort)
-                .WithClientId("AspNetPublisher")
-                .Build();
+            .WithTcpServer(BrokerIp,BrokerPort) // ブローカ PC の LAN IP
+            .Build();
 
-            //MQTTクライアント生成
-            var factory = new MqttFactory();
-            var mqttClient = factory.CreateMqttClient();
-
-            //接続
-            await mqttClietnt.ConnectAsync(options);
-            Console.WriteLine("Connected to MQTT broker.");
-
-            int r = 255, g = 100, b = 50;
-            string messagePayload = $"{r},{g},{b}";
-
-            var message = new MqttApplicationMessageBuilder()
-                .WithTopic(topic)
-                .WithPayload(messagePayload)
-                .WithAtMostOnceQoS()
-                .Build();
-
-            await mqttClient.PublishAsync(message);
-            Console.WriteLine($"Published: {messagePayload}");
-
-            await mqttClient.DisconnectAsync();
-        }
+        _mqttClient.ConnectAsync(options, CancellationToken.None).Wait();
     }
+
+    public async Task SendLedColorAsync(LedColor color)
+    {
+        var payload = JsonSerializer.Serialize(color);
+        var message = new MqttApplicationMessageBuilder()
+            .WithTopic("esp32/led")
+            .WithPayload(payload)
+            .Build();
+
+        await _mqttClient.PublishAsync(message);
+    }
+}    public class LedColor
+{
+    public int R { get; set; }
+    public int G { get; set; }
+    public int B { get; set; }
+}
 }
