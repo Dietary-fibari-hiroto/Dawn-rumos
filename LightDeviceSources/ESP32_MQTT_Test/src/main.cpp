@@ -15,7 +15,7 @@ const char* mqtt_topic = "esp32/led";      // ←ASP.NET 側と合わせる
 
 // ==== NeoPixel設定 ====
 #define LED_PIN    18
-#define NUM_LEDS   8
+#define NUM_LEDS   5
 Adafruit_NeoPixel strip(NUM_LEDS, LED_PIN, NEO_GRB + NEO_KHZ800);
 
 WiFiClient espClient;
@@ -44,14 +44,16 @@ void callback(char* topic, byte* payload, unsigned int length) {
   int r = doc["R"] | 0;
   int g = doc["G"] | 0;
   int b = doc["B"] | 0;
+  int brightness = doc["Brightness"] | 100;
 
   Serial.printf("Set Color: R=%d, G=%d, B=%d\n", r, g, b);
 
   // 全部のLEDに反映
   for (int i = 0; i < NUM_LEDS; i++) {
     strip.setPixelColor(i, strip.Color(r, g, b));
+    
   }
-
+strip.setBrightness(brightness);
   strip.show();
 }
 
@@ -77,12 +79,14 @@ void setup() {
 
   // WiFi接続
   WiFi.begin(ssid, password);
+  
   while (WiFi.status() != WL_CONNECTED) {
     delay(500);
     Serial.print(".");
   }
   Serial.println("WiFi connected");
-
+  Serial.println(WiFi.localIP());
+  
   // NeoPixel初期化
   strip.begin();
   strip.show();
