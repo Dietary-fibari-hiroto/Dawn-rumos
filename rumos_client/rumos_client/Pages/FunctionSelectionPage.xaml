@@ -38,36 +38,46 @@
                       ZoomMode="Disabled"
                       ViewChanged="Scroller_ViewChanged">
             <StackPanel x:Name="PanelStack">
-                <StackPanel Orientation="Horizontal" Height="{Binding ActualHeight,ElementName=RootGrid}">
-                    <TextBlock Text="I Control"/>
-                    <Border Width="100" Height="100" BorderBrush="White" BorderThickness="2">
-                        <Image Source="/Assets/Images/IMG_0086.jpg" />
-                    </Border>
-                </StackPanel>
-                <StackPanel Orientation="Horizontal" Height="{Binding ActualHeight,ElementName=RootGrid}">
-                    <TextBlock Text="MagicRoutine"/>
-                    <Border Width="100" Height="100" BorderBrush="White" BorderThickness="2">
-                        <Image Source="/Assets/Images/IMG_0086.jpg" />
-                    </Border>
-                </StackPanel>
-                <StackPanel Orientation="Horizontal" Height="{Binding ActualHeight,ElementName=RootGrid}">
-                    <TextBlock Text="Device"/>
-                    <Border Width="100" Height="100" BorderBrush="White" BorderThickness="2">
-                        <Image Source="/Assets/Images/IMG_0086.jpg" />
-                    </Border>
-                </StackPanel>
-                <StackPanel Orientation="Horizontal" Height="{Binding ActualHeight,ElementName=RootGrid}">
-                    <TextBlock Text="Environment"/>
-                    <Border Width="100" Height="100" BorderBrush="White" BorderThickness="2">
-                        <Image Source="/Assets/Images/IMG_0086.jpg" />
-                    </Border>
-                </StackPanel>
-                <StackPanel Orientation="Horizontal" Height="{Binding ActualHeight,ElementName=RootGrid}">
-                    <TextBlock Text="Setting"/>
-                    <Border Width="100" Height="100" BorderBrush="White" BorderThickness="2">
-                        <Image Source="/Assets/Images/IMG_0086.jpg" />
-                    </Border>
-                </StackPanel>
+                <Grid  Height="{Binding ActualHeight,ElementName=RootGrid}" Width="{Binding ActualWidth,ElementName=RootGrid}">
+                    <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Orientation="Horizontal">
+                        <TextBlock Text="I Control" VerticalAlignment="Center" FontSize="100" />
+                        <Border Margin="20,0" Width="100" Height="100" BorderBrush="White" BorderThickness="2" CornerRadius="10">
+                            <Image Source="/Assets/Images/icontrol_icon.png" />
+                        </Border>
+                    </StackPanel>
+                </Grid>
+                <Grid  Height="{Binding ActualHeight,ElementName=RootGrid}" Width="{Binding ActualWidth,ElementName=RootGrid}">
+                    <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Orientation="Horizontal">
+                        <TextBlock Text="MagicRoutine" VerticalAlignment="Center" FontSize="100" />
+                        <Border Margin="20,0" Width="100" Height="100" BorderBrush="White" BorderThickness="2" CornerRadius="10">
+                            <Image Source="/Assets/Images/magicroutin_icon.png" />
+                        </Border>
+                    </StackPanel>
+                </Grid>
+                <Grid  Height="{Binding ActualHeight,ElementName=RootGrid}" Width="{Binding ActualWidth,ElementName=RootGrid}">
+                    <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Orientation="Horizontal">
+                        <TextBlock Text="Device" VerticalAlignment="Center" FontSize="100"/>
+                        <Border Margin="20,0" Width="100" Height="100" BorderBrush="White" BorderThickness="2" CornerRadius="10">
+                            <Image Source="/Assets/Images/Device_icon.png" />
+                        </Border>
+                    </StackPanel>
+                </Grid>
+                <Grid  Height="{Binding ActualHeight,ElementName=RootGrid}" Width="{Binding ActualWidth,ElementName=RootGrid}">
+                    <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Orientation="Horizontal">
+                        <TextBlock Text="Environment" VerticalAlignment="Center" FontSize="100"/>
+                        <Border Margin="20,0" Width="100" Height="100" BorderBrush="White" BorderThickness="2" CornerRadius="10">
+                            <Image Source="/Assets/Images/Environment_icon.png" />
+                        </Border>
+                    </StackPanel>
+                </Grid>
+                <Grid  Height="{Binding ActualHeight,ElementName=RootGrid}" Width="{Binding ActualWidth,ElementName=RootGrid}">
+                    <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Orientation="Horizontal">
+                        <TextBlock Text="Setting" VerticalAlignment="Center" FontSize="100"/>
+                        <Border Margin="20,0" Width="100" Height="100" BorderBrush="White" BorderThickness="2" CornerRadius="10">
+                            <Image Source="/Assets/Images/setting_icon.png" />
+                        </Border>
+                    </StackPanel>
+                </Grid>
             </StackPanel>
         </ScrollViewer>
     </Grid>
