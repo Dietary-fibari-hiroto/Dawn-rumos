@@ -13,14 +13,38 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Remove="Assets\新しいフォルダー\**" />
+    <Content Remove="Assets\新しいフォルダー\**" />
+    <EmbeddedResource Remove="Assets\新しいフォルダー\**" />
+    <None Remove="Assets\新しいフォルダー\**" />
+    <Page Remove="Assets\新しいフォルダー\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Remove="Assets\Fonts\NotoSerifJp\NotoSerifJP-Black.ttf" />
+    <Content Remove="Assets\Fonts\NotoSerifJp\NotoSerifJP-Bold.ttf" />
+    <Content Remove="Assets\Fonts\NotoSerifJp\NotoSerifJP-ExtraBold.ttf" />
+    <Content Remove="Assets\Fonts\NotoSerifJp\NotoSerifJP-ExtraLight.ttf" />
+    <Content Remove="Assets\Fonts\NotoSerifJp\NotoSerifJP-Light.ttf" />
+    <Content Remove="Assets\Fonts\NotoSerifJp\NotoSerifJP-Medium.ttf" />
+    <Content Remove="Assets\Fonts\NotoSerifJp\NotoSerifJP-SemiBold.ttf" />
+    <Content Remove="Assets\Styles\ElementStyles.xaml" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="Assets\Fonts\NotoSerifJp\NotoSerifJP-Regular.ttf" />
     <None Remove="Assets\Images\Device_icon.png" />
+    <None Remove="Assets\Images\Environment_bg.png" />
     <None Remove="Assets\Images\Environment_icon.png" />
     <None Remove="Assets\Images\icontrol_icon.png" />
     <None Remove="Assets\Images\IMG_0086.jpg" />
     <None Remove="Assets\Images\IMG_7028.jpg" />
     <None Remove="Assets\Images\IMG_7053.jpg" />
+    <None Remove="Assets\Images\IMG_7067.jpg" />
+    <None Remove="Assets\Images\IMG_7083.jpg" />
+    <None Remove="Assets\Images\menu_bar.png" />
     <None Remove="Assets\Images\rumos_icon.png" />
     <None Remove="Assets\Images\setting_icon.png" />
+    <None Remove="Components\SelectionElementCard.xaml" />
+    <None Remove="Pages\FunctionListPage.xaml" />
     <None Remove="Pages\FunctionSelectionPage.xaml" />
     <None Remove="Pages\Opening.xaml" />
     <None Remove="Tests\TestPage.xaml" />
@@ -51,9 +75,16 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.26100.4654" />
     <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.7.250606001" />
+    <PackageReference Include="WinUIEx" Version="2.6.0" />
   </ItemGroup>
   <ItemGroup>
+    <Content Update="Assets\Fonts\NotoSerifJp\NotoSerifJP-Regular.ttf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Update="Assets\Images\Device_icon.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\Images\Environment_bg.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Update="Assets\Images\Environment_icon.png">
@@ -71,7 +102,16 @@
     <Content Update="Assets\Images\IMG_7053.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Update="Assets\Images\IMG_7067.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\Images\IMG_7083.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Update="Assets\Images\magicroutin_icon.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\Images\menu_bar.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Update="Assets\Images\rumos_icon.png">
@@ -117,4 +157,22 @@
     <PublishTrimmed Condition="'$(Configuration)' == 'Debug'">False</PublishTrimmed>
     <PublishTrimmed Condition="'$(Configuration)' != 'Debug'">True</PublishTrimmed>
   </PropertyGroup>
+  <ItemGroup>
+    <PRIResource Remove="Assets\新しいフォルダー\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Components\SelectionElementCard.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Pages\FunctionListPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Assets\Styles\ElementStyles.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
 </Project>

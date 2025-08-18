@@ -6,10 +6,19 @@
     xmlns:local="using:rumos_client">
     <Application.Resources>
         <ResourceDictionary>
+
+            <Style TargetType="TextBlock">
+                <Setter Property="FontFamily"
+                        Value="/Assets/Fonts/NotoSerifJp/NotoSerifJP-Regular.ttf#Noto Serif JP"/>
+            </Style>
+            
             <ResourceDictionary.MergedDictionaries>
                 <XamlControlsResources xmlns="using:Microsoft.UI.Xaml.Controls" />
                 <!-- Other merged dictionaries here -->
+                <ResourceDictionary Source="/Assets/Styles/ElementStyles.xaml"/>
             </ResourceDictionary.MergedDictionaries>
+
+
             <!-- Other app resources here -->
         </ResourceDictionary>
     </Application.Resources>

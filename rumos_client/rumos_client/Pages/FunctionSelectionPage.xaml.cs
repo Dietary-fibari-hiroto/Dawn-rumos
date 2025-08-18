@@ -1,8 +1,11 @@
+using Microsoft.UI;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Input;
+using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Media.Imaging;
 using System;
+using rumos_client.Hooks;
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
 
@@ -17,9 +20,12 @@ namespace rumos_client.Pages
         private int _pageCount;
         private string[] _backgrounds = new[]
         {
-            "ms-appx:///Assets/Images/IMG_0086.jpg",
-            "ms-appx:///Assets/Images/IMG_7028.jpg",
-            "ms-appx:///Assets/Images/IMG_7053.jpg"
+            "ms-appx:///Assets/Images/IMG_7053.jpg",
+                        "ms-appx:///Assets/Images/IMG_3681.jpg",
+            "ms-appx:///Assets/Images/IMG_7083.jpg",
+          "ms-appx:///Assets/Images/Environment_bg.png",
+            "ms-appx:///Assets/Images/IMG_7067.jpg",
+
         };
 
         private int _currentIndex = 0;
@@ -49,6 +55,7 @@ namespace rumos_client.Pages
                 if(pageIndex != _currentIndex && pageIndex < _backgrounds.Length)
                 {
                     ChangeBackground(pageIndex);
+                    ChangeMenuStyle(pageIndex);
                     _currentIndex = pageIndex;
                 }
 
@@ -110,5 +117,32 @@ namespace rumos_client.Pages
             };
             FadeOutStoryboard.Begin();
         }
+        //ページごとにセレクションラベルのstyleを変化
+        private void ChangeMenuStyle(int index)
+        {
+            foreach(var child in SelectionMenuPanel.Children)
+            {
+                int childIndex = SelectionMenuPanel.Children.IndexOf(child);
+                if (child is TextBlock textblock)
+                {
+                    if (childIndex == index)
+                    {
+                        AnimationHooks.AnimateTextColor(textblock, Colors.White, ColorHelper.FromArgb(255, 155, 119, 255));
+                    }
+                    else
+                    {
+                        AnimationHooks.AnimateTextColor(textblock, Colors.White, ColorHelper.FromArgb(255, 255, 255, 255));
+                    }
+                   
+                }
+               
+            }
+        }
+        private void ToList(object sender, RoutedEventArgs e)
+        {
+            Frame.Navigate(typeof(FunctionListPage));
+        }
+
+
     }
 }
