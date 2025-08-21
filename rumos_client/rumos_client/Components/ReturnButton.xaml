@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UserControl
+    x:Class="rumos_client.Components.ReturnButton"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:rumos_client.Components"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <StackPanel Tapped="ReturnSelection" Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="100" Spacing="10" >
+        <TextBlock Text="＜" HorizontalAlignment="Center" FontSize="50"/>
+        <TextBlock Text="I Control" HorizontalAlignment="Center" FontSize="50"/>
+    </StackPanel>
+</UserControl>

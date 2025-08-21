@@ -28,7 +28,7 @@ namespace rumos.Api
 
         public async Task<string> PostESP(string url)
         {
-            var color = new LedColor { R = 47, G = 0, B = 94, Brightness=50 };
+            var color = new LedColor { R = 255, G = 255, B = 255, Brightness=50 };
             string json = JsonSerializer.Serialize(color);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
             HttpResponseMessage response = await _httpClient.PostAsync(url, content);

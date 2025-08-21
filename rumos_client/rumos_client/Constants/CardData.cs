@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Microsoft.UI.Xaml.Controls;
+using rumos_client.Pages;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -16,5 +18,6 @@ namespace rumos_client.Constants
                         ("ms-appx:///Assets/Images/Environment_icon.png", "ms-appx:///Assets/Images/Environment_bg.png", "Environment"),
                                 ("ms-appx:///Assets/Images/setting_icon.png", "ms-appx:///Assets/Images/IMG_7067.jpg", "Setting"),
         };
+
     }
 }

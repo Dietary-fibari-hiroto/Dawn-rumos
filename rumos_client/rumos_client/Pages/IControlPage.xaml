@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Page
+    x:Class="rumos_client.Pages.IControlPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:rumos_client.Pages"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:component="using:rumos_client.Components"
+    mc:Ignorable="d">
+    <Grid>
+        <component:ReturnButton x:Name="ToHome"/>
+        <Grid   Height="700">
+
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center"  >
+                <ScrollViewer  Height="700">
+                    <StackPanel Orientation="Vertical">
+                        <component:DeviceLabel/>
+                    </StackPanel>
+                </ScrollViewer>
+                <StackPanel>
+                    <component:DeviceStateBorad/>
+                </StackPanel>
+            </StackPanel>
+        </Grid>
+    </Grid>
+</Page>

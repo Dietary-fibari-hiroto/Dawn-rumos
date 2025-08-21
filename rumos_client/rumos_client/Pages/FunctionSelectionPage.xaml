@@ -65,8 +65,8 @@
                       ViewChanged="Scroller_ViewChanged"
                       Canvas.ZIndex="1">
             <StackPanel x:Name="PanelStack">
-                <Grid  Height="{Binding ActualHeight,ElementName=RootGrid}" Width="{Binding ActualWidth,ElementName=RootGrid}">
-                    <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Orientation="Horizontal">
+                <Grid  Height="{Binding ActualHeight,ElementName=RootGrid}" Width="{Binding ActualWidth,ElementName=RootGrid}" Tapped="ToIControl"  >
+                    <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Orientation="Horizontal" >
                         <TextBlock Text="I Control" VerticalAlignment="Center" FontSize="100" />
                         <Border Margin="20,0" Width="100" Height="100" BorderBrush="White" BorderThickness="2" CornerRadius="10">
                             <Image Source="/Assets/Images/icontrol_icon.png" />

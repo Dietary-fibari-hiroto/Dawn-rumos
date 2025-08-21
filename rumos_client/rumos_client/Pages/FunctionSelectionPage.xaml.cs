@@ -143,6 +143,11 @@ namespace rumos_client.Pages
             Frame.Navigate(typeof(FunctionListPage));
         }
 
+        private void ToIControl(object sender ,RoutedEventArgs e)
+        {
+            Frame.Navigate(typeof(IControlPage));
+        }
+
 
     }
 }

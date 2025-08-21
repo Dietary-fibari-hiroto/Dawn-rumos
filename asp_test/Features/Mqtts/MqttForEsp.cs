@@ -32,7 +32,8 @@ public class MQTT_Test
             .WithPayload(payload)
             .Build();
 
-        await _mqttClient.PublishAsync(message);
+            Console.WriteLine("mqtt送信前まで来や");
+            await _mqttClient.PublishAsync(message);
     }
 }    public class LedColor
     {

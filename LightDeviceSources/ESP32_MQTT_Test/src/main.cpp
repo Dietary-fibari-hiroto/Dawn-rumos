@@ -15,7 +15,7 @@ const char* mqtt_topic = "esp32/led";      // ←ASP.NET 側と合わせる
 
 // ==== NeoPixel設定 ====
 #define LED_PIN    18
-#define NUM_LEDS   5
+#define NUM_LEDS   22
 Adafruit_NeoPixel strip(NUM_LEDS, LED_PIN, NEO_GRB + NEO_KHZ800);
 
 WiFiClient espClient;

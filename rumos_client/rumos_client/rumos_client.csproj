@@ -43,9 +43,14 @@
     <None Remove="Assets\Images\menu_bar.png" />
     <None Remove="Assets\Images\rumos_icon.png" />
     <None Remove="Assets\Images\setting_icon.png" />
+    <None Remove="Components\DeviceLabel.xaml" />
+    <None Remove="Components\DeviceStateBorad.xaml" />
+    <None Remove="Components\ReturnButton.xaml" />
     <None Remove="Components\SelectionElementCard.xaml" />
     <None Remove="Pages\FunctionListPage.xaml" />
     <None Remove="Pages\FunctionSelectionPage.xaml" />
+    <None Remove="Pages\IControlPage.xaml" />
+    <None Remove="Pages\MagicRoutinePage.xaml" />
     <None Remove="Pages\Opening.xaml" />
     <None Remove="Tests\TestPage.xaml" />
   </ItemGroup>
@@ -159,6 +164,31 @@
   </PropertyGroup>
   <ItemGroup>
     <PRIResource Remove="Assets\新しいフォルダー\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Components\ReturnButton.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Components\DeviceStateBorad.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Components\DeviceLabel.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Pages\MagicRoutinePage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Pages\IControlPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Page Update="Components\SelectionElementCard.xaml">
