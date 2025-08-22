@@ -52,3 +52,7 @@ packages/
 # 一時ファイル
 *.tmp
 *.temp
+
+
+#sql
+sql/init_sqlaccount.sql

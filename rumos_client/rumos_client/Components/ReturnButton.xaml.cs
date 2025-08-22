@@ -21,7 +21,7 @@ namespace rumos_client.Components;
 
 public sealed partial class ReturnButton : UserControl
 {
-    public event EventHandler NavigateRequest;
+    public event EventHandler? NavigateRequest;
     public ReturnButton()
     {
         InitializeComponent();
