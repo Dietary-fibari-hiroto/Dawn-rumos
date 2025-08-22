@@ -16,16 +16,19 @@ public class Room
 
 public class Device
 {
-    public int  Id { get; set; }
+    public int Id { get; set; }
     public string Name { get; set; } = string.Empty;
-    public string Ip_v4 {  get; set; } = "";
+    public string? Ip_v4 { get; set; }
+
     [Column("platform_id")]
     public int Platform_id { get; set; }
-    [ForeignKey("platform_id")]
+
+    [ForeignKey("Platform_id")]
     public Platform? Platform { get; set; }
 
     [Column("room_id")]
-    public int Room_id  { get; set; }
-    [ForeignKey("platform_id")]
+    public int Room_id { get; set; }
+
+    [ForeignKey("Room_id")]
     public Room? Room { get; set; }
 }

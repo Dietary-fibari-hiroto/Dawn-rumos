@@ -6,4 +6,8 @@ public interface IPlatformService
     {
         Task<IEnumerable<Platform>> GetPlatformAsync();
     }
+    public interface IDeviceService
+    {
+        Task<IEnumerable<Device>> GetDeviceAsync();
+    }
 }

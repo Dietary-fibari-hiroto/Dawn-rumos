@@ -15,4 +15,17 @@ namespace rumos_server.Features.Controller
         [HttpGet]
         public async Task<IActionResult> GetAll() => Ok(await _service.GetPlatformAsync());
     }
+
+    [ApiController]
+    [Route("/api/[controller]")]
+    public class DeviceController : ControllerBase
+    {
+        private readonly IDeviceService _service;
+        public DeviceController(IDeviceService service)
+        {
+            _service = service;
+        }
+        [HttpGet]
+        public async Task<IActionResult> GetAll() => Ok(await _service.GetDeviceAsync());
+    }
 }
