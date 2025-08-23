@@ -9,5 +9,6 @@ public interface IPlatformService
     public interface IDeviceService
     {
         Task<IEnumerable<Device>> GetDeviceAsync();
+        Task<Device?> GetDeviceAsync(int id);
     }
 }

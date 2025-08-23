@@ -1,5 +1,6 @@
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media.Imaging;
 using System;
 
@@ -42,11 +43,16 @@ public sealed partial class DeviceLabel : UserControl
     private static void OnDeviceIconSourceChanged(DependencyObject d,DependencyPropertyChangedEventArgs e)
     {
         // d が DeviceLabel か確認し、e.NewValue が string (画像のパス) なら処理する
-        if (d is DeviceLabel label && e.NewValue is string path)
+        if (d is DeviceLabel label && e.NewValue is string type)
         {
-            // DeviceLabel 内にある "DeviceIcon" という Image コントロールのソースに
-            // 新しい画像 (BitmapImage) を設定する。
-            label.DeviceIcon.Source = new BitmapImage(new Uri(path));
+            string assetPath = type switch
+            {
+                "0" => "ms-appx:///Assets/Images/Device_icon.png",
+                "1" => "ms-appx:///Assets/Images/icontrol_icon.png",
+                "2" => "ms-appx:///Assets/Images/Environment_icon.png",
+                _ => "ms-appx:///Assets/Images/magicroutin_icon.png" // 未定義の場合
+            };
+            label.DeviceIcon.Source = new BitmapImage(new Uri(assetPath));
         }
     }
 
@@ -66,4 +72,20 @@ public sealed partial class DeviceLabel : UserControl
                     label.DeviceName.Text = e.NewValue?.ToString();
                 }
             }));
+
+    public int DeviceId
+    {
+        get => (int)GetValue(DeviceIdProperty);
+        set => SetValue(DeviceIdProperty, value);
+    }
+
+    public static readonly DependencyProperty DeviceIdProperty =
+        DependencyProperty.Register(nameof(DeviceId), typeof(int), typeof(DeviceLabel), new PropertyMetadata(0));
+
+    public event EventHandler<int>? DeviceClicked;
+
+    private void DeviceLabel_Tapped(object sender, TappedRoutedEventArgs e)
+    {
+        DeviceClicked?.Invoke(this, DeviceId);
+    }
 }

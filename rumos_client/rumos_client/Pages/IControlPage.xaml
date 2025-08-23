@@ -7,6 +7,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:component="using:rumos_client.Components"
+    xmlns:model="using:rumos_client.Models"
     mc:Ignorable="d">
     <Grid>
         <component:ReturnButton x:Name="ToHome"/>
@@ -15,11 +16,17 @@
             <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center"  >
                 <ScrollViewer  Height="700">
                     <StackPanel Orientation="Vertical">
-                        <component:DeviceLabel/>
+                        <ItemsRepeater x:Name="DeviceRepeater">
+                            <ItemsRepeater.ItemTemplate>
+                                <DataTemplate x:DataType="model:Device">
+                                    <component:DeviceLabel DeviceNameText="{x:Bind Name}" DeviceIconSource="{x:Bind Platform_id}" DeviceId="{x:Bind Id}" />
+                                </DataTemplate>
+                            </ItemsRepeater.ItemTemplate>
+                        </ItemsRepeater>
                     </StackPanel>
                 </ScrollViewer>
                 <StackPanel>
-                    <component:DeviceStateBorad/>
+                    <component:DeviceStateBorad x:Name="DeviceStateBorad"/>
                 </StackPanel>
             </StackPanel>
         </Grid>

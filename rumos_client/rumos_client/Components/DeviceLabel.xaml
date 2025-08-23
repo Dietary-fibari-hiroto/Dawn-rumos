@@ -8,7 +8,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <Border BorderBrush="Wheat" BorderThickness="1" Width="400" Height="80" Padding="10,0">
+    <Border Background="Transparent" BorderBrush="Wheat" BorderThickness="1" Width="400" Height="80" Padding="10,0" Tapped="DeviceLabel_Tapped">
         <Grid>
             <!-- アイコン -->
             <Border Width="60" Height="60" BorderBrush="Wheat" BorderThickness="1" CornerRadius="10"

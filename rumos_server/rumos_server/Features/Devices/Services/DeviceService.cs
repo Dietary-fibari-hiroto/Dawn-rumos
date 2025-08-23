@@ -13,5 +13,6 @@ namespace rumos_server.Features.Services
         }
 
         public Task<IEnumerable<Device>> GetDeviceAsync() => _repo.GetAllAsync();
+        public Task<Device?> GetDeviceAsync(int id) => _repo.GetByIdAsync(id);
     }
 }

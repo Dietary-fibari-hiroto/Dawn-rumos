@@ -1,3 +1,5 @@
+//https有効化コマンド:dotnet run --launch-profile "https"
+
 using rumos_server.Data;
 using rumos_server.Extensions;
 using Microsoft.EntityFrameworkCore;
@@ -10,7 +12,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-//DI�o�^
+//DI�o�^
 builder.Services.AddDbContext<AppDbContext>(options => options.UseMySql(builder.Configuration.GetConnectionString("DefaultConnection"), new MySqlServerVersion(new Version(8, 0, 38))));
 builder.Services.RegisterRepositories();
 builder.Services.RegisterServices();

@@ -11,16 +11,20 @@
     <Border Width="1000"  Height="700" BorderBrush="White" BorderThickness="1" Padding="50">
         <StackPanel Orientation="Vertical" Spacing="20">
             <StackPanel Orientation="Vertical">
-                <TextBlock Text="DeviceName" Foreground="#9B77FF" FontSize="15" />
-                <TextBlock x:Name="DeviceIpLabel" Text="DeviceName" FontSize="20" Margin="20,0,0,0"/>
+                <TextBlock Text="Id" Foreground="#9B77FF" FontSize="15" />
+                <TextBlock x:Name="DeviceIdLabel"  FontSize="20" Margin="20,0,0,0"/>
             </StackPanel>
             <StackPanel Orientation="Vertical">
-                <TextBlock Text="DeviceName" Foreground="#9B77FF" FontSize="15" />
-                <TextBlock Text="DeviceName" FontSize="20" Margin="20,0,0,0"/>
+                <TextBlock Text="Name" Foreground="#9B77FF" FontSize="15" />
+                <TextBlock x:Name="DeviceNameLabel" FontSize="20" Margin="20,0,0,0"/>
             </StackPanel>
             <StackPanel Orientation="Vertical">
-                <TextBlock Text="DeviceName" Foreground="#9B77FF" FontSize="15" />
-                <TextBlock  Text="DeviceName" FontSize="20" Margin="20,0,0,0"/>
+                <TextBlock Text="Category" Foreground="#9B77FF" FontSize="15" />
+                <TextBlock x:Name="DeviceCategoryLabel" FontSize="20" Margin="20,0,0,0"/>
+            </StackPanel>
+            <StackPanel Orientation="Vertical">
+                <TextBlock Text="Ip" Foreground="#9B77FF" FontSize="15" />
+                <TextBlock  x:Name="DeviceIpLabel" FontSize="20" Margin="20,0,0,0"/>
             </StackPanel>
         </StackPanel>
     </Border>

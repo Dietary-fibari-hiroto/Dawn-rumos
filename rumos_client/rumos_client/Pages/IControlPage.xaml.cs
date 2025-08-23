@@ -1,17 +1,10 @@
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Controls.Primitives;
-using Microsoft.UI.Xaml.Data;
-using Microsoft.UI.Xaml.Input;
-using Microsoft.UI.Xaml.Media;
-using Microsoft.UI.Xaml.Navigation;
-using System;
+using rumos_client.Apis;
+using rumos_client.Components;
+using rumos_client.Models;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
+
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -23,14 +16,46 @@ namespace rumos_client.Pages
     /// </summary>
     public sealed partial class IControlPage : Page
     {
+        private readonly ApiClient api = new ApiClient();
 
         public IControlPage()
         {
             InitializeComponent();
+            GetDeviceLIst();
+            Loaded += IControlPage_Loaded;
             ToHome.NavigateRequest += (s, e) =>
             {
                 Frame.Navigate(typeof(FunctionSelectionPage));
             };
+        }
+
+        public async void GetDeviceLIst()
+        {
+            var devices = await api.GetAsync<List<Device>>("/device");
+
+            if(devices == null)
+            {
+                return;
+            }
+            DeviceRepeater.ItemsSource = devices;
+
+
+        }
+
+        public void IControlPage_Loaded(object sender,RoutedEventArgs e)
+        {
+            DeviceRepeater.ElementPrepared += DeviceRepeater_ElementPrepared;
+        }
+
+        private void DeviceRepeater_ElementPrepared(ItemsRepeater sender,ItemsRepeaterElementPreparedEventArgs args)
+        {
+            if(args.Element is DeviceLabel deviceLabel)
+            {
+                deviceLabel.DeviceClicked += (s, deviceId) =>
+                {
+                    DeviceStateBorad.SelectedDeviceId = deviceId;
+                };
+            }
         }
 
     }

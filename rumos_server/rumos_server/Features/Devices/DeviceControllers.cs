@@ -27,5 +27,11 @@ namespace rumos_server.Features.Controller
         }
         [HttpGet]
         public async Task<IActionResult> GetAll() => Ok(await _service.GetDeviceAsync());
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetById(int id)
+        {
+            var device = await _service.GetDeviceAsync(id);
+            return device == null ? NotFound() : Ok(device);
+        }
     }
 }
