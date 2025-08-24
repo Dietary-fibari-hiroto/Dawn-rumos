@@ -9,13 +9,14 @@ const char* ssid = WIFI_SSID;
 const char* password = WIFI_PASSWORD;
 
 // ==== MQTT設定 ====
+const char* device_name = "DawnSangria_Device_2";
 const char* mqtt_server = MQTT_SERVER;  // ←PCのLAN IP
 const int mqtt_port = MQTT_PORT;
 const char* mqtt_topic = "esp32/led";      // ←ASP.NET 側と合わせる
 
 // ==== NeoPixel設定 ====
-#define LED_PIN    18
-#define NUM_LEDS   22
+#define LED_PIN    25
+#define NUM_LEDS   5
 Adafruit_NeoPixel strip(NUM_LEDS, LED_PIN, NEO_GRB + NEO_KHZ800);
 
 WiFiClient espClient;
@@ -60,7 +61,7 @@ strip.setBrightness(brightness);
 void reconnect() {
   while (!client.connected()) {
     Serial.print("Attempting MQTT connection...");
-    if (client.connect("ESP32Client")) {
+    if (client.connect(device_name)) {
       Serial.println("connected");
       client.subscribe(mqtt_topic);
       Serial.print("Subscribed to: ");

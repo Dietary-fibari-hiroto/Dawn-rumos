@@ -3,7 +3,7 @@ certs/*
 
 #Node
 tp-link-test/node_modules/
-
+rumos_server/Node_gRPC_server/node_modules/
 
 # ──────────────
 # 🧱 ASP.NET (asp_test/) 側

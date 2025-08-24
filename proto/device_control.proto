@@ -8,10 +8,10 @@ service DeviceControl {
 }
 
 message SetPowerRequest {
-  string device_id = 1;  // ひろと側の内部ID（DBで管理）
-  string ip = 2;         // Node側をステートレスにするなら送る
-  string account_email = 4;   // 必要なら（Tapo）
-  string account_password = 5; // 必要なら（Tapo）→ 本番は渡さずトークン化推奨
+  string device_id = 1;  
+  string ip = 2;         
+  string account_email = 4;  
+  string account_password = 5; // → 本番は渡さずトークン化推奨
 }
 
 message SetPowerReply {
@@ -20,7 +20,7 @@ message SetPowerReply {
   bool is_on = 3;
 }
 
-message GetStatusRequest {
+message GetStatusRequest {  
   string device_id = 1;
   string ip = 2;
   string account_email = 3;
