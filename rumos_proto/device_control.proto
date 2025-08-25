@@ -10,7 +10,7 @@ service DawnDeviceControl {
 }
 
 message SetDeviceRequest {
-  string ip = 2;         
+  string ip = 1;         
 }
 message SetPowerReply {
   bool success = 1;
@@ -18,8 +18,8 @@ message SetPowerReply {
   bool is_on = 3;
 }
 message GetStatusReply {
-  bool is_connect = 2;
-  bool is_on = 3;
+  bool is_connect = 1;
+  bool is_on = 2;
 }
 
 

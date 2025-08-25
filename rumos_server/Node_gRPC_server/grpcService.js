@@ -1,4 +1,5 @@
 const { loginDeviceByIp } = require("tp-link-tapo-connect");
+require("dotenv").config();
 
 const email = process.env.TP_LINK_EMAIL;
 const password = process.env.TP_LINK_PASSWORD;
@@ -22,7 +23,9 @@ exports.returnPowerState = async (deviceIp) => {
 
 //電源ON/OFFを切り替え
 exports.powerSupply = async (deviceIp) => {
+  console.log(email, password, deviceIp);
   const device = await loginDeviceByIp(email, password, deviceIp);
+  console.log("test");
   const info = await device.getDeviceInfo();
   try {
     info.device_on ? await device.turnOff() : await device.turnOn();

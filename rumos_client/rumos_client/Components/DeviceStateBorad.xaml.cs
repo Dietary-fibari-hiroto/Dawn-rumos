@@ -1,48 +1,87 @@
-using rumos_client.Apis;
+using Microsoft.UI;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Media;
+using rumos_client.Apis;
 using rumos_client.Models;
+using System.Threading.Tasks;
+using System;  
 
-// To learn more about WinUI, the WinUI project structure,
-// and more about our project templates, see: http://aka.ms/winui-project-info.
 
-namespace rumos_client.Components;
-
-public sealed partial class DeviceStateBorad : UserControl
+namespace rumos_client.Components
 {
-    public DeviceStateBorad()
+    public sealed partial class DeviceStateBorad : UserControl
     {
-        InitializeComponent();
+        private readonly ApiClient _apiClient = new ApiClient();
+        private int _deviceId;
+        public DeviceStateBorad()
+        {
+            InitializeComponent();
+        }
+
+        public int SelectedDeviceId
+        {
+            get => (int)GetValue(SelectedDeviceIdProperty);
+            set => SetValue(SelectedDeviceIdProperty, value);
+        }
+
+        public static readonly DependencyProperty SelectedDeviceIdProperty =
+            DependencyProperty.Register(
+                nameof(SelectedDeviceId),
+                typeof(int),
+                typeof(DeviceStateBorad),
+                new PropertyMetadata(0, OnSelectedDeviceChangedStatic));
+
+        // static コールバックはインスタンスメソッドに橋渡しするだけ
+        private static void OnSelectedDeviceChangedStatic(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var control = (DeviceStateBorad)d;
+            control.OnSelectedDeviceChanged((int)e.NewValue);
+        }
+
+        // インスタンスメソッドで async にできる
+        private async void OnSelectedDeviceChanged(int newId)
+        {
+            try
+            {
+                _deviceId = newId;
+                DeviceIdLabel.Text = newId.ToString();
+
+                var device = await _apiClient.GetByIdAsync<Device>("/device", newId);
+                if (device == null) return;
+
+                DeviceNameLabel.Text = device.Name;
+                DeviceIpLabel.Text = device.Ip_v4;
+
+                var res = await _apiClient.GetTpState(newId);
+
+  
+                if (res.IsConnect)
+                {
+                    ConnectionBar.Background = new SolidColorBrush(res.IsOn ? Colors.Green : Colors.Red);
+                }
+                else
+                {
+                    ConnectionBar.Background = new SolidColorBrush(Colors.Gray);
+                }
+            }
+            catch (Exception ex)
+            {
+                // 必要に応じてログ出力
+                System.Diagnostics.Debug.WriteLine($"Error updating device: {ex.Message}");
+                ConnectionBar.Background = new SolidColorBrush(Colors.Gray);
+            }
+        }
+
+        private async void PowerSupply(object sebder,RoutedEventArgs e)
+        {
+            var res = await _apiClient.PostPowerSupply(_deviceId);
+
+                ConnectionBar.Background = new SolidColorBrush(res.IsOn ? Colors.Green : Colors.Red);
+
+        }
+        
+
+
     }
-
-    public int SelectedDeviceId
-    {
-        get => (int)GetValue(SelectedDeviceIdProperty);
-        set => SetValue(SelectedDeviceIdProperty, value);
-     }
-    public static readonly DependencyProperty SelectedDeviceIdProperty = 
-        DependencyProperty.Register(nameof(SelectedDeviceId),typeof(int),typeof(DeviceStateBorad),
-            new PropertyMetadata(0,OnSelectedDeviceChanged));
-
-    private static async void OnSelectedDeviceChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-    {
-        var control = (DeviceStateBorad)d;
-        int newId = (int)e.NewValue;
-
-        control.DeviceIdLabel.Text = newId.ToString();
-
-        ApiClient _apiClient = new ApiClient();
-        var device = await _apiClient.GetByIdAsync<Device>("/device",newId);
-
-        if (device == null) {
-            return;
-         }
-
-        control.DeviceNameLabel.Text = device?.Name;
-        control.DeviceIpLabel.Text = device?.Ip_v4;
-
-
-    }
-
-
 }

@@ -1,7 +1,7 @@
 const path = require("path");
 const grpc = require("@grpc/grpc-js");
 const protoLoader = require("@grpc/proto-loader");
-const grpcController = require("./grpcController");
+const { grpcController } = require("./grpcController");
 
 //proto読み込み
 const PROTO_PATH = path.join(
@@ -13,7 +13,7 @@ const PROTO_PATH = path.join(
 );
 
 const packageDef = protoLoader.loadSync(PROTO_PATH, {
-  keedCase: true,
+  keepCase: true,
   longs: String,
   enums: String,
   defaults: true,

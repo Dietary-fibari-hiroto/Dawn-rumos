@@ -13,8 +13,8 @@ INSERT INTO rooms (name, description) VALUES
 
 -- デバイス
 INSERT INTO devices (name, ip_v4, platform_id, room_id) VALUES
-('ESP32-TempSensor1', '192.168.1.10', 1, 1),
-('ESP32-LightController', '192.168.1.11', 1, 2),
-('RaspberryPi-MediaCenter', '192.168.1.20', 2, 1),
+('TP-1', '192.168.10.13', 1, 1),
+('TP-2', '192.168.10.8', 1, 2),
+('TP-3', '192.168.10.10', 2, 1),
 ('Arduino-DoorSensor', NULL, 3, 4),
 ('ESP32-HumiditySensor', '192.168.1.12', 1, 3);

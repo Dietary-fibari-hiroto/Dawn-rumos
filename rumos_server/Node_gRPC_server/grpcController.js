@@ -8,6 +8,7 @@ const {
 exports.grpcController = {
   //電源を切り替える処理
   SetPowerChange: async (call, callback) => {
+    console.log("手st");
     const { ip } = call.request;
     console.log("callState:", call.request);
 

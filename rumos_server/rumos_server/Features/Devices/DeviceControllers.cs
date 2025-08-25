@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using rumos_server.Externals.GrpcClients;
 using rumos_server.Features.Interface;
+using static Devicecontrol.DawnDeviceControl;
 namespace rumos_server.Features.Controller
 {
     [ApiController]
@@ -21,9 +23,11 @@ namespace rumos_server.Features.Controller
     public class DeviceController : ControllerBase
     {
         private readonly IDeviceService _service;
-        public DeviceController(IDeviceService service)
+        private readonly GrpcService _grpcService;
+        public DeviceController(IDeviceService service, GrpcService grpcService)
         {
             _service = service;
+            _grpcService = grpcService;
         }
         [HttpGet]
         public async Task<IActionResult> GetAll() => Ok(await _service.GetDeviceAsync());
@@ -33,5 +37,32 @@ namespace rumos_server.Features.Controller
             var device = await _service.GetDeviceAsync(id);
             return device == null ? NotFound() : Ok(device);
         }
+
+        /*---tp-link制御---*/
+        //tpplugの状態取得
+        [HttpGet("tp/state/{id}")]
+        public async Task<IActionResult> GetTpState(int id)
+        {
+            //受け取ったidを使ってIPだけ取得
+            string? ip = await _service.GetTpIpAsync(id);
+            if(ip == null) return NotFound("IPの取得に失敗");
+            RGetStatusReply res = await _grpcService.GetDevicePower(ip);
+            return Ok(res);
+        }
+
+        //tpplugをOn/Off切り替えるエンドポイント
+        [HttpPost("tp/supply/{id}")]
+        public async Task<IActionResult> ChangePowerSupply(int id)
+        {
+            //受け取ったidを使ってIPだけ取得
+            string? ip = await _service.GetTpIpAsync(id);
+            if (ip == null) { return NotFound("IP取得失敗"); }
+            //取得したIPを使ってgRPCリクエスト
+            RSetPowerReply res = await _grpcService.PowerSupply(ip);
+            return Ok(res);
+            ;
+        }
+        
     }
+    
 }

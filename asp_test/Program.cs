@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 
 
 
-
+//gRPCの接続設定とインスタンスを呼び出して接続
 GrpcChannel channel = GrpcChannel.ForAddress("http://localhost:50051");
 MyService.MyServiceClient client = new MyService.MyServiceClient(channel);
 
@@ -19,6 +19,7 @@ DeviceControl.DeviceControlClient sendClient = new DeviceControl.DeviceControlCl
 var builder = WebApplication.CreateBuilder(args);
 Env.Load();
 
+//ここの設定はテスト環境で使用したhttp通信のものだからいらないかな
 builder.WebHost.ConfigureKestrel(options =>
 {
     options.ListenAnyIP(5250); // HTTP
@@ -34,7 +35,7 @@ builder.Services.ConfigureHttpJsonOptions(options =>
     // プロパティ名の変換をしない（PascalCaseのまま出す）
     options.SerializerOptions.PropertyNamingPolicy = null;
 });
-
+//ここまでいらないかな
 
 // Add services to the container.-
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi

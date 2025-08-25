@@ -1,9 +1,28 @@
 //https有効化コマンド:dotnet run --launch-profile "https"
 
+using Devicecontrol;
+using DotNetEnv;
+using Grpc.Net.Client;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using rumos_server.Data;
 using rumos_server.Extensions;
-using Microsoft.EntityFrameworkCore;
+using rumos_server.Externals.GrpcClients;
 var builder = WebApplication.CreateBuilder(args);
+
+//gRPCの接続設定とインスタンスを呼び出して接続
+//GrpcChannel channel = GrpcChannel.ForAddress("http://localhost:50052");
+var channel = GrpcChannel.ForAddress("http://localhost:50052", new GrpcChannelOptions
+{
+    LoggerFactory = LoggerFactory.Create(builder =>
+    {
+        builder.AddConsole().SetMinimumLevel(LogLevel.Debug);
+    })
+});
+
+DawnDeviceControl.DawnDeviceControlClient client = new DawnDeviceControl.DawnDeviceControlClient(channel);
+//builder.Services.AddSingleton(new DawnDeviceControlClient(channel));//DI登録
+builder.Services.AddSingleton(new GrpcService(client));
 
 // Add services to the container.
 
@@ -32,5 +51,7 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+
+
 
 app.Run();

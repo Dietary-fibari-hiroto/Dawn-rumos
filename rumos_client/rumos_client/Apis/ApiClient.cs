@@ -1,6 +1,7 @@
 ﻿using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
+using rumos_client.Models;
 
 namespace rumos_client.Apis
 {
@@ -40,6 +41,30 @@ namespace rumos_client.Apis
             }
             catch (HttpRequestException) { return default; }
             catch (JsonException) { return default; }
+
+        }
+
+        //IDを使ってTpの情報を受け取る
+        public async Task<RGetStatusReply> GetTpState(int id)
+        {
+            try
+            {
+                var responce = await _http.GetStringAsync(baseUrl + "/device/tp/state/" + id);
+                return JsonSerializer.Deserialize<RGetStatusReply>(responce);
+            }
+            catch (HttpRequestException) { return new RGetStatusReply(isConnect: false, isOn: false); }
+            catch (JsonException) { return new RGetStatusReply(isConnect: false, isOn: false); }
+        }
+
+        public async Task<RSetPowerReply> PostPowerSupply(int id)
+        {
+            try
+            {
+                var response = await _http.PostAsync(baseUrl + "/device/tp/supply/" + id,null);
+                var json = await response.Content.ReadAsStringAsync();
+                return JsonSerializer.Deserialize<RSetPowerReply>(json);
+            }catch (HttpRequestException) { return new RSetPowerReply(); }
+            catch (JsonException) { return new RSetPowerReply(); }
 
         }
     }
