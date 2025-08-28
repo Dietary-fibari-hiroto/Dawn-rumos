@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using rumos_server.Externals.GrpcClients;
+using rumos_server.Externals.MqttClients;
 using rumos_server.Features.Interface;
 using static Devicecontrol.DawnDeviceControl;
 namespace rumos_server.Features.Controller
@@ -64,5 +65,26 @@ namespace rumos_server.Features.Controller
         }
         
     }
-    
+
+    //Luminaエンドポイント
+    [Route("/api/[controller]")]
+    public class LuminaController : ControllerBase
+    {
+        private readonly IDeviceService _service;
+        private readonly MqttService _mqttService;
+        public LuminaController(IDeviceService service,MqttService mqttService)
+        {
+            _service = service;
+            _mqttService = mqttService;
+        }
+
+        [HttpPost("all")]
+        public async Task<IActionResult> SetColorForAll(LedColor color,CancellationToken ct)
+        {
+            await _mqttService.SendColorAsyncForAll(color, ct);
+            return Ok();
+        }       
+
+    }
+
 }
