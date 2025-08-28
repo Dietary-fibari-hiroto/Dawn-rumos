@@ -2,6 +2,10 @@ mqttの起動方法かな？
 "C:\Program Files\mosquitto\mosquitto.exe" -v -c "C:\Program Files\mosquitto\mosquitto.conf"
 
 
+mysql -u root -p
+root
+
+
 cd C:\Users\2230372\MyData\Yuzu_Product\Dawn\Dawn-rumos\rumos_server\rumos_server
 dotnet run --launch-profile "https"
 

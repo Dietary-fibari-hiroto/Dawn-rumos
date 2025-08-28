@@ -9,34 +9,54 @@
     mc:Ignorable="d">
 
     <Border Width="1000"  Height="700" BorderBrush="White" BorderThickness="1" Padding="50">
-        <StackPanel Orientation="Vertical" Spacing="20">
-            <StackPanel Orientation="Vertical">
-                <TextBlock Text="Id" Foreground="#9B77FF" FontSize="15" />
-                <TextBlock x:Name="DeviceIdLabel"  FontSize="20" Margin="20,0,0,0"/>
-            </StackPanel>
-            <StackPanel Orientation="Vertical">
-                <TextBlock Text="Name" Foreground="#9B77FF" FontSize="15" />
-                <TextBlock x:Name="DeviceNameLabel" FontSize="20" Margin="20,0,0,0"/>
-            </StackPanel>
-            <StackPanel Orientation="Vertical">
-                <TextBlock Text="Category" Foreground="#9B77FF" FontSize="15" />
-                <TextBlock x:Name="DeviceCategoryLabel" FontSize="20" Margin="20,0,0,0"/>
-            </StackPanel>
-            <StackPanel Orientation="Vertical">
-                <TextBlock Text="Ip" Foreground="#9B77FF" FontSize="15" />
-                <TextBlock  x:Name="DeviceIpLabel" FontSize="20" Margin="20,0,0,0"/>
-            </StackPanel>
-            <StackPanel Orientation="Vertical">
-                <TextBlock Text="Connect" Foreground="#9B77FF" FontSize="15" />
-                <Border x:Name="ConnectionBar" HorizontalAlignment="Left" Background="Gray" BorderThickness="1" BorderBrush="White" Width="150" Height="20" Margin="20,0,0,0"/>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <!-- 左側の情報パネル -->
+            <StackPanel Grid.Column="0" Orientation="Vertical" Spacing="20" HorizontalAlignment="Left">
+                <StackPanel Orientation="Vertical">
+                    <TextBlock Text="Id" Foreground="#9B77FF" FontSize="15" />
+                    <TextBlock x:Name="DeviceIdLabel" FontSize="20" Margin="20,0,0,0"/>
+                </StackPanel>
+                <StackPanel Orientation="Vertical">
+                    <TextBlock Text="Name" Foreground="#9B77FF" FontSize="15" />
+                    <TextBlock x:Name="DeviceNameLabel" FontSize="20" Margin="20,0,0,0"/>
+                </StackPanel>
+                <StackPanel Orientation="Vertical">
+                    <TextBlock Text="Category" Foreground="#9B77FF" FontSize="15" />
+                    <TextBlock x:Name="DeviceCategoryLabel" FontSize="20" Margin="20,0,0,0"/>
+                </StackPanel>
+                <StackPanel Orientation="Vertical">
+                    <TextBlock Text="Ip" Foreground="#9B77FF" FontSize="15" />
+                    <TextBlock  x:Name="DeviceIpLabel" FontSize="20" Margin="20,0,0,0"/>
+                </StackPanel>
+                <StackPanel Orientation="Vertical">
+                    <TextBlock Text="Connect" Foreground="#9B77FF" FontSize="15" />
+                    <Border x:Name="ConnectionBar" HorizontalAlignment="Left" Background="Gray" BorderThickness="1" BorderBrush="White" Width="150" Height="20" Margin="20,0,0,0"/>
+                </StackPanel>
+                <Button VerticalAlignment="Bottom" HorizontalAlignment="Right" Click="PowerSupply">
+                    <Border  Width="150" Height="150" CornerRadius="75" BorderBrush="Wheat" BorderThickness="1">
+                        <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" Text="Supply" FontSize="20"/>
+                    </Border>
+                </Button>
             </StackPanel>
 
-            <Button VerticalAlignment="Bottom" HorizontalAlignment="Right" Click="PowerSupply">
-                <Border  Width="150" Height="150" CornerRadius="75" BorderBrush="Wheat" BorderThickness="1">
-                    <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" Text="Supply" FontSize="20"/>
-                </Border>
-            </Button>
-        </StackPanel>
+            <!-- 右側のカラーピッカー＆ボタン -->
+            <StackPanel Grid.Column="1" Orientation="Vertical" HorizontalAlignment="Right" VerticalAlignment="Stretch">
+                <ColorPicker 
+             x:Name="colorPicker"
+                     ColorChanged="ColorPicker_ColorChanged"
+             IsAlphaEnabled="False"
+             IsColorPreviewVisible="True"
+             HorizontalAlignment="Right"
+             VerticalAlignment="Top"
+         />
+
+            </StackPanel>
+        </Grid>
 
     </Border>
 </UserControl>

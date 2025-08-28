@@ -20,4 +20,18 @@ namespace rumos_client.Models
         [JsonPropertyName("room_id")]
         public int Room_Id { get; set; }
     }
+
+    public class LedColor
+    {
+        public int R { get; set; }
+        public int G { get; set; }
+        public int B { get; set; }
+        public int Brightness { get; set; } = 255;
+    }
+
+    public class DeviceState
+    {
+        public string Id { get; set; }
+        public bool Success { get; set; }
+    }
 }

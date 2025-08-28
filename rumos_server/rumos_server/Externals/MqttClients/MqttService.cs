@@ -1,7 +1,5 @@
 ﻿using MQTTnet;
-using MQTTnet.Client;
 using System.Text.Json;
-using MQTTnet;
 using MQTTnet.Protocol;
 
 namespace rumos_server.Externals.MqttClients
@@ -28,6 +26,23 @@ namespace rumos_server.Externals.MqttClients
                 .Build();
 
             await _conn.Client.PublishAsync(msg, ct);
+        }
+
+        //特定のデバイスにリクエスト
+        public async Task SendColorAsync(LedColor color,string DeviceName,CancellationToken ct = default)
+        {
+            await _conn.EnsureConnectedAsync(ct);
+
+            var payload = JsonSerializer.Serialize(color);
+            var msg = new MqttApplicationMessageBuilder()
+                .WithTopic($"dawn/led/{DeviceName}")
+                .WithPayload(payload)
+                .WithQualityOfServiceLevel(MqttQualityOfServiceLevel.AtLeastOnce)
+                .WithRetainFlag(false)
+                .Build();
+
+            await _conn.Client.PublishAsync( msg, ct);
+
         }
     }
 }

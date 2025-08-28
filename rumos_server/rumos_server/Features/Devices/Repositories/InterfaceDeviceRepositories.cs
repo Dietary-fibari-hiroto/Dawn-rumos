@@ -8,6 +8,7 @@ public interface IDeviceRepository
     Task<Device?> GetByIdAsync(int id);
 
     Task<string?> GetIpByIdAsync(int id);
+    Task<string?> GetNameByIdAsync(int id);
 }
 
 public interface IPlatformRepository

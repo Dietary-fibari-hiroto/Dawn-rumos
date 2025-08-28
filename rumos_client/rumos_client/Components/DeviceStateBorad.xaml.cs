@@ -4,8 +4,8 @@ using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media;
 using rumos_client.Apis;
 using rumos_client.Models;
-using System.Threading.Tasks;
 using System;  
+using System.Threading.Tasks;
 
 
 namespace rumos_client.Components
@@ -14,6 +14,7 @@ namespace rumos_client.Components
     {
         private readonly ApiClient _apiClient = new ApiClient();
         private int _deviceId;
+        private int _devicePlatformId;
         public DeviceStateBorad()
         {
             InitializeComponent();
@@ -53,6 +54,16 @@ namespace rumos_client.Components
                 DeviceNameLabel.Text = device.Name;
                 DeviceIpLabel.Text = device.Ip_v4;
 
+                //platform_idÇ™ëOâÒÇÃÇ‡ÇÃÇ∆à·Ç¡ÇΩÇ∆Ç´ÇÃèàóù
+                if(device.Platform_id != _devicePlatformId)
+                {
+                    _devicePlatformId = device.Platform_id;
+                    if (_devicePlatformId != 1) colorPicker.Visibility = Visibility.Collapsed;
+                    else colorPicker.Visibility = Visibility.Visible;
+                }
+
+
+
                 var res = await _apiClient.GetTpState(newId);
 
   
@@ -75,12 +86,37 @@ namespace rumos_client.Components
 
         private async void PowerSupply(object sebder,RoutedEventArgs e)
         {
-            var res = await _apiClient.PostPowerSupply(_deviceId);
-
+            if (_devicePlatformId == 2)
+            {
+                var res = await _apiClient.PostPowerSupply(_deviceId);
                 ConnectionBar.Background = new SolidColorBrush(res.IsOn ? Colors.Green : Colors.Red);
+            }
+            else
+            {
+                await _apiClient.LuminasLedColorAsync(ledColor, _deviceId);
+            }
 
         }
-        
+
+        private LedColor ledColor;
+
+        private void ColorPicker_ColorChanged(ColorPicker sender, ColorChangedEventArgs args)
+        {
+            var color = args.NewColor;
+
+            // Color Å® LedColor Ç÷ïœä∑
+            ledColor = new LedColor
+            {
+                R = color.R,
+                G = color.G,
+                B = color.B,
+    
+            };
+
+            
+        }
+
+
 
 
     }

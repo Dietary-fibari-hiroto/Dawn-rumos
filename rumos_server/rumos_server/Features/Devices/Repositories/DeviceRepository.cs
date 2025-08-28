@@ -16,7 +16,7 @@ namespace rumos_server.Features.Repositories
         public async Task<Device?> GetByIdAsync(int id) => await _context.Devices.FindAsync(id);
 
         public async Task<string?> GetIpByIdAsync(int id) => await _context.Devices.Where(d => d.Id == id).Select(d => d.Ip_v4).FirstOrDefaultAsync();
-
+        public async Task<string?> GetNameByIdAsync(int id)=> await _context.Devices.Where(d =>d.Id==id).Select(d => d.Name).FirstOrDefaultAsync();
 
     }
 }

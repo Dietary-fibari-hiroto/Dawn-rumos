@@ -1,7 +1,8 @@
-﻿using System.Net.Http;
+﻿using rumos_client.Models;
+using System.Net.Http;
+using System.Net.Http.Json;
 using System.Text.Json;
 using System.Threading.Tasks;
-using rumos_client.Models;
 
 namespace rumos_client.Apis
 {
@@ -56,6 +57,7 @@ namespace rumos_client.Apis
             catch (JsonException) { return new RGetStatusReply(isConnect: false, isOn: false); }
         }
 
+        //TP-Link電源を制御するAPIへのリクエスト
         public async Task<RSetPowerReply> PostPowerSupply(int id)
         {
             try
@@ -66,6 +68,18 @@ namespace rumos_client.Apis
             }catch (HttpRequestException) { return new RSetPowerReply(); }
             catch (JsonException) { return new RSetPowerReply(); }
 
+        }
+
+        //個別のLuminasプロダクトAPIへリクエストするための関数
+        public async Task LuminasLedColorAsync(LedColor ledColor,int id)
+        {
+            try
+            {
+                var response = await _http.PostAsJsonAsync(baseUrl + "/Lumina/" + id, ledColor);
+                response.EnsureSuccessStatusCode();
+            }
+            catch (HttpRequestException) {  }
+            catch (JsonException) { }
         }
     }
 }

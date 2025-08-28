@@ -11,5 +11,6 @@ public interface IPlatformService
         Task<IEnumerable<Device>> GetDeviceAsync();
         Task<Device?> GetDeviceAsync(int id);
         Task<string?> GetTpIpAsync(int id);
+        Task<string?> GetDeviceNameAsync(int id);
     }
 }

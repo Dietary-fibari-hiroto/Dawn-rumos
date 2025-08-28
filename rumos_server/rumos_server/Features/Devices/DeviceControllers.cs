@@ -83,7 +83,17 @@ namespace rumos_server.Features.Controller
         {
             await _mqttService.SendColorAsyncForAll(color, ct);
             return Ok();
-        }       
+        }
+
+        [HttpPost("{id}")]
+        public async Task<IActionResult> SetColor([FromBody]LedColor color,int id,CancellationToken ct)
+        {
+            string? deviceName = await _service.GetDeviceNameAsync(id);
+            if (deviceName == null) return NotFound();
+
+            await _mqttService.SendColorAsync(color, deviceName);
+            return Ok();
+        }
 
     }
 
