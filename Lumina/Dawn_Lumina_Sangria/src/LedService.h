@@ -9,4 +9,5 @@ namespace LedService{
     void handleAll(String msg);
     void handleIControl(String msg);
     void handleLed(String msg);
+    void ledFadein(String msg);
 }

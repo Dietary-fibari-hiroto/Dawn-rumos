@@ -27,7 +27,7 @@ namespace LedService{
         int r = doc["R"] | 0;
         int g = doc["G"] | 0;
         int b = doc["B"] | 0;
-        int brightness = doc["Brightness"] | 100;
+        int brightness = doc["Brightness"] | 255;
 
         Serial.printf("Set Color: R=%d, G=%d, B=%d\n", r, g, b);
 strip.setBrightness(brightness);
@@ -37,5 +37,29 @@ strip.setBrightness(brightness);
     delay(20); 
     strip.show();
     delay(20); 
+    }
+
+    void ledFadein(String msg){
+        StaticJsonDocument<200> doc;
+        DeserializationError error = deserializeJson(doc,msg);
+        if(error){
+            Serial.print("deserializeJson() failed: ");
+            Serial.println(error.f_str());
+            return;
+        }
+        
+        int r = doc["R"] | 0;
+        int g = doc["G"] | 0;
+        int b = doc["B"] | 0;
+        int brightness = doc["Brightness"] | 255;
+    for(int i = 0; i <= brightness; i++){
+        strip.setBrightness(i);
+        for(int j = 0; j < NUM_LEDS; j++){
+            strip.setPixelColor(j, strip.Color(r, g, b));
+        }
+        strip.show();
+        delay(20);
+    }
+
     }
 }

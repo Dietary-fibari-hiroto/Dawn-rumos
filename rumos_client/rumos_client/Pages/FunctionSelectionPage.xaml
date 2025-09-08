@@ -73,7 +73,7 @@
                         </Border>
                     </StackPanel>
                 </Grid>
-                <Grid  Height="{Binding ActualHeight,ElementName=RootGrid}" Width="{Binding ActualWidth,ElementName=RootGrid}">
+                <Grid  Height="{Binding ActualHeight,ElementName=RootGrid}" Width="{Binding ActualWidth,ElementName=RootGrid}" Tapped="ToMagicRoutine">
                     <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Orientation="Horizontal">
                         <TextBlock Text="MagicRoutine" VerticalAlignment="Center" FontSize="100" />
                         <Border Margin="20,0" Width="100" Height="100" BorderBrush="White" BorderThickness="2" CornerRadius="10">

@@ -148,6 +148,11 @@ namespace rumos_client.Pages
             Frame.Navigate(typeof(IControlPage));
         }
 
+        private void ToMagicRoutine(object sender,RoutedEventArgs e)
+        {
+            Frame.Navigate(typeof(MagicRoutinePage));
+        }
+
 
     }
 }

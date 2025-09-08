@@ -8,6 +8,20 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
+    <Page.Resources>
+        <Storyboard x:Name="FadeOutStoryboard">
+            <DoubleAnimation Storyboard.TargetName="BackgroundImage"
+                             Storyboard.TargetProperty="Opacity"
+                             To="0"
+                             Duration="0:0:0.2"/>
+        </Storyboard>
+        <Storyboard x:Name="FadeInStoryboard">
+            <DoubleAnimation Storyboard.TargetName="BackgroundImage"
+                             Storyboard.TargetProperty="Opacity"
+                             To="0.8"
+                             Duration="0:0:0.2"/>
+        </Storyboard>
+    </Page.Resources>
     <Grid>
         <TextBlock Text="test" Foreground="White"/>
     </Grid>

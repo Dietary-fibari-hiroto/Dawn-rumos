@@ -95,6 +95,16 @@ namespace rumos_server.Features.Controller
             return Ok();
         }
 
+        [HttpPost("{id}/fadein")]
+        public async Task<IActionResult> SetColorFadeIn([FromBody] LedColor color,int id, CancellationToken ct){
+            string? deviceName = await _service.GetDeviceNameAsync(id);
+            if(deviceName == null) return NotFound();
+
+            await _mqttService.SendColorFadeinAsync(color, deviceName);
+            return Ok();
+        }
+
+      
     }
 
 }

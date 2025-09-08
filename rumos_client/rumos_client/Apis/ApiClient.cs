@@ -10,7 +10,7 @@ namespace rumos_client.Apis
     public class ApiClient
     {
         private readonly HttpClient _http = new HttpClient();
-        const string baseUrl = "https://localhost:7032/api";
+        const string baseUrl = "https://localhost:7032/api"; //ベースのエンドポイントをしえてい
 
         //全取得用
         public async Task<T?> GetAsync<T>(string url)
