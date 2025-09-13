@@ -75,7 +75,7 @@ namespace rumos_client.Apis
         {
             try
             {
-                var response = await _http.PostAsJsonAsync(baseUrl + "/Lumina/" + id, ledColor);
+                var response = await _http.PostAsJsonAsync(baseUrl + "/Lumina/" + id+ "/fadein", ledColor);
                 response.EnsureSuccessStatusCode();
             }
             catch (HttpRequestException) {  }

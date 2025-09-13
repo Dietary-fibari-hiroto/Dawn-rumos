@@ -27,5 +27,7 @@ namespace rumos_client.Pages
         {
             InitializeComponent();
         }
+
+
     }
 }

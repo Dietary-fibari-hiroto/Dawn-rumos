@@ -93,6 +93,7 @@ namespace rumos_client.Pages
             Scroller.ChangeView(null, currentPage * viewportHeight, null, true);
         }
 
+        //指定の子要素の大きさを動的に変える
         private  void RootGrid_SizeChanged(object sender,SizeChangedEventArgs e)
         {
             foreach(var child in PanelStack.Children)

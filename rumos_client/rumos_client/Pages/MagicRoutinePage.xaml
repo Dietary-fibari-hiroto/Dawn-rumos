@@ -22,7 +22,18 @@
                              Duration="0:0:0.2"/>
         </Storyboard>
     </Page.Resources>
-    <Grid>
-        <TextBlock Text="test" Foreground="White"/>
+    <Grid x:Name="RootGrid">
+        <Image x:Name="BackgroundImage"
+               Stretch="UniformToFill"
+               VerticalAlignment="Center"
+               HorizontalAlignment="Center"
+               Canvas.ZIndex="0"/>
+
+        <ScrollViewer>
+            <StackPanel x:Name="PanelStack">
+                
+            </StackPanel>
+        </ScrollViewer>
+        
     </Grid>
 </Page>
