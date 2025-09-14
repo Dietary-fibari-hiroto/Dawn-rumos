@@ -1,6 +1,0 @@
-{
-  "ApiSettings": {
-    "BaseUrl": "http://localhost:5250/",
-    "GetPostEndpoint": "/posts/1"
-  }
-}
