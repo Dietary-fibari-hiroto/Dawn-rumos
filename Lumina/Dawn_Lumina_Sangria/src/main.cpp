@@ -39,7 +39,7 @@ void reconnect() {
     Serial.print("Attempting MQTT connection...");
     if (client.connect(DEVICE_NAME)) {
       Serial.println("connected");
-      // TopicRegistry に任せて subscribe する
+      //TopicRegistryでトピックを一括登録
       TopicRegistry::registerAll(DEVICE_NAME);
     } else {
       Serial.print("failed, rc=");

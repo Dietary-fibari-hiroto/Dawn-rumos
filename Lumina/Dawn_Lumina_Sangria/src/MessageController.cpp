@@ -1,9 +1,6 @@
 #include "MessageController.h"
 
-/**
- * コントローラー関数。
- * topicとserviceの紐づけ
- */
+
 
 std::map<std::string,std::function<void(String)>> MessageController::handlers;
 
