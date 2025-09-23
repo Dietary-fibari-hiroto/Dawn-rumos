@@ -13,11 +13,15 @@ class LedService{
     static int g;
     static int b;
     static int brightness;
+    static String mode;
 
     public:
+    static void setJsonUtil(String msg);
+    static void modeBranch(String msg);
     static void getLedJson(String msg);
     static void setLedColor();
     static void handleIControl(String msg);
-    static void handleLed(String msg);
-    static void ledFadein(String msg);
+    static void handleLed();
+    static void ledFadein();
+    static void WhiteGradient();
 };

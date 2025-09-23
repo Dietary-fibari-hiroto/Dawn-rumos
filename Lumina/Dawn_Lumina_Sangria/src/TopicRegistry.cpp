@@ -10,12 +10,12 @@ extern PubSubClient client; // mainのclientを参照
 
 namespace TopicRegistry{
     void registerAll(const char* device_name){
-        MessageController::registerHandler("dawn/led/all",LedService::handleLed);
+        MessageController::registerHandler("dawn/led/all",LedService::modeBranch);
         String topic = String("dawn/led/") + String(device_name);
-        MessageController::registerHandler(topic.c_str(),LedService::handleLed);
+        MessageController::registerHandler(topic.c_str(),LedService::modeBranch);
 
-        String fadeTopic = topic + String("/fadein");
-        MessageController::registerHandler(fadeTopic.c_str(),LedService::ledFadein);
+        //String fadeTopic = topic + String("/fadein");
+        //MessageController::registerHandler(fadeTopic.c_str(),LedService::WhiteGradient);
 
         // subscribeもここでまとめる
         client.subscribe("dawn/led/all");

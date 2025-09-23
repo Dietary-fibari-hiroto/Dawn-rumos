@@ -27,6 +27,7 @@ namespace rumos_client.Models
         public int G { get; set; }
         public int B { get; set; }
         public int Brightness { get; set; } = 255;
+        public string Mode { get; set; } = "normal";
     }
 
     public class DeviceState

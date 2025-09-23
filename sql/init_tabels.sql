@@ -43,4 +43,4 @@ CREATE TABLE preset_device_maps(
     FOREIGN KEY (preset_id) REFERENCES presets(id),
     FOREIGN KEY (device_id) REFERENCES devices(id),
     PRIMARY KEY (preset_id,device_id)
-)ENDINE=InnoDB;
+)ENGINE=InnoDB;

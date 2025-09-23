@@ -12,8 +12,8 @@ INSERT INTO rooms (name, description) VALUES
 
 -- デバイス
 INSERT INTO devices (name, ip_v4, platform_id, room_id) VALUES
-('TP-1', '192.168.10.13', 2, 1),
-('TP-2', '192.168.10.8', 2, 2),
-('TP-3', '192.168.10.10', 2, 1),
+('TP-1', '192.168.10.4', 2, 1),
+('TP-2', '192.168.10.2', 2, 2),
+('TP-3', '192.168.10.3', 2, 1),
 ('Lumina_Sangria_1', NULL, 1, 4),
 ('Lumina_Sangria_2', NULL, 1, 3);

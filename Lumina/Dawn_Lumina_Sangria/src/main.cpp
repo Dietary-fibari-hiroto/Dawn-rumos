@@ -6,6 +6,7 @@
 #include "DeviceMetaData.h"
 #include "TopicRegistry.h"
 #include "MessageController.h"
+#include "./services/LedService.h"
 
 // ==== WiFi設定 ====
 const char* ssid = WIFI_SSID;
@@ -31,6 +32,7 @@ void callback(char* topic, byte* payload, unsigned int length) {
   for (unsigned int i = 0; i < length; i++) {
     msg += (char)payload[i];
   }
+  LedService::setJsonUtil(msg);
   MessageController::handleMessage(topic, msg.c_str());
 }
 
@@ -69,7 +71,19 @@ void setup() {
   strip.show();
 
   // MQTT設定
-  client.setServer(mqtt_server, mqtt_port);
+  IPAddress brokerIp;
+  unsigned long start = millis();
+  while (!WiFi.hostByName("DawnDeveloper.local", brokerIp)) {
+      if (millis() - start > 5000) { // 5秒待ってダメなら脱出
+          Serial.println("DNS timeout, using fallback IP");
+          brokerIp.fromString("192.168.10.10");
+          break;
+      }
+      delay(500);
+  }
+  client.setServer(brokerIp, mqtt_port);
+
+
   client.setCallback(callback);
 
   TopicRegistry::registerAll(device_name);
