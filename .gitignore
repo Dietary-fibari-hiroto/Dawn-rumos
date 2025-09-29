@@ -30,7 +30,7 @@ asp_test/*.snupkg
 # ビルド成果物
 bin/
 obj/
-build/*
+build/
 
 # ユーザー固有設定
 *.user

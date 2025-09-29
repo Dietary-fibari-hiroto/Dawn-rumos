@@ -16,6 +16,7 @@ const char* password = WIFI_PASSWORD;
 const char* device_name = DEVICE_NAME;
 const char* device_series = DEVICE_SERIES;
 const char* mqtt_server = MQTT_SERVER;  // ←PCのLAN IP
+const char* mqtt_device_name = MQTT_DEVICE_NAME;
 const int mqtt_port = MQTT_PORT;
 
 // ==== NeoPixel設定 ====
@@ -73,10 +74,10 @@ void setup() {
   // MQTT設定
   IPAddress brokerIp;
   unsigned long start = millis();
-  while (!WiFi.hostByName("DawnDeveloper.local", brokerIp)) {
+  while (!WiFi.hostByName(mqtt_device_name, brokerIp)) {
       if (millis() - start > 5000) { // 5秒待ってダメなら脱出
           Serial.println("DNS timeout, using fallback IP");
-          brokerIp.fromString("192.168.10.10");
+          brokerIp.fromString(mqtt_server);
           break;
       }
       delay(500);

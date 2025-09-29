@@ -15,9 +15,19 @@ namespace rumos_client.Components
         private readonly ApiClient _apiClient = new ApiClient();
         private int _deviceId;
         private int _devicePlatformId;
+        private LedColor ledColor = new LedColor(); //Ledの発行情報
         public DeviceStateBorad()
         {
             InitializeComponent();
+        }
+
+        //モードの選択のたびに呼び出される関数
+        private void ModeComboBox_SelectionChanged(object sender,SelectionChangedEventArgs e)
+        {
+            if(ModeComboBox.SelectedItem is ComboBoxItem selectedItem)
+            {
+                ledColor.Mode = selectedItem.Content?.ToString();
+            }
         }
 
         public int SelectedDeviceId
@@ -98,22 +108,15 @@ namespace rumos_client.Components
 
         }
 
-        private LedColor ledColor;
-
         private void ColorPicker_ColorChanged(ColorPicker sender, ColorChangedEventArgs args)
         {
             var color = args.NewColor;
 
             // Color → LedColor へ変換
-            ledColor = new LedColor
-            {
-                R = color.R,
-                G = color.G,
-                B = color.B,
-    
-            };
 
-            
+            ledColor.R = color.R;
+            ledColor.G = color.G;
+            ledColor.B = color.B;
         }
 
 

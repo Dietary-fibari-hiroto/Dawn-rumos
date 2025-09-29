@@ -1,0 +1,22 @@
+﻿using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Controls;
+
+namespace MyApp
+{
+    public sealed partial class MainWindow : Window
+    {
+        public MainWindow()
+        {
+            this.InitializeComponent();
+            FruitComboBox.SelectionChanged += FruitComboBox_SelectionChanged;
+        }
+
+        private void FruitComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (FruitComboBox.SelectedItem is ComboBoxItem selectedItem)
+            {
+                ResultText.Text = $"選んだのは: {selectedItem.Content}";
+            }
+        }
+    }
+}
