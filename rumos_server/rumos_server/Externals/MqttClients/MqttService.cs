@@ -13,6 +13,7 @@ namespace rumos_server.Externals.MqttClients
             _conn = conn;
         }
 
+        //全デバイスに発光リクエスト
         public async Task SendColorAsyncForAll(LedColor color,CancellationToken ct = default)
         {
             await _conn.EnsureConnectedAsync(ct);
@@ -45,20 +46,8 @@ namespace rumos_server.Externals.MqttClients
 
         }
 
-        //特定のデバイスのフェードイン
-        public async Task SendColorFadeinAsync(LedColor color,string DeviceName,CancellationToken ct = default)
-        {
-            await _conn.EnsureConnectedAsync(ct);
+        
 
-            var payload = JsonSerializer.Serialize(color);
-            var msg = new MqttApplicationMessageBuilder()
-                .WithTopic($"dawn/led/{DeviceName}/fadein")
-                .WithPayload(payload)
-                .WithQualityOfServiceLevel(MqttQualityOfServiceLevel.AtLeastOnce)
-                .WithRetainFlag(false)
-                .Build();
 
-            await _conn.Client.PublishAsync( msg,ct);
-        }
     }
 }

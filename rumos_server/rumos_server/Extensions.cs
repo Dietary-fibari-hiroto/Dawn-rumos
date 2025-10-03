@@ -10,11 +10,13 @@ public static class ServiceExtensions
     {
         services.AddScoped<IPlatformRepository, PlatformRepository>();
         services.AddScoped<IDeviceRepository,DeviceRepository>();
+        services.AddScoped<IPresetRepository, PresetRepository>();
     }
 
     public static void RegisterServices(this IServiceCollection services)
     {
         services.AddScoped<IPlatformService,PlatformService>();
         services.AddScoped<IDeviceService, DeviceService>();
+        services.AddScoped<IPresetService, PresetService>();
     }
 }

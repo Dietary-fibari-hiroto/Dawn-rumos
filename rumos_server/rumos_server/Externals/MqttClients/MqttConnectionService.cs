@@ -1,7 +1,7 @@
 ﻿using MQTTnet;
 using MQTTnet.Client;
 using MQTTnet.Protocol;
-using Microsoft.Extensions.Logging;
+using Microsoft.Extensions;
 using Microsoft.Extensions.Options;
 
 namespace rumos_server.Externals.MqttClients
@@ -128,6 +128,12 @@ namespace rumos_server.Externals.MqttClients
                     await _client.ConnectAsync(_options, ct);
                 }
             }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "ブローカーに接続できませんでした。再試行します。");
+                Console.WriteLine("接続失敗。再試行します。:",ex.Message);
+                // ここで再接続ループに入れる or ユーザーに通知
+            }
             finally
             {
                 _connectLock.Release();
@@ -176,9 +182,9 @@ namespace rumos_server.Externals.MqttClients
                     await _client.DisconnectAsync();
                 }
             }
-            catch
+            catch (MqttBrokerNotFoundException ex)
             {
-
+                Console.WriteLine($"接続失敗: {ex.Message}");
             }
             _client?.Dispose();
             _connectLock.Dispose();

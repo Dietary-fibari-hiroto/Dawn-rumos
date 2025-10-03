@@ -19,4 +19,16 @@ namespace rumos_server.Features.Services
 
         public Task<string?> GetDeviceNameAsync(int id) => _repo.GetNameByIdAsync(id);
     }
+
+    public class PresetService : IPresetService
+    {
+        private readonly IPresetRepository _repo;
+        public PresetService(IPresetRepository repo)
+        {
+            _repo = repo;
+        }
+        public Task<IEnumerable<Preset>> GetAllPresetAsync() => _repo.GetAllAsync();
+        public Task<Preset> CreateAsync(Preset preset) => _repo.AddAsync(preset);
+        public Task<List<Preset_device_map>> GetMapsByIdAsync(int id) => _repo.GetDeviceMapAsync(id);
+    }
 }

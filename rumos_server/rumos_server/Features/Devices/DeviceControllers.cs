@@ -2,7 +2,7 @@
 using rumos_server.Externals.GrpcClients;
 using rumos_server.Externals.MqttClients;
 using rumos_server.Features.Interface;
-using static Devicecontrol.DawnDeviceControl;
+using rumos_server.Features.Models;
 namespace rumos_server.Features.Controller
 {
     [ApiController]
@@ -72,10 +72,12 @@ namespace rumos_server.Features.Controller
     {
         private readonly IDeviceService _service;
         private readonly MqttService _mqttService;
-        public LuminaController(IDeviceService service,MqttService mqttService)
+        private readonly IPresetService _presetService;
+        public LuminaController(IDeviceService service,MqttService mqttService,IPresetService presetService)
         {
             _service = service;
             _mqttService = mqttService;
+            _presetService = presetService;
         }
 
         [HttpPost("all")]
@@ -95,14 +97,34 @@ namespace rumos_server.Features.Controller
             return Ok();
         }
 
-        [HttpPost("{id}/fadein")]
-        public async Task<IActionResult> SetColorFadeIn([FromBody] LedColor color,int id, CancellationToken ct){
-            string? deviceName = await _service.GetDeviceNameAsync(id);
-            if(deviceName == null) return NotFound();
-
-            await _mqttService.SendColorFadeinAsync(color, deviceName);
+        /*magicRoutin用エンドポイント*/
+        //全情報取得
+        [HttpGet("magicroutin")]
+        public async Task<IActionResult> GetMagicRoutin(CancellationToken ct)
+        {
+            var presets = await _presetService.GetAllPresetAsync();
+            return presets == null ? NotFound() : Ok(presets); 
+        }
+        //登録
+        [HttpPost("magicroutin")]
+        public async Task<IActionResult> PostMagicRoutin([FromBody]Preset preset,CancellationToken ct)
+        {
             return Ok();
         }
+        //実行
+        [HttpPost("magicroutin/execution")]
+        public async Task<IActionResult> ExeMagicRoutin(int id,CancellationToken ct)
+        {
+            List<Preset_device_map> exeValue = await _presetService.GetMapsByIdAsync(id);
+            foreach (Preset_device_map item in exeValue)
+            {
+                Console.WriteLine($"PresetId: {item.Preset_id}, DeviceId: {item.Device_id},DeviceName:{item.Device.Name}");
+                //ここに実行プロセス
+            }
+            
+            return exeValue == null ? NotFound() : Ok(exeValue);
+        }
+        
 
       
     }

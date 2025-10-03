@@ -17,3 +17,10 @@ INSERT INTO devices (name, ip_v4, platform_id, room_id) VALUES
 ('TP-3', '192.168.10.3', 2, 1),
 ('Lumina_Sangria_1', NULL, 1, 4),
 ('Lumina_Sangria_2', NULL, 1, 3);
+
+INSERT INTO devices (name, ip_v4, platform_id, room_id) VALUES
+('XIAO-test', NULL, 1, 4),
+('Esp32-dev-Module-test', NULL, 1, 3);
+
+INSERT INTO presets(name,img_url) VALUES
+('Test_preset','https://dawn-waiting.com/static/media/IMG_7038.fb29bdc7d5c0f55d07eb.jpg');
