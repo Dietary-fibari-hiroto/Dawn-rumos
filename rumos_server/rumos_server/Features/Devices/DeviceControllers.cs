@@ -111,7 +111,7 @@ namespace rumos_server.Features.Controller
         {
             return Ok();
         }
-        //実行
+        //Mqtt実行
         [HttpPost("magicroutin/execution")]
         public async Task<IActionResult> ExeMagicRoutin(int id,CancellationToken ct)
         {
@@ -119,7 +119,16 @@ namespace rumos_server.Features.Controller
             foreach (Preset_device_map item in exeValue)
             {
                 Console.WriteLine($"PresetId: {item.Preset_id}, DeviceId: {item.Device_id},DeviceName:{item.Device.Name}");
-                //ここに実行プロセス
+                //新しいcolorに格納
+                LedColor color = new LedColor
+                {
+                    R = item.R,
+                    G = item.G,
+                    B = item.B,
+                    Brightness = item.Brightness,
+                };
+                //colorを使ってMqttリクエスト
+                await _mqttService.SendColorAsync(color, item.Device.Name);
             }
             
             return exeValue == null ? NotFound() : Ok(exeValue);

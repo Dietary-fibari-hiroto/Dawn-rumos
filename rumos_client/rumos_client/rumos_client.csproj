@@ -32,6 +32,7 @@
   <ItemGroup>
     <None Remove="Assets\Fonts\NotoSerifJp\NotoSerifJP-Regular.ttf" />
     <None Remove="Assets\Images\Device_icon.png" />
+    <None Remove="Assets\Images\Elements\square_white.png" />
     <None Remove="Assets\Images\Environment_bg.png" />
     <None Remove="Assets\Images\Environment_icon.png" />
     <None Remove="Assets\Images\icontrol_icon.png" />
@@ -163,6 +164,11 @@
   </PropertyGroup>
   <ItemGroup>
     <PRIResource Remove="Assets\新しいフォルダー\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Update="Assets\Images\Elements\square_white.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Page Update="Components\ReturnButton.xaml">
