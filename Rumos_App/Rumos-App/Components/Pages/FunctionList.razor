@@ -1,0 +1,41 @@
+﻿@page "/functionlist"
+
+@inject IJSRuntime JS
+
+
+<div class="root-grid">
+    <img class="background-image" alt="background" />
+
+    <div class="menu">
+        <p data-index="0" class="active">・I Control</p>
+        <p data-index="1">・Magic Routine</p>
+        <p data-index="2">・Device</p>
+        <p data-index="3">・Environment</p>
+        <p data-index="4">・Setting</p>
+    </div>
+
+    <div id="scroller" class="scroller">
+        <section class="panel"><p>I Control</p></section>
+        <section class="panel"><p>Magic Routine</p></section>
+        <section class="panel"><p>Device</p></section>
+        <section class="panel"><p>Environment</p></section>
+        <section class="panel"><p>Setting</p></section>
+    </div>
+</div>
+
+
+@code {
+    private IJSObjectReference? module;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            //JSモジュールインポート
+            module = await JS.InvokeAsync<IJSObjectReference>(
+                "import","./js/index.js"
+            );
+            await module.InvokeVoidAsync("selectionImageChanging");
+        }
+    }
+}

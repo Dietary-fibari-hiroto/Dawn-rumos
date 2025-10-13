@@ -1,0 +1,18 @@
+﻿/*
+    app.css
+    説明:特定のタグ要素すべてに統一のスタイルを付与したいときに使う。
+        classとid指定が無く、タグそのものにスタイルを掛ける
+*/
+
+html, body {
+    padding:0;
+    margin:0;
+    background-color:#000000;
+    color:white;
+}
+img{
+    object-fit:cover;
+}
+::-webkit-scrollbar {
+    display: none;
+}

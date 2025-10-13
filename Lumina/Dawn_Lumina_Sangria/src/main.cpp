@@ -56,7 +56,6 @@ void reconnect() {
 
 void setup() {
   Serial.begin(115200);
-
   // WiFi接続
   WiFi.begin(ssid, password);
   
