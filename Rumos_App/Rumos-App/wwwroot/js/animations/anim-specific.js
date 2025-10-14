@@ -1,3 +1,7 @@
+
+/**
+ * FunctionSelectionPageのアニメーション
+ */
 export const selectionImageChanging = () => {
     const scroller = document.querySelector("#scroller");
     const panels = document.querySelectorAll(".panel");

@@ -1,0 +1,28 @@
+#devices-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: clamp(300px,30vw,700px);
+    width: 1000px;
+}
+
+#devices-container > #device-list{
+    display:flex;
+    flex-direction:column;
+    justify-content:start;
+    overflow-y:scroll;
+
+    height:100%;
+}
+
+#devices-container > #device-detail{
+    width:600px;
+    height:100%;
+}
+
+
+@media(max-width:760px) {
+    #devices-container {
+        flex-direction:column;
+    }
+}

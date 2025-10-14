@@ -1,0 +1,9 @@
+﻿<button class="device-card-container">
+    <img src="@DeviceIcon" />
+    <p>@DeviceName</p>
+</button>
+
+@code {
+    [Parameter] public string DeviceIcon { get; set; } = "";
+    [Parameter] public string DeviceName { get; set; } = "";
+}

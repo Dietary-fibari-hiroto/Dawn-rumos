@@ -5,14 +5,20 @@
 */
 
 html, body {
-    padding:0;
-    margin:0;
-    background-color:#000000;
-    color:white;
+    padding: 0;
+    margin: 0;
+    background-color: #000000 !important;
+    color: white !important;
 }
 img{
     object-fit:cover;
 }
 ::-webkit-scrollbar {
     display: none;
+}
+
+button {
+    border: none;
+    background:transparent;
+    color:white;
 }

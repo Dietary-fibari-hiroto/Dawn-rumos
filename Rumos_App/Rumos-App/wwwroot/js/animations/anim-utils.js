@@ -1,3 +1,4 @@
+//ロード時のフェードインアニメーション
 export const loaded_FadeIn = () => {
     //非同期処理
     return new Promise((resolve) => {
