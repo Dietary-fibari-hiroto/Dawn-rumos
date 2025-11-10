@@ -1,0 +1,26 @@
+﻿<Router AppAssembly="@typeof(MauiProgram).Assembly">
+    <Found Context="routeData">
+        <LayoutView Layout="@GetLayout(routeData)">
+            <RouteView RouteData="@routeData" />
+            <FocusOnNavigate RouteData="@routeData" Selector="h1" />
+        </LayoutView>
+    </Found>
+</Router>
+
+
+@code{
+    [Inject] NavigationManager Nav { get; set; }
+
+    private Type GetLayout(RouteData routeData)
+    {
+        var path = Nav.Uri.Replace(Nav.BaseUri, "");
+        // app系のパスで MainBg を使いたい場合
+        string[] mainBgPaths = { "app" };
+
+        if (mainBgPaths.Any(p => path.StartsWith(p)))
+        {
+            return typeof(RumosLayout);
+        }
+        return null;
+    }
+}

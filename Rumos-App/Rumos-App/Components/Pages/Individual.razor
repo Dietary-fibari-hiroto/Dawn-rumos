@@ -1,0 +1,77 @@
+@page "/app/individual"
+@inject IJSRuntime JS
+<PageTitleLabel/>
+<div class="page-frame page-label-margin">
+    <section class="control-mode string-md">
+        <button @onclick="ControlModeChange" class="@(controlMode ? "selected" : "")">Control</button>
+        <button @onclick="ControlModeChange" class="@(controlMode ? "" : "selected")">Power</button>
+    </section>
+    <section class="device-section">
+        <div class="device-list">
+            <p class="title-label bg-blur string-md flex-all-center"> Devices</p>
+            <div class="device-list-container">
+                <p class="string-l series-label">Sangria</p>
+                <div class="list-container">
+                    <DeviceButton Label="Sangria_1" Color="#5D00FF" />
+                    <DeviceButton Label="Sangria_2" Color="#FFA200" />
+                    <DeviceButton Label="Sangria_3" Color="#000000" />
+                    <DeviceButton Label="Sangria_4" Color="#000000" />
+                </div>
+                <p class="string-l series-label">Startrail</p>
+                <div class="list-container">
+                    <DeviceButton Label="Startrail_1" Color="#000000" />
+                </div>
+            </div>
+        </div>
+        <div class="device-list">
+            <div class="control-container">
+                <p class="string-l">Lumina_Sangria_2</p>
+                <div class="string-m">
+                    <p>ID:1</p>
+                    <p>Series:Sangria</p>
+                    <p>Power:On</p>
+                </div>
+                <select class="mode-select string-m">
+                    <option value="test">Test</option>
+                </select>
+                <input style="display:none;" type="color" @bind="SelectedColor" @oninput="UpdateRgb" @ref="colorInput" />
+                <p>Color: @SelectedColor</p>
+                <div @onclick="TriggerColorPicker" style="display:inline;">
+                    <DeviceButton Label="" Color="@SelectedColor" />
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+<BgImg Src="images/photos/IMG_7116.jpg" />
+
+
+
+@code{
+    private bool controlMode = true;
+    private string SelectedColor { get; set; } = "#FFA200";
+    private string RgbColor { get; set; }
+    private Task ControlModeChange()
+    {
+        controlMode = !controlMode;
+        return Task.CompletedTask;
+    }
+
+    private void UpdateRgb(ChangeEventArgs e)
+    {
+        SelectedColor = e.Value.ToString();
+        if (SelectedColor.StartsWith("#") && SelectedColor.Length == 7)
+        {
+            var r = Convert.ToInt32(SelectedColor.Substring(1, 2), 16);
+            var g = Convert.ToInt32(SelectedColor.Substring(3, 2), 16);
+            var b = Convert.ToInt32(SelectedColor.Substring(5, 2), 16);
+            RgbColor = $"rgb({r},{g},{b})";
+        }
+    }
+
+    private ElementReference colorInput;
+    private async Task TriggerColorPicker()
+    {
+        await JS.InvokeVoidAsync("clickTrigger", colorInput);
+    }
+}

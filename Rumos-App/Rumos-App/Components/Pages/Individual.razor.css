@@ -1,0 +1,80 @@
+.control-mode
+{
+    width:460px;
+    height:50px;
+    display:flex;
+    border-radius:10px;
+    border:solid 1px white;
+
+}
+    .control-mode > button {
+        width: 230px;
+        height: 100%;
+        text-align: center;
+        border-radius: 10px;
+    }
+    .control-mode > button.selected{
+        color:black;
+        background:white;
+    }
+
+.device-section{
+    width:100%;
+    display:flex;
+    justify-content:space-between;
+    align-items:start;
+}
+
+.device-list {
+    width: 800px;
+    height: 700px;
+    border-radius: 10px;
+    overflow-y: scroll;
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    background: linear-gradient(to bottom,#0011FF44,#00000044,#00000044,#00000044);
+}
+.device-list > .title-label{
+    width:100%;
+    height:50px;
+    border-radius:10px 10px 0 0;
+
+}
+
+.device-control {
+    width: 800px;
+    height: 700px;
+    border-radius: 10px;
+    overflow-y: scroll;
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    background: #00000044;
+}
+
+.list-container{
+    display:flex;
+    flex-wrap:wrap;
+}
+.series-label{
+    padding-left:10px;
+}
+.device-list-container{
+    overflow-y:scroll;
+}
+
+.mode-select{
+    width:250px;
+    height:60px;
+    color:white;
+    background:black;
+    text-align:start;
+    padding-left:10px;
+
+}
+
+.control-container{
+    margin:30px;
+}
+.control-container > * + *{
+    margin-top:10px;
+}

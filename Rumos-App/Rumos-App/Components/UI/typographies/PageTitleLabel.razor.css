@@ -1,0 +1,14 @@
+.label-container
+{
+    padding:0 15px;
+    border-bottom:1px solid white;
+    position:absolute;
+    top:5%;
+    left:10%;
+    z-index:5;
+}
+
+.title{
+    text-align:start;
+    width:100%;
+}

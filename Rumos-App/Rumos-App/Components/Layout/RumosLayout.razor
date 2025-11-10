@@ -1,0 +1,26 @@
+﻿@inherits LayoutComponentBase
+
+<aside class="side-viewer  @(isOpenSideMenu?"open":"")">
+    <img @onclick="OpenDialog" class="open-button" src="images/elements/menu.svg" />
+    <div class="sideline" />
+    @if (isOpenSideMenu)
+    {
+        <div class=" font-Montserrat opend-menu @(isOpenSideMenu ? "show" : "")">
+            <button>Individual</button>
+            <button>MagicRoutine</button>
+            <button>Device</button>
+        </div>
+    }
+</aside>
+<p class="app-logo string-l">Rumos</p>
+<div class="section-frame flex-all-center main-viewer">
+        @Body
+</div>
+@code {
+    private bool isOpenSideMenu = false;
+    private  Task OpenDialog()
+    {
+        isOpenSideMenu = !isOpenSideMenu;
+        return Task.CompletedTask;
+    }
+}

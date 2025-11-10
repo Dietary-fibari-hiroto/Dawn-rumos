@@ -1,0 +1,30 @@
+.button-container {
+    position: relative;
+    width: 200px;
+    height: 70px;
+    margin: 20px;
+    border-radius: 10px;
+}
+.right-content {
+    width: 150px;
+    height: 50px;
+    z-index: 1;
+    border-radius: 10px;
+}
+.name-plate{
+    z-index:3;
+    width:100%;
+    height:100%;
+    border-radius:10px;
+}
+
+.content-blur {
+    background: #00000022;
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+}
+
+.black-mode{
+    border:white 1px solid;
+    background:black;
+}

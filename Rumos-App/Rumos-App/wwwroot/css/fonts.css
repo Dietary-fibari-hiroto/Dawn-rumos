@@ -1,0 +1,124 @@
+@font-face {
+    font-family: 'NotoSerifJP';
+    src: url("../fonts/NotoSerifJp/NotoSerifJP-Regular.ttf") format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'Cormorant';
+    src: url("../fonts/Cormorant/Cormorant-Regular.ttf") format('truetype');
+    font-weight:normal;
+    font-style:normal;
+}
+
+@font-face {
+    font-family: 'NotoSansJP';
+    src: url("../fonts/Noto_Sans_JP/NotoSansJP-Regular.ttf") format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'NotoSansJP';
+    src: url("../fonts/Noto_Sans_JP/NotoSansJP-Bold.ttf") format('truetype');
+    font-weight: bold;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Montserrat';
+    src: url("../fonts/Montserrat/Montserrat-Regular.ttf") format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Montserrat';
+    src: url("../fonts/Montserrat/Montserrat-Bold.ttf") format('truetype');
+    font-weight: bold;
+    font-style: normal;
+}
+
+html,body {
+    font-family: 'NotoSerifJP',sans-serif;
+}
+.font-Montserrat {
+    font-family: 'Montserrat',sans-serif;
+}
+
+
+.string-ss {
+    font-size: 12px;
+}
+
+.string-ss-bold {
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.string-reg {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.string-reg-bold {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.string-big-bold {
+    font-size: 50px;
+    font-weight: bold;
+}
+
+.string-big {
+    font-size: 50px;
+}
+
+.string-s {
+    font-size: 15px;
+}
+
+.string-s-bold {
+    font-size: 15px;
+    font-weight: bold;
+}
+
+.string-l {
+    font-size: 36px;
+}
+
+.string-l-bold {
+    font-size: 36px;
+    font-weight: bold;
+}
+
+.string-md {
+    font-size: 20px;
+}
+
+.string-md-bold {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.string-label {
+    font-size: 13px;
+}
+
+.string-sss {
+    font-size: 10px;
+}
+
+.string-mini {
+    font-size: 8px;
+}
+
+.string-m-bold {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.string-m {
+    font-size: 24px;
+}

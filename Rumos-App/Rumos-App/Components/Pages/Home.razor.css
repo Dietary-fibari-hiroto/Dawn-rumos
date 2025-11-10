@@ -1,0 +1,44 @@
+.screen-container {
+    background: linear-gradient(135deg,black,#560097);
+    position:relative;
+    transition:opacity 1s ease-in-out;
+    text-align:center;
+}
+   .hidden {
+        opacity: 0;
+        
+    }
+
+
+
+.app-logo {
+    letter-spacing: 20px;
+}
+.company-logo {
+    letter-spacing: 10px;
+}
+
+.blur-element {
+    width: 600px;
+    height: 170px;
+    border-radius: 100%;
+    background: radial-gradient(circle, #ffffff00, #ffffffff);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    opacity: 0.5;
+    z-index: 0;
+    transition: opacity 2s ease-in-out 2s;
+}
+.logo-container {
+    z-index: 3;
+    transition: opacity 2s ease-in-out 1s;
+}
+
+.text-animation {
+    color: black;
+    transition: color 2s ease-in-out 2s;
+}
+    .text-animation.white {
+        color: white;
+    }
+

@@ -1,0 +1,21 @@
+
+@if(Color != "#000000" && Color != "rgb(0,0,0)")
+{
+    <button class="button-container">
+        <div class="right-content absolute-position-center" style="box-shadow: 0 0 50px 20px @Color; background: @Color;" />
+        <p class="string-md flex-all-center absolute-position-center content-blur name-plate">@Label</p>
+    </button>
+}
+else
+{
+    <button class="button-container black-mode">
+        <div class="right-content absolute-position-center"  />
+        <p class="string-md flex-all-center absolute-position-center name-plate">@Label</p>
+    </button>
+}
+
+@code {
+    [Parameter] public string Color { get; set; } = "#000000";
+    [Parameter] public string Label { get; set; } = "";
+    
+}

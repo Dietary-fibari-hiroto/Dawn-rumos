@@ -1,0 +1,29 @@
+﻿@page "/"
+@inject NavigationManager Nav
+@inject IJSRuntime JS
+
+<section class="section-frame flex-all-center screen-container @(IsShow ? "" : "hidden")">
+    <div class="absolute-position-center logo-container @(IsShow ? "" : "hidden")">
+        <p class="string-big app-logo text-animation @(IsShow ? "white" : "")">
+            Rumos
+        </p>
+        <p class="string-reg company-logo text-animation @(IsShow ? "white" : "")">
+            DAWN
+        </p>
+    </div>
+    <div class=" absolute-position-center blur-element @(IsShow ? "" : "hidden")" />
+</section>
+
+@code{
+    private bool IsShow = false;
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            IsShow = true;
+            StateHasChanged();
+            await Task.Delay(4000);
+            Nav.NavigateTo("/app/individual");
+        }
+    }
+}
