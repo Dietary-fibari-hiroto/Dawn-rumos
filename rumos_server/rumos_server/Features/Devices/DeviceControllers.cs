@@ -87,9 +87,11 @@ namespace rumos_server.Features.Controller
             return Ok();
         }
 
+        //一つの端末に対して制御をおこなうエンドポイント
         [HttpPost("{id}")]
         public async Task<IActionResult> SetColor([FromBody]LedColor color,int id,CancellationToken ct)
         {
+            //DBから名前を取ってくる
             string? deviceName = await _service.GetDeviceNameAsync(id);
             if (deviceName == null) return NotFound();
 

@@ -16,7 +16,9 @@ INSERT INTO devices (name, ip_v4, platform_id, room_id) VALUES
 ('TP-2', '192.168.10.2', 2, 2),
 ('TP-3', '192.168.10.3', 2, 1),
 ('Lumina_Sangria_1', NULL, 1, 4),
-('Lumina_Sangria_2', NULL, 1, 3);
+('Lumina_Sangria_2', NULL, 1, 3),
+('Lumina_Sangria_3', NULL, 1, 3),
+('Astrolume_Startrail_1', NULL, 1, 1);
 
 INSERT INTO devices (name, ip_v4, platform_id, room_id) VALUES
 ('XIAO-test', NULL, 1, 4),
