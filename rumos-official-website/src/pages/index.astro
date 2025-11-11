@@ -1,0 +1,21 @@
+---
+import {BaseLayout} from "../layouts";
+  import { initMultiParallax } from "../hooks/index";
+---
+<BaseLayout>
+	<section class="section-frame flex-all-center">comming soon...</section>
+
+</BaseLayout>
+
+
+<script>
+  import { initMultiParallax } from "../hooks/index";
+
+  window.addEventListener("load", () => {
+    initMultiParallax([
+      { selector: ".tracked-element", ratio: 0.2 },
+      { selector: ".tracked-element2", ratio: 0.4 },
+      { selector: ".tracked-element3", ratio: 0.6 },
+    ]);
+  });
+</script>

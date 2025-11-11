@@ -1,0 +1,32 @@
+---
+import {ImagesRoute} from "../assets/images/ImagesRoute";
+
+---
+
+<footer class="section-frame flex-all-center" style={`--bg-img: url(${ImagesRoute.IMG_7039})`}>
+    <p class="dawn-text text-3l">DAWN</p>
+    <p class="reserved-label">Copyright 2025 - Dawn. All Rights Reserved.</p>
+</footer>
+
+<style lang="scss">
+footer {
+    position:relative;
+  background-image: var(--bg-img);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  .dawn-text{
+    font-weight:light;
+    letter-spacing:1rem;
+    }
+    .reserved-label{
+        position:absolute;
+        bottom:0;
+        margin:10px 0;
+        left:50%;
+        transform:translateX(-50%);
+
+    }
+}
+
+</style>

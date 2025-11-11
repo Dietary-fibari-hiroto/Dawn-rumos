@@ -1,0 +1,50 @@
+---
+
+---
+
+<header>
+    <div class="text-2l rumos"><a href="/">Rumos</a></div>
+    <nav>
+        <ul>
+            <li>About</li>
+            <li><a href="/product/sangria">Sngria</a></li>
+            <li>Startrail</li>
+        </ul>
+    </nav>
+</header>
+
+<style lang="scss">
+    @use "../assets/styles/fonts.scss";
+    header{
+        width:100%;
+        display:flex;
+        justify-content:space-between;
+        align-items:center;
+
+        position:absolute;
+        top:0;
+        left:0;
+        z-index:10;
+
+        :first-child{
+            margin-left:10px;
+        }
+        :last-child{
+            margin-right:10px;
+        }  
+        .rumos{
+            letter-spacing: 1rem;
+        }
+    }
+
+    nav > ul{
+        display:flex;
+        font-size:fonts.$text-x;
+        letter-spacing: 5px;
+        * + *{
+            margin-left:5rem;
+            
+        }
+    }
+
+</style>

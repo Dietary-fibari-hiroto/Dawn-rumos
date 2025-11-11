@@ -1,0 +1,46 @@
+@font-face {
+  font-family: "NotoSerifJP";
+  src: url("../fonts/NotoSerifJP/NotoSerifJP-Regular.ttf");
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: "NotoSerifJP";
+  src: url("../fonts/NotoSerifJP/NotoSerifJP-Bold.ttf");
+  font-weight: bold;
+  font-style: normal;
+}
+@font-face {
+  font-family: "NotoSerifJP";
+  src: url("../fonts/NotoSerifJP/NotoSerifJP-Light.ttf");
+  font-weight: light;
+  font-style: normal;
+}
+$text-md: 1.125rem;
+$text-x: 1.5rem;
+$text-xl: 2rem;
+$text-2l: 3rem;
+$text-3l: 4rem;
+$text-4l: 5rem;
+.text-md {
+  font-size: $text-md;
+}
+.text-xl {
+  font-size: $text-xl;
+}
+.text-x {
+  font-size: $text-x;
+}
+.text-2l {
+  font-size: $text-2l;
+}
+.text-3l {
+  font-size: $text-3l;
+}
+.text-4l {
+  font-size: $text-4l;
+}
+
+.font-light {
+  font-weight: light;
+}
