@@ -23,7 +23,7 @@
 
   <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRf7u6IFvFishXrGbwZiPBZfPxJMrQH3eUKhuE6Vb5wEMrhoazewOBy9iLvxpLGu97wgnU&usqp=CAU" alt="Blazor" width="60" height="60"/>
   <img src="https://devblogs.microsoft.com/dotnet/wp-content/uploads/sites/16/2019/04/BrandBlazor_nohalo_1000x.png" alt=".NET" width="60" height="60"/>
-
+  <img src="https://cdn.sanity.io/images/3do82whm/next/1c2aa4d10fe71c23d7a36f69fc11c419c5f4ac35-1000x667.png?w=720&h=480&fit=clip&auto=format" alt=".NET" width="60" height="60"/>
 </p>
 
 ---
@@ -111,4 +111,3 @@
 2. 複数端末の一括制御や状態取得も可能
 
 ---
-
