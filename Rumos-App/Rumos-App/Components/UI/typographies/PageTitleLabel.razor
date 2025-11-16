@@ -1,4 +1,9 @@
 <div class="label-container">
-    <p class="title string-big">Individual</p>
-    <p class="title string-md">ŒÂ•ÊƒRƒ“ƒgƒ[ƒ‹</p>
+    <p class="title string-big">@Title</p>
+    <p class="title string-md">@SubTitle</p>
 </div>
+
+@code{
+    [Parameter] public string Title { get; set; } = "";
+    [Parameter] public string SubTitle { get; set; } = "";
+}

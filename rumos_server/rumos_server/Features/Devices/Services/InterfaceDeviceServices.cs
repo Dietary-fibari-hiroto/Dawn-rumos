@@ -1,4 +1,5 @@
 ﻿using rumos_server.Features.Models;
+using rumos_server.Features.DTOs;
 
 namespace rumos_server.Features.Interface
 {
@@ -12,6 +13,9 @@ public interface IPlatformService
         Task<Device?> GetDeviceAsync(int id);
         Task<string?> GetTpIpAsync(int id);
         Task<string?> GetDeviceNameAsync(int id);
+        Task<List<PlatformWithDevicesDto>> GetAllDevicesWithPlatformAsync();
+
+        Task<Device> CreateDeviceAsync(CreateDeviceDto device);
     }
 
     public interface IPresetService {
@@ -19,6 +23,10 @@ public interface IPlatformService
         Task<Preset> CreateAsync(Preset preset);
 
         Task<List<Preset_device_map>> GetMapsByIdAsync(int id);
+    }
+    public interface IRoomService
+    {
+        Task<IEnumerable<Room>> GetAllRoomAsync();
     }
 
 }

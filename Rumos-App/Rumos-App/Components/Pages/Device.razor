@@ -1,0 +1,198 @@
+@page "/app/device"
+@using Rumos_App.Services
+@using Rumos_App.DTOs
+@using Rumos_App.Entities
+@inject ApiService Api
+@inject IJSRuntime JS
+
+<PageTitleLabel Title="Device" SubTitle="デバイス設定"/>
+
+<div class="page-frame  page-label-margin">
+    <section>
+        <button class="option-button" @onclick="()=>isOpenDialog = true">
+            <img src="images/elements/badge-plus.svg" />
+            <p class="string-md">Register</p>
+        </button>
+    </section>
+    <div class="page-container">
+    <section class="device-list">
+
+        @if (devices == null)
+        {
+            <p>...loading</p>
+        }
+        else if (devices.Count == 0)
+        {
+            <p>No data found.</p>
+        }
+        else
+        {
+            @foreach (var platform in devices)
+            {
+                <p class="string-l series-label">@platform.PlatformName</p>
+                <div class="list-container">
+                    @foreach (var device in platform.Devices)
+                    {
+                        <DeviceButton Device=@device OnSelectDevice="ChangeControlDevice" />
+                    }
+                </div>
+            }
+        }
+    </section>
+    <setion class="device-list">
+        <div class="control-container">
+            <p class="string-l">@controlDevice?.Name</p>
+            <div class="string-m">
+                <p>ID:@controlDevice?.Id</p>
+                <p>Series:@controlDevice?.Series</p>
+                <p>Power:On</p>
+            </div>
+            <select class="mode-select string-m">
+                <option value="normal">Normal</option>
+                <option value="fadein">Fadein</option>
+                <option value="whitegradient">Whitegradient</option>
+            </select>
+            <input style="display:none;" @bind:after="OnColorPicked" type="color" @bind="SelectedColor" @oninput="UpdateRgb" @ref="colorInput" />
+            <p>Color: @SelectedColor</p>
+            <div @onclick="TriggerColorPicker" style="display:inline;">
+                <button class="button-container">
+                    <div class="right-content absolute-position-center" style="box-shadow: 0 0 50px 20px @SelectedColor; background: @SelectedColor;" />
+                    <p class="string-md flex-all-center absolute-position-center content-blur name-plate;" />
+                </button>
+            </div>
+        </div>
+    </setion>
+    </div>
+</div>
+
+@if (isOpenDialog)
+{
+    <section class="function-dialog section-frame absolute-position-center bg-blur flex-all-center">
+        <div class="dialog-container">
+            <div class="function-logo-container string-big">Register</div>
+            <div class="function-form-container">
+                <input placeholder = "デバイス名" type="text" @bind=newDeviceData.Name required />
+                <input placeholder="IP" type="text" @bind=newDeviceData.Ip_v4 required />
+                @if (platforms == null)
+                {
+                    <p>Platform Loading...</p>
+                }
+                else
+                {
+                    <select @bind=newDeviceData.Platform_id placeholder= "デバイスのシリーズを選択" required>
+                        <option value="">-- デバイスのシリーズを選択してください --</option>
+                        @foreach (var platform in platforms)
+                        {
+
+                            <option value="@platform.Id">@platform.Name</option>
+                        }
+                    </select>
+                }
+                @if (rooms == null)
+                {
+                    <p>Room Loading...</p>
+                }
+                else
+                {
+                    <select @bind=newDeviceData.Room_id placeholder="部屋を選択" required>
+                        <option value="">-- ルームを選択してください --</option>
+                        @foreach (var room in rooms)
+                        {
+                            
+                            <option value="@room.Id">@room.Name</option>
+                        }
+                    </select>
+                }
+                <button @onclick="RegisterDevice" class="submit string-m">
+                    登録
+                </button>
+            </div>
+        </div>
+    </section>
+}
+
+
+@code {
+    private bool isOpenDialog = false;
+    private List<Room>? rooms;
+    private List<Platform>? platforms;
+    private CreateDeviceDto newDeviceData = new();
+    private bool controlMode = true;
+    private string SelectedColor { get; set; } = "#FFA200";
+    private string? RgbColor { get; set; }
+    private DeviceDto? controlDevice;
+    //全デバイス情報をPlatformベースで格納するための変数
+    private List<PlatformWithDevicesDto>? devices;
+    private Task ControlModeChange()
+    {
+        controlMode = !controlMode;
+        return Task.CompletedTask;
+    }
+
+    private void UpdateRgb(ChangeEventArgs e)
+    {
+        SelectedColor = e.Value.ToString();
+        if (SelectedColor.StartsWith("#") && SelectedColor.Length == 7)
+        {
+            var r = Convert.ToInt32(SelectedColor.Substring(1, 2), 16);
+            var g = Convert.ToInt32(SelectedColor.Substring(3, 2), 16);
+            var b = Convert.ToInt32(SelectedColor.Substring(5, 2), 16);
+            RgbColor = $"rgb({r},{g},{b})";
+
+        }
+        StateHasChanged();
+    }
+
+    //色選択後の処理
+    private async Task OnColorPicked()
+    {
+        if (SelectedColor.StartsWith("#") && SelectedColor.Length == 7)
+        {
+            var r = Convert.ToInt32(SelectedColor.Substring(1, 2), 16);
+            var g = Convert.ToInt32(SelectedColor.Substring(3, 2), 16);
+            var b = Convert.ToInt32(SelectedColor.Substring(5, 2), 16);
+
+            if (controlDevice != null)
+            {
+                controlDevice.R = r;
+                controlDevice.G = g;
+                controlDevice.B = b;
+                controlDevice.Brightness = 255;
+            }
+        }
+        await Api.TurnOnTheLightById(controlDevice);
+        StateHasChanged();
+    }
+
+
+    private ElementReference colorInput;
+    private async Task TriggerColorPicker()
+    {
+        await JS.InvokeVoidAsync("clickTrigger", colorInput);
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        devices = await Api.GetDevicesData();
+        platforms = await Api.GetPlatforms();
+        rooms = await Api.GetRooms();
+        StateHasChanged();
+    }
+
+    //controlコンテナにかんする処理
+    private Task ChangeControlDevice(DeviceDto device)
+    {
+        controlDevice = device;
+        string hex = $"#{device.R:X2}{device.G:X2}{device.B:X2}";
+        SelectedColor = hex;
+        StateHasChanged();
+        return Task.CompletedTask;
+    }
+
+    //デバイスの登録処理
+    private async Task RegisterDevice()
+    {
+        Entities.Device createdData = await Api.PostDevice(newDeviceData);
+
+    }
+}

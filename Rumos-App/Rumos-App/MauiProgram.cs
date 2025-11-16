@@ -1,7 +1,10 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using Microsoft.Maui;
 using Microsoft.Maui.Hosting;
 using Microsoft.Maui.LifecycleEvents;
+using Rumos_App.Services;
+using System.Reflection;
 
 #if WINDOWS
 using Microsoft.UI.Windowing;
@@ -20,6 +23,13 @@ namespace Rumos_App
         {
             var builder = MauiApp.CreateBuilder();
 
+            // Configuration読み込み
+            var a = Assembly.GetExecutingAssembly();
+            using var stream = a.GetManifestResourceStream("Rumos_App.appsettings.json");
+            var config = new ConfigurationBuilder()
+                .AddJsonStream(stream!)
+                .Build();
+            builder.Configuration.AddConfiguration(config);
             builder
                 .UseMauiApp<App>()
                 .ConfigureFonts(fonts =>
@@ -28,34 +38,37 @@ namespace Rumos_App
 
                 })
                 .ConfigureLifecycleEvents(events => {
-#if WINDOWS
-    events.AddWindows(windows =>
-    {
-        windows.OnWindowCreated(window =>
-        {
-            // MAUI の Window から WinUI3 のネイティブウィンドウを取得
-            var hwnd = WindowNative.GetWindowHandle(window);
-            var windowId = Win32Interop.GetWindowIdFromWindow(hwnd);
-            var appWindow = AppWindow.GetFromWindowId(windowId);
+                    #if WINDOWS
+                        events.AddWindows(windows =>
+                        {
+                            windows.OnWindowCreated(window =>
+                            {
+                                // MAUI の Window から WinUI3 のネイティブウィンドウを取得
+                                var hwnd = WindowNative.GetWindowHandle(window);
+                                var windowId = Win32Interop.GetWindowIdFromWindow(hwnd);
+                                var appWindow = AppWindow.GetFromWindowId(windowId);
 
-            // WinUI3 の OverlappedPresenter で最大化
-            if (appWindow.Presenter is OverlappedPresenter presenter)
-            {
-                presenter.Maximize();
-            }
-        });
-    });
-#endif
+                                // WinUI3 の OverlappedPresenter で最大化
+                                if (appWindow.Presenter is OverlappedPresenter presenter)
+                                {
+                                    presenter.Maximize();
+                                }
+                            });
+                        });
+                    #endif
                 });
 
-
+            var baseUrl = builder.Configuration["ApiSettings:BaseApiUrl"];
+            builder.Services.AddSingleton(new HttpClient { BaseAddress = new Uri(baseUrl) });
             builder.Services.AddMauiBlazorWebView();
 
 #if DEBUG
     		builder.Services.AddBlazorWebViewDeveloperTools();
     		builder.Logging.AddDebug();
 #endif
-
+            builder.Services.AddSingleton(new HttpClient());
+            builder.Services.AddScoped<ApiService>();
+            builder.Services.AddSingleton<SignalRService>();            
             return builder.Build();
         }
     }

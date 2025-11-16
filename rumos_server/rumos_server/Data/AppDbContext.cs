@@ -11,7 +11,8 @@ namespace rumos_server.Data
         public DbSet<Room> Rooms => Set<Room>();
         public DbSet<Device> Devices => Set<Device>();
         public DbSet<Preset> Presets => Set<Preset>();
-        public DbSet<Preset_device_map> Preset_device_maps => Set<Preset_device_map>();
+        public DbSet<Preset_device_map> Preset_device_maps => Set<Preset_device_map>(); 
+        public DbSet<Mode> Modes => Set<Mode>();
 
         //複合キーの設定
         protected override void OnModelCreating(ModelBuilder modelBuilder)

@@ -3,6 +3,7 @@ using rumos_server.Externals.GrpcClients;
 using rumos_server.Externals.MqttClients;
 using rumos_server.Features.Interface;
 using rumos_server.Features.Models;
+    using rumos_server.Features.DTOs;
 namespace rumos_server.Features.Controller
 {
     [ApiController]
@@ -63,6 +64,16 @@ namespace rumos_server.Features.Controller
             return Ok(res);
             ;
         }
+
+        [HttpPost("register")]
+        public async Task<IActionResult> CreateDevice(CreateDeviceDto request)
+        {
+            Device created = await _service.CreateDeviceAsync(request);
+            return CreatedAtAction(
+                nameof(GetById),
+                new { id = created.Id },
+                created);
+        }
         
     }
 
@@ -80,7 +91,15 @@ namespace rumos_server.Features.Controller
             _presetService = presetService;
         }
 
+        //プラットフォームベースですべてのデバイス取得
+        [HttpGet("deviceswithplatform")]
+        public async Task<IActionResult> GetDevicesGroupedByPlatform()
+        {
+            return Ok(await _service.GetAllDevicesWithPlatformAsync());
+        }
+
         [HttpPost("all")]
+
         public async Task<IActionResult> SetColorForAll(LedColor color,CancellationToken ct)
         {
             await _mqttService.SendColorAsyncForAll(color, ct);
@@ -134,10 +153,24 @@ namespace rumos_server.Features.Controller
             }
             
             return exeValue == null ? NotFound() : Ok(exeValue);
-        }
-        
-
-      
+        } 
     }
 
+    [Route("/api/[controller]")]
+    public class RoomController : ControllerBase
+    {
+        private readonly IRoomService _roomService;
+        public RoomController(IRoomService roomService)
+        {
+            _roomService = roomService;
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetAll()
+        {
+            return Ok(await _roomService.GetAllRoomAsync());
+        }
+
+    }
+    
 }

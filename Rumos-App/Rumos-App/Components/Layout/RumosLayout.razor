@@ -1,4 +1,5 @@
 ﻿@inherits LayoutComponentBase
+@inject NavigationManager Nav
 
 <aside class="side-viewer  @(isOpenSideMenu?"open":"")">
     <img @onclick="OpenDialog" class="open-button" src="images/elements/menu.svg" />
@@ -6,9 +7,10 @@
     @if (isOpenSideMenu)
     {
         <div class=" font-Montserrat opend-menu @(isOpenSideMenu ? "show" : "")">
-            <button>Individual</button>
-            <button>MagicRoutine</button>
-            <button>Device</button>
+            <button @onclick='() => NavFunction("/app/individual")'>Individual</button>
+            <button @onclick='() => NavFunction("/app/magicroutine")'>MagicRoutine</button>
+            <button @onclick='() => NavFunction("/app/device")'>Device</button>
+            <button @onclick='() => NavFunction("/app/test")'>Test</button>
         </div>
     }
 </aside>
@@ -21,6 +23,13 @@
     private  Task OpenDialog()
     {
         isOpenSideMenu = !isOpenSideMenu;
+        return Task.CompletedTask;
+    }
+
+    private Task NavFunction(String path)
+    {
+        isOpenSideMenu = false;
+        Nav.NavigateTo(path);
         return Task.CompletedTask;
     }
 }

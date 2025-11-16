@@ -1,6 +1,9 @@
 @page "/app/individual"
+@using Rumos_App.Services
+@inject ApiService Api
 @inject IJSRuntime JS
-<PageTitleLabel/>
+@using Rumos_App.DTOs
+<PageTitleLabel Title="Individual" SubTitle="個別コントロール" />
 <div class="page-frame page-label-margin">
     <section class="control-mode string-md">
         <button @onclick="ControlModeChange" class="@(controlMode ? "selected" : "")">Control</button>
@@ -8,36 +11,48 @@
     </section>
     <section class="device-section">
         <div class="device-list">
-            <p class="title-label bg-blur string-md flex-all-center"> Devices</p>
-            <div class="device-list-container">
-                <p class="string-l series-label">Sangria</p>
-                <div class="list-container">
-                    <DeviceButton Label="Sangria_1" Color="#5D00FF" />
-                    <DeviceButton Label="Sangria_2" Color="#FFA200" />
-                    <DeviceButton Label="Sangria_3" Color="#000000" />
-                    <DeviceButton Label="Sangria_4" Color="#000000" />
-                </div>
-                <p class="string-l series-label">Startrail</p>
-                <div class="list-container">
-                    <DeviceButton Label="Startrail_1" Color="#000000" />
-                </div>
-            </div>
+
+            @if (devices == null)
+            {
+                <p>...loading</p>
+            }else if (devices.Count == 0)
+            {
+                <p>No data found.</p>
+            }
+            else
+            {
+                @foreach(var platform in devices)
+                {
+                    <p class="string-l series-label">@platform.PlatformName</p>
+                    <div class="list-container">
+                        @foreach(var device in platform.Devices)
+                        {
+                            <DeviceButton Device=@device  OnSelectDevice="ChangeControlDevice" />
+                        }
+                    </div>
+                }
+            }
         </div>
         <div class="device-list">
             <div class="control-container">
-                <p class="string-l">Lumina_Sangria_2</p>
+                <p class="string-l">@controlDevice?.Name</p>
                 <div class="string-m">
-                    <p>ID:1</p>
-                    <p>Series:Sangria</p>
+                    <p>ID:@controlDevice?.Id</p>
+                    <p>Series:@controlDevice?.Series</p>
                     <p>Power:On</p>
                 </div>
                 <select class="mode-select string-m">
-                    <option value="test">Test</option>
+                    <option value="normal">Normal</option>
+                    <option value="fadein">Fadein</option>
+                    <option value="whitegradient">Whitegradient</option>
                 </select>
-                <input style="display:none;" type="color" @bind="SelectedColor" @oninput="UpdateRgb" @ref="colorInput" />
+                <input style="display:none;" @bind:after="OnColorPicked" type="color" @bind="SelectedColor" @oninput="UpdateRgb" @ref="colorInput" />
                 <p>Color: @SelectedColor</p>
                 <div @onclick="TriggerColorPicker" style="display:inline;">
-                    <DeviceButton Label="" Color="@SelectedColor" />
+                    <button class="button-container">
+                        <div class="right-content absolute-position-center" style="box-shadow: 0 0 50px 20px @SelectedColor; background: @SelectedColor;" />
+                        <p class="string-md flex-all-center absolute-position-center content-blur name-plate;" />
+                    </button>
                 </div>
             </div>
         </div>
@@ -50,7 +65,10 @@
 @code{
     private bool controlMode = true;
     private string SelectedColor { get; set; } = "#FFA200";
-    private string RgbColor { get; set; }
+    private string? RgbColor { get; set; }
+    private DeviceDto? controlDevice;
+    //全デバイス情報をPlatformベースで格納するための変数
+    private List<PlatformWithDevicesDto>? devices;
     private Task ControlModeChange()
     {
         controlMode = !controlMode;
@@ -66,12 +84,52 @@
             var g = Convert.ToInt32(SelectedColor.Substring(3, 2), 16);
             var b = Convert.ToInt32(SelectedColor.Substring(5, 2), 16);
             RgbColor = $"rgb({r},{g},{b})";
+
         }
+        StateHasChanged();
     }
+
+    //色選択後の処理
+    private async Task OnColorPicked()
+    {
+        if (SelectedColor.StartsWith("#") && SelectedColor.Length == 7)
+        {
+            var r = Convert.ToInt32(SelectedColor.Substring(1, 2), 16);
+            var g = Convert.ToInt32(SelectedColor.Substring(3, 2), 16);
+            var b = Convert.ToInt32(SelectedColor.Substring(5, 2), 16);
+
+            if (controlDevice != null)
+            {
+                controlDevice.R = r;
+                controlDevice.G = g;
+                controlDevice.B = b;
+                controlDevice.Brightness = 255;
+            }
+        }
+        await Api.TurnOnTheLightById(controlDevice);
+        StateHasChanged();
+    }
+
 
     private ElementReference colorInput;
     private async Task TriggerColorPicker()
     {
         await JS.InvokeVoidAsync("clickTrigger", colorInput);
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        devices = await Api.GetDevicesData();
+        StateHasChanged();
+    }
+
+    //controlコンテナにかんする処理
+    private Task ChangeControlDevice(DeviceDto device)
+    {
+        controlDevice = device;
+        string hex = $"#{device.R:X2}{device.G:X2}{device.B:X2}";
+        SelectedColor = hex;
+        StateHasChanged();
+        return Task.CompletedTask;
     }
 }

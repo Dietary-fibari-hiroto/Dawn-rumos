@@ -1,11 +1,18 @@
 #include "LedService.h"
 #include <ArduinoJson.h>
+#include <PubSubClient.h>
 #include <Adafruit_NeoPixel.h>
 #include "DeviceMetaData.h"
+
+#include <WiFi.h>
+extern PubSubClient client;  // ✅ main.cpp の client を参照する宣言
+extern WiFiClient espClient; // （必要ならこっちも）
 
 
 const int NUM_LEDS = CONST_NUM_LEDS;
 const int LED_PIN = CONST_LED_PIN;
+const char* NAME = DEVICE_NAME;
+const char* SERIES = DEVICE_SERIES;
 extern Adafruit_NeoPixel strip; // mainで定義したものを参照
     
 DeserializationError LedService::error;
@@ -26,7 +33,7 @@ void LedService::setJsonUtil(String msg){
     r = doc["R"] | 0;
     g = doc["G"] | 0;
     b = doc["B"] | 0;
-    brightness = doc["Brightness"] | 2;
+    brightness = doc["Brightness"] | 0;
     mode = doc["Mode"] | "normal";
 }
 
@@ -46,6 +53,7 @@ void LedService::handleLed() {
     delay(20);
     strip.show();
     delay(20);
+    returnState();
 }
 
 //フェードインサービス
@@ -102,4 +110,26 @@ void LedService::WhiteGradient(){
 
     strip.show();
     delay(100);
+}
+
+void LedService::returnState() {
+    const char* topicName = "dawn/led/response/all";  // トピック名修正（/allつけるとC#側と一致）
+    
+    // ✅ JSONオブジェクト作成
+    JsonDocument responseDoc; // v7での基本。StaticJsonDocumentはもう非推奨。
+    responseDoc["Name"] = NAME;
+    responseDoc["Series"] = SERIES;
+    responseDoc["R"] = r;
+    responseDoc["G"] = g;
+    responseDoc["B"] = b;
+
+    // ✅ JSONを文字列に変換
+    char buffer[256];
+    serializeJson(responseDoc, buffer, sizeof(buffer));
+
+    // ✅ Publish!!
+    client.publish(topicName, buffer);
+
+    Serial.println("[MQTT] State published:");
+    Serial.println(buffer);
 }

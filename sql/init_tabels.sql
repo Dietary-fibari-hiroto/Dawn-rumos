@@ -45,3 +45,9 @@ CREATE TABLE preset_device_maps(
     FOREIGN KEY (device_id) REFERENCES devices(id),
     PRIMARY KEY (preset_id,device_id)
 )ENGINE=InnoDB;
+
+
+CREATE TABLE modes(
+    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL
+)ENGINE=InnoDB;

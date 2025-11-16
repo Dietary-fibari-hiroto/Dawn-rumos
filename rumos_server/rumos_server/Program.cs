@@ -2,15 +2,18 @@
 using Devicecontrol;
 using DotNetEnv;
 using Grpc.Net.Client;
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using rumos_server.Data;
 using rumos_server.Extensions;
 using rumos_server.Externals.GrpcClients;
 using rumos_server.Externals.MqttClients;
+using rumos_server.SignalR.Hubs;
+
 
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddSignalR();
 
 //env読み込み
 DotNetEnv.Env.Load();
@@ -59,6 +62,17 @@ builder.Services.RegisterServices();
 
 var app = builder.Build();
 app.MapGet("/", () => "Dawn-Rumos");
+app.MapHub<LedHub>("/ledstate");
+app.MapHub<TestHub>("/test");
+
+app.MapGet("/api/test-broadcast", async (IHubContext<TestHub> hub) =>
+{
+    var msg = $"サーバーからのブロードキャスト！ {DateTime.Now}";
+    await hub.Clients.All.SendAsync("ReceiveMessage", "Server", msg);
+    Console.WriteLine($"🧪 {msg}");
+    return Results.Ok("送信完了");
+});
+
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

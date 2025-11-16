@@ -32,7 +32,7 @@
     overflow-y: scroll;
     backdrop-filter: blur(15px);
     -webkit-backdrop-filter: blur(15px);
-    background: linear-gradient(to bottom,#0011FF44,#00000044,#00000044,#00000044);
+    background: linear-gradient(to bottom,#0011FF44,#ffffff44,#ffffff44,#ffffff44);
 }
 .device-list > .title-label{
     width:100%;
@@ -77,4 +77,31 @@
 }
 .control-container > * + *{
     margin-top:10px;
+}
+
+.right-content {
+    width: 150px;
+    height: 50px;
+    z-index: 1;
+    border-radius: 10px;
+}
+
+.name-plate {
+    z-index: 3;
+    width: 100%;
+    height: 100%;
+    border-radius: 10px;
+}
+
+.content-blur {
+    background: #00000022;
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+}
+.button-container {
+    position: relative;
+    width: 200px;
+    height: 70px;
+    margin: 20px;
+    border-radius: 10px;
 }

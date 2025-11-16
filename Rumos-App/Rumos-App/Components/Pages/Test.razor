@@ -1,0 +1,76 @@
+﻿@page "/app/test"
+@inject Rumos_App.Services.SignalRService SignalRService
+
+
+
+<div class="flex-all-center">
+<h3>chat</h3>
+
+<p><b>Rservice.initializeから受け取ったstring:</b> @connectionStatus</p>
+
+<input @bind="user" placeholder="Your name" />
+<input @bind="message" placeholder="Message" />
+<button @onclick="Send">Send</button>
+
+<div>
+    <p>friend:@friendUser</p>
+    <p>Message:@friendMessage</p>
+</div>
+
+
+
+
+<ul>
+    @foreach (var msg in messages)
+    {
+        <li>@msg</li>
+    }
+</ul>
+
+
+
+</div>
+@code{
+    string user = "";
+    string message = "";
+    string friendUser = "";
+    string friendMessage = "";
+    string returnMessage = "";
+    string connectionStatus = "未接続";
+    List<string> messages = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        SignalRService.ConnectionStatusChanged += (status) =>
+        {
+            MainThread.BeginInvokeOnMainThread(() =>
+            {
+                connectionStatus = status;
+                StateHasChanged();
+            });
+        };
+        SignalRService.MessageStatusChanged += (user, message) =>
+        {
+            MainThread.BeginInvokeOnMainThread(() =>
+            {
+                friendUser = user;
+                friendMessage = message;
+                StateHasChanged();
+            });
+        };
+
+        await SignalRService.InitializeAsync();
+
+        // 接続状態を手動確認（オプション）
+        connectionStatus = SignalRService.GetState()?.ToString() ?? "不明";
+    }
+    
+    async Task Send()
+    {
+       await SignalRService.SendMessageAsync(user, message);
+        message = "";
+    }
+
+
+ 
+}

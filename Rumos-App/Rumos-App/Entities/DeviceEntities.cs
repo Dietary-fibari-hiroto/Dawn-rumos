@@ -1,5 +1,4 @@
-﻿namespace rumos_server.Features.Models;
-using Microsoft.EntityFrameworkCore;
+﻿namespace Rumos_App.Entities;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -48,17 +47,19 @@ public class Device
 }
 
 //プリセットテーブルのデータ型
-public class Preset {
+public class Preset
+{
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     [Key]
     public int Id { get; set; }
     [StringLength(15)]
-    public string Name { get; set; }=string.Empty;
+    public string Name { get; set; } = string.Empty;
     [StringLength(255)]
     public string Img_url { get; set; } = "";
 }
 
-public class Mode {
+public class Mode
+{
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     [Key]
     public int Id { get; set; }
@@ -69,7 +70,6 @@ public class Mode {
 }
 
 
-[Index(nameof(Preset_id),nameof(Device_id),IsUnique=true)]
 public class Preset_device_map
 {
 

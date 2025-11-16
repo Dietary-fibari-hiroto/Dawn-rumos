@@ -24,4 +24,6 @@ class LedService{
     static void handleLed();
     static void ledFadein();
     static void WhiteGradient();
+    
+    static void returnState();
 };

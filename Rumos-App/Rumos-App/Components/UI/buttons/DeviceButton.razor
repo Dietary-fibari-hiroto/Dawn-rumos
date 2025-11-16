@@ -1,21 +1,27 @@
+@using Rumos_App.DTOs
 
-@if(Color != "#000000" && Color != "rgb(0,0,0)")
+@if(Device.Brightness != 0)
 {
-    <button class="button-container">
-        <div class="right-content absolute-position-center" style="box-shadow: 0 0 50px 20px @Color; background: @Color;" />
-        <p class="string-md flex-all-center absolute-position-center content-blur name-plate">@Label</p>
+    <button class="button-container" @onclick="()=>Select(Device)">
+        <div class="right-content absolute-position-center" style="box-shadow: 0 0 50px 20px rgb(@Device.R,@Device.G,@Device.B); background: rgb(@Device.R,@Device.G,@Device.B);" />
+        <p class="string-md flex-all-center absolute-position-center content-blur name-plate;" />
+        <p class="string-md flex-all-center absolute-position-center content-blur name-plate">@Device.Name</p>
     </button>
 }
 else
 {
-    <button class="button-container black-mode">
+    <button class="button-container black-mode" @onclick="() => Select(Device)">
         <div class="right-content absolute-position-center"  />
-        <p class="string-md flex-all-center absolute-position-center name-plate">@Label</p>
+        <p class="string-md flex-all-center absolute-position-center name-plate">@Device.Name</p>
     </button>
 }
 
 @code {
-    [Parameter] public string Color { get; set; } = "#000000";
-    [Parameter] public string Label { get; set; } = "";
-    
+    [Parameter] public DeviceDto Device { get; set; } = new();
+    [Parameter] public EventCallback<DeviceDto> OnSelectDevice { get; set; }
+
+    private Task Select(DeviceDto d)
+    {
+        return OnSelectDevice.InvokeAsync(d);
+    }
 }

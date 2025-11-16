@@ -1,4 +1,5 @@
 ﻿using rumos_server.Features.Models;
+using rumos_server.Features.DTOs;
 
 namespace rumos_server.Features.Interface;
 
@@ -10,7 +11,10 @@ public interface IDeviceRepository
     Task<string?> GetIpByIdAsync(int id);
     Task<string?> GetNameByIdAsync(int id);
 
+    Task<List<PlatformWithDevicesDto>> GetAllDevicesGroupedByPlatformAsync();
+
     //登録処理めちゃくちゃ忘れてた。
+    Task<Device> AddAsync(Device device);
 }
 
 public interface IPlatformRepository
@@ -28,3 +32,6 @@ public interface IPresetRepository {
 }
 
 
+public interface IRoomRepository {
+    Task<IEnumerable<Room>> GetAllAsync();
+}
