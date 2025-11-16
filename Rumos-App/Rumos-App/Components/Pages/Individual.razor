@@ -38,7 +38,9 @@
                 <p class="string-l">@controlDevice?.Name</p>
                 <div class="string-m">
                     <p>ID:@controlDevice?.Id</p>
-                    <p>Series:@controlDevice?.Series</p>
+                    <p>
+                        Series:@(platforms?.FirstOrDefault(p => p.Id == controlDevice?.Series)?.Name ?? "不明")
+                    </p>
                     <p>Power:On</p>
                 </div>
                 <select class="mode-select string-m">
@@ -67,6 +69,7 @@
     private string SelectedColor { get; set; } = "#FFA200";
     private string? RgbColor { get; set; }
     private DeviceDto? controlDevice;
+    private List<Entities.Platform>? platforms;
     //全デバイス情報をPlatformベースで格納するための変数
     private List<PlatformWithDevicesDto>? devices;
     private Task ControlModeChange()
@@ -120,6 +123,7 @@
     protected override async Task OnInitializedAsync()
     {
         devices = await Api.GetDevicesData();
+        platforms = await Api.GetPlatforms();
         StateHasChanged();
     }
 

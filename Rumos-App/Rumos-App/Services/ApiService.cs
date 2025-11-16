@@ -68,6 +68,30 @@ namespace Rumos_App.Services
             }
         }
 
+        //デバイスの削除処理:Delete
+        public async Task<bool> DeleteDeviceAsync(int id)
+        {
+            try
+            {
+                var response = await _httpClient.DeleteAsync(baseApiUrl + $"/Device/{id}");
+                if (response.IsSuccessStatusCode)
+                {
+                    return true;
+                }
+                else
+                {
+                    // ログ出したければここ
+                    var error = await response.Content.ReadAsStringAsync();
+                    Console.WriteLine($"Delete failed: {error}");
+                    return false;
+                }
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
         public async Task<List<Entities.Platform>> GetPlatforms()
         {
             try

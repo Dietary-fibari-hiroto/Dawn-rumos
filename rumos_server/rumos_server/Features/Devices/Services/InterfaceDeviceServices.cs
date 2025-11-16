@@ -16,6 +16,7 @@ public interface IPlatformService
         Task<List<PlatformWithDevicesDto>> GetAllDevicesWithPlatformAsync();
 
         Task<Device> CreateDeviceAsync(CreateDeviceDto device);
+        Task<bool> DeleteDeviceAsync(int id);
     }
 
     public interface IPresetService {

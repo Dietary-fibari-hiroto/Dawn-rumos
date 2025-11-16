@@ -15,6 +15,7 @@ public interface IDeviceRepository
 
     //登録処理めちゃくちゃ忘れてた。
     Task<Device> AddAsync(Device device);
+    Task<bool> DeleteAsync(int id);
 }
 
 public interface IPlatformRepository

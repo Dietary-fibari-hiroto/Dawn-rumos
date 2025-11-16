@@ -44,7 +44,7 @@
             <p class="string-l">@controlDevice?.Name</p>
             <div class="string-m">
                 <p>ID:@controlDevice?.Id</p>
-                <p>Series:@controlDevice?.Series</p>
+                    <p>Series:@(platforms?.FirstOrDefault(p => p.Id == controlDevice?.Series)?.Name ?? "不明")</p>
                 <p>Power:On</p>
             </div>
             <select class="mode-select string-m">
@@ -60,6 +60,10 @@
                     <p class="string-md flex-all-center absolute-position-center content-blur name-plate;" />
                 </button>
             </div>
+                <button class="option-button" @onclick="() => isOpenDeleteDialog=true">
+                <img src="images/elements/trash.svg" />
+                <p class="string-md">Delete</p>
+            </button>
         </div>
     </setion>
     </div>
@@ -69,6 +73,7 @@
 {
     <section class="function-dialog section-frame absolute-position-center bg-blur flex-all-center">
         <div class="dialog-container">
+            <button @onclick="() => isOpenDialog = false" class="x-button"><img src="images/elements/x.svg" /></button>
             <div class="function-logo-container string-big">Register</div>
             <div class="function-form-container">
                 <input placeholder = "デバイス名" type="text" @bind=newDeviceData.Name required />
@@ -111,9 +116,30 @@
     </section>
 }
 
+@if (isOpenDeleteDialog)
+{
+    <section class="function-dialog section-frame absolute-position-center bg-blur flex-all-center">
+        <div class="dialog-container delete">
+            <button @onclick="() => isOpenDeleteDialog = false" class="x-button"><img src="images/elements/x.svg" /></button>
+           <p class="string-big">Deleted</p>
+           <p>以下のデバイス情報を完全に削除します。よろしいですか？</p>
+            <div class="flex-all-center-vertical">
+                <p>@controlDevice?.Name</p>
+                <p>ID:@controlDevice?.Id</p>
+                <p>Series:@(platforms?.FirstOrDefault(p => p.Id == controlDevice?.Series)?.Name ?? "不明")</p>
+           </div>
+            <button @onclick="DeleteDevice" class="submit string-m">
+                削除
+            </button>
+        </div>
+    </section>
+}
+
+
 
 @code {
     private bool isOpenDialog = false;
+    private bool isOpenDeleteDialog = false;
     private List<Room>? rooms;
     private List<Platform>? platforms;
     private CreateDeviceDto newDeviceData = new();
@@ -193,6 +219,31 @@
     private async Task RegisterDevice()
     {
         Entities.Device createdData = await Api.PostDevice(newDeviceData);
+        DeviceDto addDevicesData = new()
+        {
+            Id = createdData.Id,
+            Name = createdData.Name,
+            Series = createdData.Platform_id
+        };
+        var platform = devices?.FirstOrDefault(p => p.PlatformId == createdData.Platform_id);
 
+        platform?.Devices.Add(addDevicesData);
+
+        isOpenDialog = false;
+    }
+    //デバイスの削除処理
+    private async Task DeleteDevice()
+    {
+        bool isSccess = await Api.DeleteDeviceAsync(controlDevice!.Id);
+        foreach(var platform in devices!)
+        {
+            var device = platform.Devices.FirstOrDefault(d => d.Id == controlDevice.Id);
+            if(device != null)
+            {
+                platform.Devices.Remove(device);
+            }
+        }
+
+        isOpenDeleteDialog = false;
     }
 }

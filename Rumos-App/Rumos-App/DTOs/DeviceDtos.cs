@@ -11,7 +11,7 @@ namespace Rumos_App.DTOs
     {
         public int Id { get; set; }
         public string Name { get; set; } = string.Empty;
-        public string Series { get; set; } = string.Empty;
+        public int Series { get; set; } 
         public bool IsPower { get; set; } = false;
         public int R { get; set; } = 0;
         public int G { get; set; } = 0;

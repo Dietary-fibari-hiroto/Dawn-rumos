@@ -31,7 +31,7 @@ namespace rumos_server.Features.Repositories
                     {
                         Id = d.Id,
                         Name = d.Name,
-                        Series = p.Name,        // Entity に無いので追加するならここ
+                        Series = p.Id,        // Entity に無いので追加するならここ
                         IsPower = false,    // 初期値入れるならここ
                         R = 0,
                         G = 0,
@@ -49,6 +49,18 @@ namespace rumos_server.Features.Repositories
             _context.Devices.Add(device);
             await _context.SaveChangesAsync();
             return device;
+        }
+
+        public async Task<bool> DeleteAsync(int id)
+        {
+            var entity = await _context.Devices.FindAsync(id);
+            if(entity == null)
+            {
+                return false;
+            }
+            _context.Devices.Remove(entity);
+            await _context.SaveChangesAsync();
+            return true;
         }
     }
     public class PresetRepository:IPresetRepository

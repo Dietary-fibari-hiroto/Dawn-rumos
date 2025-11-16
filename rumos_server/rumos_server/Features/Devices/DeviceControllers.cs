@@ -74,6 +74,14 @@ namespace rumos_server.Features.Controller
                 new { id = created.Id },
                 created);
         }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var result = await _service.DeleteDeviceAsync(id);
+            if (!result) return NotFound();
+            return Ok(result);
+        }
         
     }
 

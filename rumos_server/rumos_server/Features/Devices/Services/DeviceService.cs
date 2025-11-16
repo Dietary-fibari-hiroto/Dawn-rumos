@@ -31,6 +31,8 @@ namespace rumos_server.Features.Services
                         };
             return await _repo.AddAsync(addDevice);
         }
+
+        public async Task<bool> DeleteDeviceAsync(int id) => await _repo.DeleteAsync(id);
     }
 
     public class PresetService : IPresetService
