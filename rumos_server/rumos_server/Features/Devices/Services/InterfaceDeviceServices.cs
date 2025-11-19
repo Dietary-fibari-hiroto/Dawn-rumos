@@ -21,9 +21,10 @@ public interface IPlatformService
 
     public interface IPresetService {
         Task<IEnumerable<Preset>> GetAllPresetAsync();
-        Task<Preset> CreateAsync(Preset preset);
-
+        Task<Preset> CreateAsync(PresetCreateDto preset);
+        Task<bool> DeletePresetAsync(int id);
         Task<List<Preset_device_map>> GetMapsByIdAsync(int id);
+        Task<bool> RegisterDeviceMapAsync(List<DeviceDto> list,int id);
     }
     public interface IRoomService
     {

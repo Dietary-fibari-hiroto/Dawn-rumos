@@ -68,6 +68,7 @@ namespace Rumos_App
 #endif
             builder.Services.AddSingleton(new HttpClient());
             builder.Services.AddScoped<ApiService>();
+            builder.Services.AddScoped<MagicRoutineApiService>();
             builder.Services.AddSingleton<SignalRService>();            
             return builder.Build();
         }

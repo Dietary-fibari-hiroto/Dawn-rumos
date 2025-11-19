@@ -24,4 +24,8 @@
 	  <Protobuf Include="../../rumos_proto/device_control.proto" GrpcServices="Client" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\images\" />
+  </ItemGroup>
+
 </Project>

@@ -78,10 +78,58 @@ namespace rumos_server.Features.Repositories
             await _context.SaveChangesAsync();
             return preset;
         }
+        public async Task<bool> DeleteAsync(int id)
+        {
+            var entity = await _context.Presets.FindAsync(id);
+            if (entity == null)
+            {
+                return false;
+            }
+            _context.Presets.Remove(entity);
+            await _context.SaveChangesAsync();
+            return true;
+        }
 
 
         //一括発光のためのデータを取得するためのリポジトリ
         public async Task<List<Preset_device_map>> GetDeviceMapAsync(int id) => await _context.Preset_device_maps.Include(d=>d.Device).Where(d => d.Preset_id == id).ToListAsync();
+
+        //プリセットの内容を保存する
+        public async Task<bool> PostDeviceMapAsync(List<Preset_device_map> list)
+        {
+            foreach(Preset_device_map device in list)
+            {
+                var existing = await _context.Preset_device_maps.FirstOrDefaultAsync(x =>
+                x.Preset_id == device.Preset_id &&
+                x.Device_id == device.Device_id
+                );
+
+                if (existing == null)
+                {
+                    _context.Preset_device_maps.Add(device);
+                }
+                else
+                {
+                    existing.R = device.R;
+                    existing.G =device.G;
+                    existing.B = device.B;
+                    existing.Brightness = device.Brightness;
+                    existing.Mode_id = device.Mode_id;
+                }
+            }
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateException ex)
+            {
+                Console.WriteLine(ex.InnerException?.Message);
+                throw;
+            }
+
+            return true;
+        }
     }
 
     public class RoomRepository : IRoomRepository {

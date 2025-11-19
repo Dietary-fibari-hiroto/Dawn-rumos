@@ -31,7 +31,7 @@ namespace Rumos_App.Services
 
         public async Task GetAllDevicesWithPlatformAsync()
         {
-            //ここ、リクエストが何秒か経っても応答なかったらnull判定とかにできないかね？
+         
             try
             {
                 _httpClient.Timeout = TimeSpan.FromSeconds(5);

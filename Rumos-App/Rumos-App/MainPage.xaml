@@ -8,7 +8,7 @@
         <BlazorWebView.RootComponents>
             <RootComponent Selector="#app" ComponentType="{x:Type local:Components.Routes}" />
         </BlazorWebView.RootComponents>
-        <BlazorWebView.StartPath>/app/individual</BlazorWebView.StartPath>
+        <BlazorWebView.StartPath>/app/magicroutine</BlazorWebView.StartPath>
     </BlazorWebView>
 
 </ContentPage>

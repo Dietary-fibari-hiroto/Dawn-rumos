@@ -72,29 +72,25 @@ public class Mode {
 [Index(nameof(Preset_id),nameof(Device_id),IsUnique=true)]
 public class Preset_device_map
 {
-
     [Required]
     [Column("preset_id")]
     public int Preset_id { get; set; }
     [ForeignKey(nameof(Preset_id))]
-    public required Preset? Preset { get; set; }
+    public Preset? Preset { get; set; }
 
     [Required]
     [Column("device_id")]
     public int Device_id { get; set; }
     [ForeignKey(nameof(Device_id))]
-    public required Device? Device { get; set; }
+    public Device? Device { get; set; }
 
     public int R { get; set; } = 255;
     public int G { get; set; } = 255;
     public int B { get; set; } = 255;
     public int Brightness { get; set; } = 255;
 
-    [StringLength(255)]
     [Column("mode_id")]
-    public int Mode_id { get; set; } = 1;
+    public int? Mode_id { get; set; } = 1;
     [ForeignKey(nameof(Mode_id))]
-    public required Mode? mode { get; set; }
-
-
+    public Mode? Mode { get; set; }
 }

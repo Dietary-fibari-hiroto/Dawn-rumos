@@ -1,0 +1,219 @@
+@page "/app/magicroutine"
+@using Rumos_App.Services
+@using Rumos_App.DTOs
+@using Rumos_App.Entities
+@inject ApiService Api
+@inject MagicRoutineApiService MrApi
+@inject NavigationManager Nav
+@inject IJSRuntime JS
+
+<PageTitleLabel Title="MagicRoutine" SubTitle="プリセット一括制御" />
+<div class="page-frame page-label-margin page-setting">
+<section class="magic-list">
+        <button @onclick='() => Nav.NavigateTo("/app/magicroutine/create")' class="magic-button create flex-all-center">
+        <img src = "images/elements/badge-plus.svg"/>
+        
+    </button>
+        @if(presetList == null)
+        {
+            <p>...loading</p>
+        }else if(presetList.Count== 0)
+        {
+            <p>No data found.</p>
+        }
+        else
+        {
+            @foreach(Preset preset in presetList)
+            {
+                <button @onclick="() => OnPreset(preset)" class="magic-button flex-all-center @(selectedPreset?.Id == preset.Id ? "selected " : "")">
+                    <img src="@preset.Img_url" class="thumbnail absolute-position-center"/>
+                    <p class="title string-md">@preset.Name</p>
+                </button>
+            }
+        }
+
+        
+</section>
+<section class="space-x-10 function-list">
+        <FunctionButton Selected='state==ControlMode.normal' OnClick='()=>state =ControlMode.normal' Label="Control" Img="images/elements/spotlight.svg" />
+        <FunctionButton Selected='state == ControlMode.edit' OnClick='() => state = ControlMode.edit' Label="Edit" Img="images/elements/square-pen.svg" />
+        <FunctionButton Selected='state == ControlMode.delete' OnClick='() => state = ControlMode.delete' Label="Delete" Img="images/elements/badge-plus.svg" />
+</section>
+    @if(state == ControlMode.edit)
+    {
+        <section>
+            <p class="string-l">@controlDevice?.Name</p>
+            <div class="device-setting-panel">
+                <p>ID:@controlDevice?.Id</p>
+                <p>Series:@(platforms?.FirstOrDefault(p => p.Id == controlDevice?.Series)?.Name ?? "不明")</p>
+                <select class="mode-select string-m">
+                    <option value="normal">Normal</option>
+                    <option value="fadein">Fadein</option>
+                    <option value="whitegradient">Whitegradient</option>
+                </select>
+                <input style="display:none;" @bind:after="OnColorPicked" type="color" @bind="SelectedColor" @oninput="UpdateRgb" @ref="colorInput" />
+                <p>Color: @SelectedColor</p>
+                <div @onclick="TriggerColorPicker" style="display:inline;">
+                    <button class="button-container">
+                        <div class="right-content absolute-position-center" style="box-shadow: 0 0 50px 20px @SelectedColor; background: @SelectedColor;" />
+                        <p class="string-md flex-all-center absolute-position-center content-blur name-plate;" />
+                    </button>
+                </div>
+            </div>
+        </section>
+        <section class="routine-save-button">
+            <button @onclick="SaveRoutine">Save</button>
+        </section>
+    }
+    <section class="device-list">
+
+        @if (devices == null)
+        {
+            <p>...loading</p>
+        }
+        else if (devices.Count == 0)
+        {
+            <p>No data found.</p>
+        }
+        else
+        {
+            @foreach (var platform in devices)
+            {
+                <p class="string-l series-label">@platform.PlatformName</p>
+                <div class="list-container">
+                    @foreach (var device in platform.Devices)
+                    {
+                        <DeviceButton Device=@device OnSelectDevice="ChangeControlDevice" />
+                    }
+                </div>
+            }
+        }
+    </section>
+    </div>
+@if (deleteDialog)
+{
+    <div class="delete-dialog">
+        <div class="delete-container">
+            <img @onclick="()=>deleteDialog = false" class="cancel-button" src ="images/elements/x.svg"/>
+            <p class="string-big">Delete</p>
+            <p class="string-md">このプリセット情報を完全に削除します。よろしいですか？</p>
+            <button @onclick=OnDelete class="delete-button">削除</button>
+        </div>
+    </div>
+}
+
+@code {
+    //全デバイス情報をPlatformベースで格納するための変数
+    private List<PlatformWithDevicesDto>? devices;
+    private List<Platform>? platforms;
+    private List<Preset>? presetList;
+    private Preset? selectedPreset;
+    private string SelectedColor { get; set; } = "#FFA200";
+    private string? RgbColor { get; set; }
+    private DeviceDto? controlDevice;
+
+    private enum ControlMode
+    {
+        normal,
+        edit,
+        delete
+    }
+    private ControlMode state = ControlMode.normal;
+
+    protected override async Task OnInitializedAsync()
+    {
+        devices = await Api.GetDevicesData();
+        platforms = await Api.GetPlatforms();
+        presetList = await MrApi.GetPresetList();
+        StateHasChanged();
+    }
+    private void UpdateRgb(ChangeEventArgs e)
+    {
+        SelectedColor = e.Value.ToString();
+        if (SelectedColor.StartsWith("#") && SelectedColor.Length == 7)
+        {
+            var r = Convert.ToInt32(SelectedColor.Substring(1, 2), 16);
+            var g = Convert.ToInt32(SelectedColor.Substring(3, 2), 16);
+            var b = Convert.ToInt32(SelectedColor.Substring(5, 2), 16);
+            RgbColor = $"rgb({r},{g},{b})";
+
+        }
+        StateHasChanged();
+    }
+    private Task ChangeControlDevice(DeviceDto device)
+    {
+        controlDevice = device;
+        string hex = $"#{device.R:X2}{device.G:X2}{device.B:X2}";
+        SelectedColor = hex;
+        StateHasChanged();
+        return Task.CompletedTask;
+    }
+
+    private async Task OnColorPicked()
+    {
+        if (SelectedColor.StartsWith("#") && SelectedColor.Length == 7)
+        {
+            var r = Convert.ToInt32(SelectedColor.Substring(1, 2), 16);
+            var g = Convert.ToInt32(SelectedColor.Substring(3, 2), 16);
+            var b = Convert.ToInt32(SelectedColor.Substring(5, 2), 16);
+
+            if (controlDevice != null)
+            {
+                controlDevice.R = r;
+                controlDevice.G = g;
+                controlDevice.B = b;
+                controlDevice.Brightness = 255;
+            }
+        }
+        await Api.TurnOnTheLightById(controlDevice);
+        StateHasChanged();
+    }
+    private ElementReference colorInput;
+    private async Task TriggerColorPicker()
+    {
+        await JS.InvokeVoidAsync("clickTrigger", colorInput);
+    }
+
+
+    private bool deleteDialog = false;
+    //presetButtonを押したときの処理
+    private async Task OnPreset(Preset preset)
+    {
+        if (preset == null) return;
+        selectedPreset = preset;
+        switch (state)
+        {
+            case ControlMode.normal:
+                await MrApi.ExeMagicRoutine(selectedPreset.Id,devices);
+                break;
+            case ControlMode.edit:
+                break;
+            case ControlMode.delete:
+                deleteDialog = true;
+                break;
+        }
+        StateHasChanged();
+    }
+    private async Task OnDelete()
+    {
+        if (selectedPreset==null) return;
+        bool isSuccess= await MrApi.DeletePresetAsync(selectedPreset.Id);
+        if (isSuccess)
+        {
+            //該当のPreset削除
+            var target = presetList!.FirstOrDefault(p => p.Id == selectedPreset.Id);
+            if(target != null)
+            {
+                presetList.Remove(target);
+            }
+        }
+        deleteDialog = false;
+
+    }
+
+
+    private async Task SaveRoutine()
+    {
+        bool isSuccess = await MrApi.PostRouitneSetting(devices,selectedPreset.Id);
+    }
+}

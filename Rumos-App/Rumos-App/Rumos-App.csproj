@@ -75,7 +75,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Components\UI\buttons\" />
       <Folder Include="Components\UI\inputs\" />
       <Folder Include="Components\UI\elements\" />
       <Folder Include="Components\UI\typographies\" />

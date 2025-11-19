@@ -19,7 +19,8 @@ INSERT INTO devices (name, ip_v4, platform_id, room_id) VALUES
 ('Astrolume_Sangria_1', NULL, 2, 4),
 ('Astrolume_Sangria_2', NULL, 2, 3),
 ('Astrolume_Sangria_3', NULL, 2, 3),
-('Astrolume_Startrail_1', NULL, 3, 1);
+('Astrolume_Startrail_1', NULL, 3, 1),
+('Astrolume_Startrail_3', NULL, 3, 1);
 
 
 INSERT INTO presets(name,img_url) VALUES

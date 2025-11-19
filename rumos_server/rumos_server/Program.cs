@@ -59,6 +59,8 @@ builder.Services.AddDbContext<AppDbContext>(options => options.UseMySql(builder.
 
 builder.Services.RegisterRepositories();
 builder.Services.RegisterServices();
+builder.Services.AddHttpContextAccessor();
+
 
 var app = builder.Build();
 app.MapGet("/", () => "Dawn-Rumos");
@@ -87,6 +89,7 @@ app.UseAuthorization();
 
 app.MapControllers();
 
+app.UseStaticFiles();
 
 
 app.Run();

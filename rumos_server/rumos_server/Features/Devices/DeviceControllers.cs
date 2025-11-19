@@ -1,9 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using rumos_server.Externals.GrpcClients;
 using rumos_server.Externals.MqttClients;
+    using rumos_server.Features.DTOs;
 using rumos_server.Features.Interface;
 using rumos_server.Features.Models;
-    using rumos_server.Features.DTOs;
+using Sprache;
+using System.Drawing;
 namespace rumos_server.Features.Controller
 {
     [ApiController]
@@ -82,8 +84,47 @@ namespace rumos_server.Features.Controller
             if (!result) return NotFound();
             return Ok(result);
         }
+
+    }
+
+    //MagicRoutinエンドポイント
+    [Route("/api/[controller]")]
+    public class MagicRoutin : ControllerBase {
+        private readonly IPresetService _service;
+        public MagicRoutin(IPresetService service)
+        {
+            _service = service;
+        }
+
+        [HttpGet]//一覧取得
+        public async Task<IActionResult> GetAll() => Ok(await _service.GetAllPresetAsync());
+        [HttpPost]//登録処理
+        public async Task<IActionResult> Create([FromForm]PresetCreateDto request)
+        {
+            if (request.File == null || request.File.Length == 0) return BadRequest("画像がありません");
+
+            Preset created = await _service.CreateAsync(request);
+            return Created($"/MagicRoutin/{created.Id}", created);
+        }
+
+        [HttpDelete("{id}")]//削除処理
+        public async Task<IActionResult> DeletePreset(int id)
+        {
+            var result = await _service.DeletePresetAsync(id);
+            if (!result) return NotFound();
+            return Ok(result);
+        }
+
+        [HttpPost("routine/{id}")]
+        public async Task<IActionResult> CreateRoutine([FromBody]List<DeviceDto> list,int id)
+        {
+            if (list == null) return BadRequest("データが入っていません。");
+            bool isSuccess = await _service.RegisterDeviceMapAsync(list,id);
+            return Ok(isSuccess);
+        }
         
     }
+
 
     //Luminaエンドポイント
     [Route("/api/[controller]")]
@@ -107,8 +148,7 @@ namespace rumos_server.Features.Controller
         }
 
         [HttpPost("all")]
-
-        public async Task<IActionResult> SetColorForAll(LedColor color,CancellationToken ct)
+        public async Task<IActionResult> SetColorForAll([FromBody]LedColor color,CancellationToken ct)
         {
             await _mqttService.SendColorAsyncForAll(color, ct);
             return Ok();
@@ -127,24 +167,23 @@ namespace rumos_server.Features.Controller
         }
 
         /*magicRoutin用エンドポイント*/
-        //全情報取得
-        [HttpGet("magicroutin")]
-        public async Task<IActionResult> GetMagicRoutin(CancellationToken ct)
-        {
-            var presets = await _presetService.GetAllPresetAsync();
-            return presets == null ? NotFound() : Ok(presets); 
-        }
-        //登録
-        [HttpPost("magicroutin")]
-        public async Task<IActionResult> PostMagicRoutin([FromBody]Preset preset,CancellationToken ct)
-        {
-            return Ok();
-        }
-        //Mqtt実行
-        [HttpPost("magicroutin/execution")]
+        // MagicRoutine実行
+        [HttpPost("magicroutin/execution/{id}")]
         public async Task<IActionResult> ExeMagicRoutin(int id,CancellationToken ct)
         {
             List<Preset_device_map> exeValue = await _presetService.GetMapsByIdAsync(id);
+            var allDevices = await _service.GetDeviceAsync();
+
+            var presetIds = exeValue.Select(x => x.Device_id).ToHashSet();
+            //プリセットに含まれない＝今回は消灯
+            var devicesToOff = allDevices.Where(d => !presetIds.Contains(d.Id));
+
+            foreach(var dev in devicesToOff)
+            {
+                await _mqttService.SendColorAsync(new LedColor() , dev.Name);
+            }
+
+
             foreach (Preset_device_map item in exeValue)
             {
                 Console.WriteLine($"PresetId: {item.Preset_id}, DeviceId: {item.Device_id},DeviceName:{item.Device.Name}");
@@ -161,7 +200,9 @@ namespace rumos_server.Features.Controller
             }
             
             return exeValue == null ? NotFound() : Ok(exeValue);
-        } 
+        }
+
+
     }
 
     [Route("/api/[controller]")]

@@ -32,6 +32,10 @@ CREATE TABLE presets(
 
 
 
+CREATE TABLE modes(
+    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL
+)ENGINE=InnoDB;
 /*プリセットとデバイスの中間テーブル*/
 CREATE TABLE preset_device_maps(
     preset_id INT NOT NULL,
@@ -40,14 +44,11 @@ CREATE TABLE preset_device_maps(
     g INT NOT NULL DEFAULT 255,
     b INT NOT NULL DEFAULT 255,
     brightness INT NOT NULL DEFAULT 255,
-    mode VARCHAR(255) NOT NULL DEFAULT 'normal',
+    mode_id INT NULL DEFAULT 1,
+    FOREIGN KEY (mode_id) REFERENCES modes(id),
     FOREIGN KEY (preset_id) REFERENCES presets(id),
     FOREIGN KEY (device_id) REFERENCES devices(id),
     PRIMARY KEY (preset_id,device_id)
 )ENGINE=InnoDB;
 
 
-CREATE TABLE modes(
-    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(255) NOT NULL
-)ENGINE=InnoDB;

@@ -1,0 +1,166 @@
+.page-setting{
+    overflow-y:scroll;
+}
+    .page-setting > * + *{
+        margin-top:30px;
+    }
+    .device-list {
+        width: 80%;
+        height: 700px;
+        border-radius: 10px;
+        overflow-y: scroll;
+        backdrop-filter: blur(15px);
+        -webkit-backdrop-filter: blur(15px);
+    }
+
+    .device-list > .title-label {
+        width: 100%;
+        height: 50px;
+        border-radius: 10px 10px 0 0;
+    }
+
+.device-control {
+    width: 800px;
+    height: 700px;
+    border-radius: 10px;
+    overflow-y: scroll;
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    background: #00000044;
+}
+
+.list-container {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.series-label {
+    padding-left: 10px;
+}
+
+
+.function-list{
+    display:flex;
+    justify-content:start;
+    align-items:center;   
+}
+.magic-list{
+    width:100%;
+    overflow-x:scroll;
+    display:flex;
+    justify-content:start;
+    align-items:center;
+}
+    .magic-list > .magic-button {
+        min-width: 400px;
+        min-height: 200px;
+        position: relative;
+        border-radius: 10px;
+        overflow: hidden;
+        margin-left:20px;
+    }
+    .magic-list > .magic-button.create {
+        border:1px solid white;
+    }
+.magic-button > .thumbnail{
+    width:100%;
+    height:100%;
+    z-index:1;
+    opacity:0.8;
+}
+.magic-button > .title {
+    position:absolute;
+    z-index:3;
+    bottom:5%;
+    right:5%;
+}
+.magic-button.selected {
+    border:green solid 2px;
+}
+
+.mode-select {
+    width: 250px;
+    height: 60px;
+    color: white;
+    background: black;
+    text-align: start;
+    padding-left: 10px;
+}
+.button-container {
+    position: relative;
+    width: 200px;
+    height: 70px;
+    margin: 20px;
+    border-radius: 10px;
+}
+
+.right-content {
+    width: 150px;
+    height: 50px;
+    z-index: 1;
+    border-radius: 10px;
+}
+
+.device-setting-panel {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+}
+
+    .device-setting-panel > * + * {
+        margin-left: 20px;
+    }
+
+
+.delete-dialog{
+    position:fixed;
+    top:0;
+    left:0;
+    z-index:10;
+    width:100vw;
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    backdrop-filter:blur(15px);
+    -webkit-backdrop-filter:blur(15px);
+
+}
+.delete-container{
+    position:relative;
+    width:1300px;
+    height:700px;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    background:black;
+    
+}
+.delete-container > * + *{
+    margin-top:20px;
+}
+    .delete-container > .cancel-button {
+        position:absolute;
+        top:10px;
+        left:10px;
+    }
+    .delete-container > .delete-button {
+        background: #4500BC;
+        text-align:center;
+        width:500px;
+        height:50px;
+    }
+
+.routine-save-button{
+    width:100%;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+    .routine-save-button > button {
+        width: 500px;
+        height: 50px;
+        border-radius: 10px;
+        background: #4500BC;
+    }

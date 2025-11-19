@@ -26,9 +26,9 @@ public interface IPlatformRepository
 public interface IPresetRepository {
     Task<IEnumerable<Preset>> GetAllAsync();
     Task<Preset> AddAsync(Preset preest);
-
+    Task<bool> DeleteAsync(int id);
     Task<List<Preset_device_map>> GetDeviceMapAsync(int id);
-    //登録処理後で追加
+    Task<bool> PostDeviceMapAsync(List<Preset_device_map> list);
 
 }
 

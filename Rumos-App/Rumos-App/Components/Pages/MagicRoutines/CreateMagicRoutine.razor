@@ -1,0 +1,60 @@
+﻿@page "/app/magicroutine/create"
+@using Rumos_App.DTOs
+@using Rumos_App.Entities
+@using Rumos_App.Services
+@inject MagicRoutineApiService MRApiService
+@inject IJSRuntime JS
+@inject NavigationManager Nav
+
+<PageTitleLabel Title="RoutineCreate" SubTitle="プリセット作成" />
+<div class="form-container">
+    <input class="input-name" type="text" @bind=data.Name placeholder="ルーチン名" />
+    <InputFile class="input-hidden" OnChange="OnFileSelected" @ref="inputFile" />
+
+    <div class="input-image flex-all-center" @onclick="TriggerImageInput">
+        <p class="string-big">+</p>
+    </div>
+  
+    <button class="register-submit" @onclick="OnSubmit">
+     登録
+    </button>
+    @if (isExecute)
+    {
+        <p>セーブしています...</p>
+    }
+</div>
+
+
+@code {
+    private PresetCreateDto data = new();
+    private static List<Preset> presetList;
+    private bool isExecute = false;
+
+    private InputFile? inputFile;
+
+    protected override async Task OnInitializedAsync()
+    {
+        presetList = await MRApiService.GetPresetList();
+        StateHasChanged();
+    }
+
+    private void OnFileSelected(InputFileChangeEventArgs e)
+    {
+        data.File = e.File;
+    }
+    private async Task OnSubmit()
+    {
+        Preset createdData = await MRApiService.PostRoutine(data);
+        isExecute = true;
+        presetList.Add(createdData);
+        Nav.NavigateTo("/app/magicroutine");
+    }
+
+
+
+    private async Task TriggerImageInput()
+    {
+        // InputFile の DOM 要素を JS 側で取得して click()
+        await JS.InvokeVoidAsync("clickTrigger", inputFile!.Element);
+    }
+}

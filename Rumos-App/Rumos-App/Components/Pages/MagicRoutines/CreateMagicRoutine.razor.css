@@ -1,0 +1,34 @@
+.form-container
+{
+    width:100%;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    
+}
+    .form-container > * + *{
+        margin-top:20px;
+    }
+    .input-name, .input-image {
+        border: solid 1px white;
+    }
+.input-name {
+    width: 500px;
+    height: 50px;
+    padding-left: 10px;
+    color: white;
+}
+.input-image{
+    width:500px;
+    height:300px;
+}
+.register-submit {
+    width: 500px;
+    height: 50px;
+    text-align: center;
+    background: #4500BC;
+}
+.input-hidden{
+    display:none;
+}

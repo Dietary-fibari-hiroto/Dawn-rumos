@@ -1,0 +1,13 @@
+.option-button {
+    width: 150px;
+    height: 60px;
+    border-radius: 10px;
+    border: 1px solid white;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+.selected{
+    background:green;
+}
+
