@@ -1,0 +1,40 @@
+---
+import { ImagesRoute } from "../../../assets/images/ImagesRoute"
+
+---
+
+<section class="section-frame flex-all-center hero-section" >
+    <div class="hero-section__inner">
+        <div class="hero-section__title flex-all-center">
+            <img class="hero-section__logo" src = {ImagesRoute.startrail_icon}/>
+            <p class="text-6xl">Startrail</p>
+            <p class="text-md">DAWN</p>
+        </div>
+        <p class="text-lg">
+            星の軌道のような間接照明
+        </p>
+    </div>
+</section>
+
+<style lang = "scss">
+    .hero-section{
+        background-position: center;
+        background-size: cover;
+        position:relative;
+        z-index:2;
+        &__inner{
+            display:flex;
+            flex-direction:column;
+            justify-content:center;
+            align-items: center;
+            gap: 5rem;
+        }
+        &__title{
+            flex-direction: column;
+        }
+        &__logo{
+            width:5rem;
+            height:5rem;
+        }
+    }
+</style>

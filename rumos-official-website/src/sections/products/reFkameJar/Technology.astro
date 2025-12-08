@@ -1,0 +1,45 @@
+---
+import { ImagesRoute } from "../../../assets/images/ImagesRoute";
+---
+
+<section class="technology-section">
+    <div class="technology-section__top section-frame">
+        <div class="technology-section__text">
+            <p class="text-5xl">
+                ミニマムな技術選定。
+            </p>
+            <p class="concept-text-width">
+                Wi-FiとBluetoothを搭載した超小型マイコン「Seeeduino XIAO ESP32C3」を中心に、テープライトとType-C給電モジュールを組み込んだシンプルな設計を採用し、できるだけコンパクトになるよう工夫しています。
+                エンクロージャ（外装）はFusion 360で設計し、Creality製3Dプリンタで出力しました。
+                制御はMQTTを用い、サーバーとのデータ通信によって実現しています。
+            </p>
+        </div>
+        <img class="img--lg-horizontal" src = {ImagesRoute.blurprint3}/>
+    </div>
+    <div class="technology-section__bottom section-frame">
+        <img class="img--md-horizontal" src = {ImagesRoute.IMG_7182}/>
+        <img class="img--big-vertical" src={ImagesRoute.IMG_7368}/>
+    </div>
+</section>
+
+<style lang="scss">
+    .technology-section{
+        width: 100%;
+        height:200lvh;
+        backdrop-filter: blur(10px);
+        background-color: #00000022;
+        &__text > * + *{
+            margin-top: 2rem;
+        }
+        &__top{
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+        }
+        &__bottom{
+                        display: flex;
+            justify-content: space-evenly;
+            align-items: center;
+        }
+    }
+</style>

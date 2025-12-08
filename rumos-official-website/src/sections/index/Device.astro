@@ -1,0 +1,88 @@
+---
+import {ProductButton,ViewMoreButton} from "../../components/buttons"
+import {SectionTitle} from"../../components/typographys"
+import { ImagesRoute } from "../../assets/images/ImagesRoute"
+
+---
+<SectionTitle label="Product" explain="作成したモノ"/>
+<section>
+    <div class="section-frame device-section">
+        <div class="device-section__inner">
+            <p class="text-5xl">空間を彩る<br/>ライトデバイス</p>
+            <p class="text-md">手軽に置けて、空間にそっと雰囲気を添える万能ライト。</p>
+            <div>
+                <p class="text-xl">Devices</p>
+                <div class="device-section__nav">
+                    <ProductButton path="/product/sangria" logo={ImagesRoute.sangria_icon} label="Sangria"/>
+                    <ProductButton path="/product/startrail" logo={ImagesRoute.startrail_icon} label="Startrail"/>
+                    <ProductButton path="/product/reflamejar" logo={ImagesRoute.reflamejar_icon} label="Re:flameJar"/>
+                    <ProductButton label="一覧へ"/>
+                </div>
+            </div>
+            <ViewMoreButton label="ViewMore..."/>
+        </div>
+        <img class="img--big-horizontal" src = {ImagesRoute.IMG_7116}/>
+    </div>
+
+    <div class="section-frame controll-section">
+        <img class="img--big-horizontal" src = {ImagesRoute.IMG_7383}/>
+        <div class="controll-section__inner">
+            <img src={ImagesRoute.IMG_7174} class="img--sm-box controll-section__inner-lt"/>
+            <div class="controll-section__inner-center">
+                <p class="text-5xl">雰囲気を自在に操る<br/>
+コントロールシステム</p>
+                <p class="concept-text concept-text-width">タッチパネルの専用ソフトを通して、ライトを個別にも一斉にも操作可能。空間の雰囲気を、指先ひとつで自在に編集できます。</p>
+            </div>
+            <img src={ImagesRoute.IMG_7389} class="img--sm-box controll-section__inner-rb"/>
+        </div>
+    </div>
+
+</section>
+
+<style lang="scss">
+    .controll-section,
+    .device-section{
+        width:100%;
+        box-sizing:border-box;
+        padding:0 2rem;
+        display:flex;
+        justify-content:space-around;
+        align-items:center;
+    }
+    .device-section{
+        &__inner{
+            display:flex;
+            flex-direction: column;
+            align-items: start;
+            gap:2rem;
+        }
+        
+        &__nav{
+            display:grid;
+            grid-template-columns:repeat(2,1fr);
+            grid-template-rows:repeat(2,1fr);
+            gap:1rem;
+        }
+    }
+
+    .controll-section{
+        &__inner{
+            display:grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: 1fr 1fr 1fr;  
+            &-lt{
+                grid-area:1 / 1;
+            }
+            &-center{
+                grid-row:2; /* 1〜3行目 → 縦に結合！ */
+                grid-column: 1 / 4;
+                display:grid;
+                place-items: center;
+                text-align:start;
+            }
+            &-rb{
+                grid-area:3 / 3;
+            }
+        }
+    }
+</style>

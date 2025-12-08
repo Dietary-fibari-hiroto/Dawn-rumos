@@ -1,0 +1,45 @@
+---
+import { FadeInOnScrollHero } from "../../../components/exclusives";
+---
+
+<section class="concept-section">
+    <div class="concept-section__inner">
+        <FadeInOnScrollHero client:load>
+            <p class="text-5xl">
+                空間の"気配"までデザインする<br/>
+                表情豊かな間接照明
+            </p>
+        </FadeInOnScrollHero>
+
+        <FadeInOnScrollHero client:load>
+            <p class="concept-section__text concept-text">
+                この間接照明は、TGBLEDカラーグレーディングによる繊細な色表現で、部屋の雰囲気を思い通りに演出できるライトです。柔らかい光が壁をなでるように広がり、空間そのものに奥行きを与えるデザインが特徴。雰囲気重視のミニマルな外観で、置くだけで部屋が“整う”ような存在感を放つ。
+            </p>
+        </FadeInOnScrollHero>
+
+    </div>
+</section>
+
+<style lang = "scss">
+    .concept-section{
+        position:relative;
+        width: 100%;
+        height:250lvh;
+        &__inner{
+            position:sticky;
+            top:0;
+            left:0;
+            height:100lvh;
+            width:100%;
+            display:flex;
+            flex-direction: column;
+            justify-content:center;
+            align-items: center;
+            gap:3rem;
+            text-align:center;
+        }
+        &__text{
+            width:31.25rem;
+        }
+    }
+</style>

@@ -1,30 +1,31 @@
 ---
 import { BaseLayout } from "../../layouts";
 import { ImagesRoute } from "../../assets/images/ImagesRoute";
-import { FadeInOnScrollHero,ElementOnScroll,MotionView } from "../../components";
+import { FadeInOnScrollHero } from "../../components/exclusives";
 ---
-
-
 
 <BaseLayout>
     <img class="fixed-background" src = {ImagesRoute.IMG_7112}/>
     <section class="section-frame hero">
         <div class="flex-all-center">
-            <p class="text-4l">Sangria</p>
+            <p class="text-6xl">Sangria</p>
             <p class="text-md">Astrolume</p>
         </div>
-        <p class="text-3l">DAWN</p>
+        <p class="text-6xl">DAWN</p>
     </section>
+
     <section class="consept-section">
         <div class="text-container">
             <FadeInOnScrollHero client:load>
-                <p class="text-2l">
+                <p class="text-5xl">
                     ワインボトルを<br/>
                     光のインテリアに。
                 </p>
             </FadeInOnScrollHero>
+
             <FadeInOnScrollHero client:load>
-                <p>Dawn-Sangriaは、飲み終えたワインボトルを<br/>
+                <p class="text-md">
+                Dawn-Sangriaは、飲み終えたワインボトルを<br/>
                 “灯り”へと生まれ変わらせる<br/>
                 ライトインテリアです。<br/>
                 <br/>
@@ -39,13 +40,15 @@ import { FadeInOnScrollHero,ElementOnScroll,MotionView } from "../../components"
                 朝の光を差し込むイメージを込めています。<br/>
                 <br/>
                 インテリアとしての美しさと実用性を両立させた<br/>
-                ちょっと特別なライトです。</p>
+                ちょっと特別なライトです。
+                </p>
             </FadeInOnScrollHero>
         </div>
     </section>
+
     <section class="ex-container">
         <div class="content">
-            <img  src = {ImagesRoute.IMG_7157}/>
+            <img src={ImagesRoute.IMG_7157}/>
             <div/>
             <div class="letter-container">
                 <div class="letter">                    
@@ -58,50 +61,46 @@ import { FadeInOnScrollHero,ElementOnScroll,MotionView } from "../../components"
             </div>
         </div>
     </section>
+
     <section class="expression-container">
         <div class="top-figure">
             <div>
-                <img class="img--lg-horizontal  tracked-element2" src={ImagesRoute.IMG_7157}/>
+                <img class="img--lg-horizontal tracked-element2" src={ImagesRoute.IMG_7157}/>
                 <br/>
             </div>
-            <img class="tracked-element img--sm-vertical" src = {ImagesRoute.IMG_7169}/>
+            <img class="tracked-element img--sm-vertical" src={ImagesRoute.IMG_7169}/>
         </div>
-        <div class="bottom-figure">
-                        <img class="img--sm-horizontal tracked-element2" src = {ImagesRoute.IMG_7174}/>
-            <img class="img--lg-vertical tracked-element" src = {ImagesRoute.IMG_7146}/>
 
+        <div class="bottom-figure">
+            <img class="img--sm-horizontal tracked-element2" src={ImagesRoute.IMG_7174}/>
+            <img class="img--lg-vertical tracked-element" src={ImagesRoute.IMG_7146}/>
         </div>
     </section>
+
     <section class="section-frame">
-        <img class="section-frame" src = {ImagesRoute.IMG_7111}/>
+        <img class="section-frame" src={ImagesRoute.IMG_7111}/>
     </section>
+
     <section class="technology-section section-frame">
         <div class="letter-text">
-            <p class="text-xl">ミニマムな技術選定。</p>
-            <p style={"width:1000px"} class="text-md">Wi-FiとBluetoothを搭載した超小型マイコン「Seeeduino XIAO ESP32C3」を中心に、テープライトとType-C給電モジュールを組み込んだシンプルな設計を採用し、できるだけコンパクトになるよう工夫しています。<br/>
-エンクロージャ（外装）はFusion 360で設計し、Creality製3Dプリンタで出力しました。<br/>
-制御はMQTTを用い、サーバーとのデータ通信によって実現しています。</p>
+            <p class="text-5xl">ミニマムな技術選定。</p>
+            <p class="text-md">
+                Wi-FiとBluetoothを搭載した超小型マイコン「Seeeduino XIAO ESP32C3」を中心に、テープライトとType-C給電モジュールを組み込んだシンプルな設計を採用し、できるだけコンパクトになるよう工夫しています。<br/>
+                エンクロージャ（外装）はFusion 360で設計し、Creality製3Dプリンタで出力しました。<br/>
+                制御はMQTTを用い、サーバーとのデータ通信によって実現しています。
+            </p>
         </div>
-        <img style="position:absolute;top:50%;left:25%;" class="img--sm-horizontal tracked-element" src = {ImagesRoute.IMG_7182}/>
-                <img style="position:absolute;bottom:12.5%;right:12.5%;" class="img--sm-vertical tracked-element2" src = {ImagesRoute.IMG_7185}/>
+        <img style="position:absolute;top:50%;left:25%;" class="img--sm-horizontal tracked-element" src={ImagesRoute.IMG_7182}/>
+        <img style="position:absolute;bottom:12.5%;right:12.5%;" class="img--sm-vertical tracked-element2" src={ImagesRoute.IMG_7185}/>
     </section>
+
     <section class="last-section section-frame">
         <br/>
-        <img src = {ImagesRoute.IMG_7120}/>
+        <img src={ImagesRoute.IMG_7120}/>
     </section>
 </BaseLayout>
 
-<script>
-  import { initMultiParallax } from "../../hooks/index";
 
-  window.addEventListener("load", () => {
-    initMultiParallax([
-      { selector: ".tracked-element", ratio: 0.1 },
-      { selector: ".tracked-element2", ratio: 0.3 },
-      { selector: ".tracked-element3", ratio: 0.5 },
-    ]);
-  });
-</script>
 
 
 <style lang="scss">
@@ -109,18 +108,11 @@ import { FadeInOnScrollHero,ElementOnScroll,MotionView } from "../../components"
         position:relative;
         z-index:1;
     }
-            .fixed-background{
-            position:fixed;
-            width:100vw;
-            height:100lvh;
-            z-index:0;
-        }
     .hero{
         display:flex;
         justify-content:space-around;
         align-items:center;
-        letter-spacing: 10px;
-
+        letter-spacing:10px;
     }
     .consept-section{
         position:relative;
@@ -132,7 +124,7 @@ import { FadeInOnScrollHero,ElementOnScroll,MotionView } from "../../components"
             top:0;
             left:0;
             width:50%;
-            height: 100lvh;
+            height:100lvh;
             display:flex;
             flex-direction:column;
             justify-content:center;
@@ -140,15 +132,14 @@ import { FadeInOnScrollHero,ElementOnScroll,MotionView } from "../../components"
             padding-left:15rem;
             box-sizing:border-box;
             gap:1.5rem;
-            
         }
     }
     .expression-container{
         position:relative;
-    width:100%;
-    height:200lvh;
-    max-height:2160px;
-    background:black;
+        width:100%;
+        height:200lvh;
+        max-height:2160px;
+        background:black;
 
         .top-figure{
             width:100%;
@@ -156,13 +147,6 @@ import { FadeInOnScrollHero,ElementOnScroll,MotionView } from "../../components"
             display:flex;
             justify-content:space-around;
             align-items:center;
-            .letter{
-                margin-top:3rem;
-                :last-child{
-                    margin-left:10rem;
-                    
-                }
-            }
         }
         .bottom-figure{
             width:100%;
@@ -174,23 +158,25 @@ import { FadeInOnScrollHero,ElementOnScroll,MotionView } from "../../components"
     }
     .technology-section{
         background:#00000088;
-        backdrop-filter: blur(2px);
+        backdrop-filter:blur(2px);
         position:relative;
 
         .letter-text{
-            width:100%;
+            box-sizing: border-box;
+            max-width:100%;
             display:flex;
             justify-content:space-evenly;
             align-items:center;
-            padding:5rem 0;
+            padding:5rem;
+
         }
     }
 
     .last-section{
-                background:#00000088;
-        backdrop-filter: blur(2px);
-        display: flex;
-        justify-content: end;
+        background:#00000088;
+        backdrop-filter:blur(2px);
+        display:flex;
+        justify-content:end;
         img{
             height:100%;
             width:50%;
@@ -207,35 +193,70 @@ import { FadeInOnScrollHero,ElementOnScroll,MotionView } from "../../components"
             width:100%;
             height:100lvh;
             position:sticky;
-            z-index:1;
             top:0;
             left:0;
-            box-sizing:border-box;  
-            display: flex;
+            display:flex;
             justify-content:space-between;
-            img {
+
+            img{
                 position:absolute;
-                z-index:1;
                 width:100%;
                 height:100lvh;
             }
+
             .letter-container{
                 position:relative;
                 z-index:2;
-            display:flex;
-            justify-content: space-around;
-            align-items: center;
-            width: 50%;
-            height: 100lvh;
-            background:#00000044;
-            backdrop-filter: blur(5px);
-            box-sizing:border-box;
-            .letter > * + *
-            {
-                margin-top:1rem;
+                display:flex;
+                justify-content:space-around;
+                align-items:center;
+                width:50%;
+                height:100lvh;
+                background:#00000044;
+                backdrop-filter:blur(5px);
             }
         }
+    }
+    @media (max-width: 1024px) {
+        .hero{
+            flex-direction: column;
+            justify-content: space-evenly;
         }
+        .consept-section{
+            .text-container{
+                width:100%;
+                padding-left:0;
+                gap:3rem;
+                align-items:center;
+            }
+        }
+        .ex-container{
+            .content{
+                .letter-container{
+                    width:100%;
+                }
+            }
+        }
+        .expression-container{
+            .top-figure,.bottom-figure{
+                flex-direction: column;
+                overflow-x: hidden;
+            }
+        }
+
+        .technology-section{
+            .letter-text{
+                box-sizing: border-box;
+                flex-direction: column;
+                gap: 5rem;
+            }
+        }
+        .last-section{
+            img{
+                width: 100%;
+            }
+        }
+
 
     }
 </style>

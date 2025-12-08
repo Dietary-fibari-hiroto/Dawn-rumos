@@ -1,0 +1,25 @@
+---
+const { path, logo = null, label } = Astro.props;
+---
+
+<a class="button" href={path}>
+{logo && <img class="button-logo" src={logo} />}
+
+
+    <p class="text-xl">{label}</p>
+</a>
+
+<style lang="scss">
+    .button{
+        width:14rem;
+        height:4rem;
+        background:var(--color-deep-gray);
+        display: flex;
+        justify-content:space-evenly;
+        align-items:center;
+        &-logo{
+            width:3rem;
+            height:3rem;
+        }
+    }
+</style>

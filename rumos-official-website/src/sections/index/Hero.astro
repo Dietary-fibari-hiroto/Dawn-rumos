@@ -1,0 +1,79 @@
+---
+import { ImagesRoute } from "../../assets/images/ImagesRoute"
+import{svgRoute} from "../../assets/svgs"
+const bg = ImagesRoute.IMG_7398
+---
+
+<section
+class="hero-section section-frame"
+  style={`background-image:
+    linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.2)),
+    url(${bg})`}
+>
+
+    <img class="hero-section__light" src = {svgRoute.Light} alt="" aria-hidden="true"/>
+
+    <div class="hero-section__inner">
+        <div class="hero-section__content">
+            <p class="hero-section__text concept-text">DawnRumosはもう使わなくなった雑貨から、いつもそばにある日用品、さらには家具に至るまであらゆるモノをライトインテリアとして再生し、それらをスマートかつ美しくコントロール。部屋に散らばる光のデバイスを一括で操り、空間全体の世界観そのものを切り替える“雰囲気演出プラットフォーム”です。</p>
+            <p class="hero-section__subtitle">変わらぬ日々に、魔法をかけて。</p>
+        </div>
+        <div class="hero-section__brand flex-all-center" aria-hidden="false">
+            <div class="hero-section__brand-inner">
+                <p class="text-7xl hero-section__brand-name">Rumos</p>
+                <p class="text-md hero-section__brand-sub">DAWN</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style lang="scss">
+    .hero-section{
+        position:relative;
+        box-sizing:border-box;
+        background-position:center;
+        background-size: cover;
+        padding:2rem;
+        
+
+        &__inner{
+            display:grid;
+            grid-template-columns:1fr 1fr;
+            align-items:end;
+            gap:1.25rem;
+            min-height: calc(100svh - 4rem);
+        }
+        &__content{
+            align-self:end;
+            max-width:62.5rem;
+        
+        }
+            &__text{
+                margin-bottom:1rem;
+            }
+
+            &__subtitle {
+                font-size: 6rem;
+                white-space: nowrap;
+            }
+
+        &__brand{
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            align-self:stretch;
+
+        }
+
+        &__light {
+            position: absolute;  
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            opacity: 0.8;
+            width: clamp(120px, 20vw, 420px);
+            pointer-events: none;
+        }
+
+    }
+</style>

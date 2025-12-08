@@ -1,0 +1,105 @@
+---
+import { ImagesRoute } from "../../../assets/images/ImagesRoute";
+---
+    
+<section class="gallery-section">
+    <div class="gallery-section__black">
+        <div class="gallery-section__black-pannel"/>
+    </div>
+    <img class="gallery-section__line" src = {ImagesRoute.line}/>
+    <div class="gallery-section__inner">
+        <figure class="gallery-section__top">
+            <img class="img--md-vertical tracked-element" src ={ImagesRoute.IMG_7352}/>
+        </figure>
+        <figure class="gallery-section__center">
+            <img class="img--md-horizontal tracked-element3" src ={ImagesRoute.IMG_7339}/>
+        </figure>
+        <figure class="gallery-section__bottom tracked-element2">
+            <img class="img--big-vertical" src = {ImagesRoute.IMG_7351}/>
+        </figure>
+    </div>
+    <img class="gallery-section__figure"  src = {ImagesRoute.IMG_7345}/>
+
+
+</section>
+
+<script>
+  import { initMultiParallax } from "../../../hooks/index";
+
+  window.addEventListener("load", () => {
+    initMultiParallax([
+      { selector: ".tracked-element", ratio: 0.1 },
+      { selector: ".tracked-element2", ratio: 0.3 },
+      { selector: ".tracked-element3", ratio: 0.5 },
+    ]);
+  });
+</script>
+
+<style lang = "scss">
+    .gallery-section{
+        position:relative;
+        
+        width:100%;
+        height:300lvh;
+        background-color: black;
+
+        &__black{
+            position:sticky;
+            width:100%;
+            height:100lvh;
+            top:0;
+            left:0;
+            display: flex;
+            align-items: end;
+            z-index: 2;
+            &-pannel{
+                width: 100%;
+                height: 60%;
+                background-color: black;
+            }
+        }
+        &__figure{
+            position:absolute;
+            bottom:0;
+            width:100%;
+            height: 100lvh;
+            z-index: 5;
+        }
+        &__inner{
+            position:absolute;
+            width:100%;
+            height:200lvh;
+            top:0;
+            left:0;
+            box-sizing: border-box;
+            padding:5rem 10rem;
+            z-index: 3;
+        }
+        &__line{
+            height:200lvh;
+            position:absolute;
+            top:0;
+            left:50%;
+            z-index: 1;
+            transform: translateX(-50%);
+        }
+
+
+        &__top,
+        &__center,
+        &__bottom{
+            display:flex;
+            position:relative;
+            z-index:3;
+        }
+        &__top{
+            justify-content: start;
+        }
+        &__center{
+            justify-content: end;
+        }
+        &__bottom{
+            justify-content: center;
+        }
+    }
+</style>

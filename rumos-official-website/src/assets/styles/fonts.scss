@@ -1,46 +1,84 @@
 @font-face {
   font-family: "NotoSerifJP";
-  src: url("../fonts/NotoSerifJP/NotoSerifJP-Regular.ttf");
+  src: url("../assets/fonts/NotoSerifJP/NotoSerifJP-Regular.ttf");
   font-weight: normal;
   font-style: normal;
+  font-display: swap;
 }
 @font-face {
   font-family: "NotoSerifJP";
-  src: url("../fonts/NotoSerifJP/NotoSerifJP-Bold.ttf");
+  src: url("../assets/fonts/NotoSerifJP/NotoSerifJP-Bold.ttf");
   font-weight: bold;
   font-style: normal;
+  font-display: swap;
 }
+
 @font-face {
   font-family: "NotoSerifJP";
-  src: url("../fonts/NotoSerifJP/NotoSerifJP-Light.ttf");
+  src: url("../assets/fonts/NotoSerifJP/NotoSerifJP-Light.ttf");
   font-weight: light;
   font-style: normal;
+  font-display: swap;
 }
+
 $text-md: 1.125rem;
 $text-x: 1.5rem;
 $text-xl: 2rem;
 $text-2l: 3rem;
 $text-3l: 4rem;
 $text-4l: 5rem;
+
+.text-xs {
+  font-size: 0.625rem;
+} /* 10px */
+.text-sm {
+  font-size: 0.75rem;
+} /* 12px */
+.text-base-sm {
+  font-size: 0.875rem;
+} /* 14px */
+
+.text-base {
+  font-size: 1rem;
+} /* 16px */
 .text-md {
-  font-size: $text-md;
-}
+  font-size: 1.125rem;
+} /* 18px */
+.concept-text,
+.concept-text-width {
+  font-size: 1.125rem;
+  line-height: 3rem;
+} /* 18px */
+.text-lg {
+  font-size: 1.25rem;
+} /* 20px */
+
 .text-xl {
-  font-size: $text-xl;
+  font-size: 1.5rem;
+} /* 24px */
+.text-2xl {
+  font-size: 1.75rem;
+} /* 28px */
+.text-3xl {
+  font-size: 2rem;
+} /* 32px */
+.text-4xl {
+  font-size: 2.25rem;
+} /* 36px */
+.text-5xl {
+  font-size: 3rem;
+} /* 48px */
+.text-6xl {
+  font-size: 4rem; //64px
 }
-.text-x {
-  font-size: $text-x;
-}
-.text-2l {
-  font-size: $text-2l;
-}
-.text-3l {
-  font-size: $text-3l;
-}
-.text-4l {
-  font-size: $text-4l;
+.text-7xl {
+  font-size: 5rem; /* 80px */
 }
 
 .font-light {
   font-weight: light;
+}
+
+.concept-text-width {
+  max-width: 32rem;
 }

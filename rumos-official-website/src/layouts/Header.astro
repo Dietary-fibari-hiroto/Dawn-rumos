@@ -1,17 +1,52 @@
 ---
-
+import { ImagesRoute } from "../assets/images/ImagesRoute"
+const menuList= [
+    {label:"Home",path:"/"},
+    {label:"Sngria",path:"/product/sangria"},
+    {label:"Startrail",path:"/"},
+]
 ---
 
 <header>
-    <div class="text-2l rumos"><a href="/">Rumos</a></div>
+    <div class="text-2xl rumos"><a href="/">Rumos</a></div>
     <nav>
         <ul>
-            <li>About</li>
-            <li><a href="/product/sangria">Sngria</a></li>
-            <li>Startrail</li>
+            {menuList.map((list)=>(
+                <li><a href={list.path}>{list.label}</a></li>
+            ))}
         </ul>
     </nav>
+    <button id="menu-button">
+        <img src = {ImagesRoute.yuzu_icon}/>
+    </button>
 </header>
+
+    <div class="section-frame" id = "menu">
+        <button id="close-button">
+            <img src = {ImagesRoute.x}/>
+        </button>
+        {menuList.map((list)=>(
+            <a class="text-3xl" href={list.path}>{list.label}</a>
+        ))}
+    </div>
+
+<script>
+  const menu = document.getElementById("menu");
+  const btn = document.getElementById("menu-button");
+  const closeBtn =document.getElementById("close-button");
+
+  closeBtn?.addEventListener("click",()=>{
+    if(menu){
+        menu.style.display = "none";
+    }
+  })
+
+  btn?.addEventListener("click", () => {
+    if(menu){
+        menu.style.display = "flex";
+    }
+  })
+</script>
 
 <style lang="scss">
     @use "../assets/styles/fonts.scss";
@@ -21,7 +56,7 @@
         justify-content:space-between;
         align-items:center;
 
-        position:absolute;
+        position:fixed;
         top:0;
         left:0;
         z-index:10;
@@ -42,8 +77,49 @@
         font-size:fonts.$text-x;
         letter-spacing: 5px;
         * + *{
-            margin-left:5rem;
+            margin-left:3rem;
             
+        }
+    }
+
+    #menu-button{
+        display: none;
+        > img{
+            box-sizing: border-box;
+            width:5rem;
+            height: 5rem;
+            padding:0.5rem;
+        }
+    }
+    #menu{
+        background-color: black;
+        position: fixed;
+        z-index: 99;
+        display: none;
+        flex-direction: column;
+        align-items: center;
+        justify-content: start;
+        gap: 3rem;
+        > a{
+            border-bottom: 1px solid white;
+            width:80%;
+            text-align: center;
+            padding-bottom: 1rem;
+        }
+    }
+    #close-button{
+        box-sizing: border-box;
+        width:100%;
+        padding: 3rem;
+        display: flex;
+        justify-content: start;
+    }
+    @media (max-width: 1024px) {
+        nav{
+            display: none;
+        }
+        #menu-button{
+            display: block;
         }
     }
 

@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
-export default function FadeInOnScrollHero({ children }) {
+export function FadeInOnScrollHero({ children }) {
   const [isShow, setIsShow] = useState(false);
 
   const animationSetting = {

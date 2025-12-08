@@ -1,0 +1,57 @@
+---
+import { ImagesRoute } from "../../assets/images/ImagesRoute";
+import { ViewMoreButton } from "../../components/buttons";
+import {SectionTitle} from "../../components/typographys"
+---
+
+<SectionTitle label="Technology" explain="技術選定(技術者向け)"/>
+<section class="section-frame technology-section">
+    <p class="text-5xl">
+        軽量マイコン×モダン開発スタックを組み合わせた、<br/>
+        リアルタイム性重視の IoT システム構成
+    </p>
+    <div class="technology-section__inner">
+        <div>
+            <p class="concept-text-width">小型 IoT デバイス（ESP32C3）を MQTT でクラウド（ASP.NET Core）と連携させ、その上で .NET MAUI Blazor Hybrid を使ってクロスプラットフォームな UI を提供する、リアルタイム性と開発効率を重視したモダンな IoT アーキテクチャを採用。</p>
+            <ViewMoreButton label="ViewMore" />
+        </div>
+        <div class="technology-section__panel">
+            <img class="img--sm-box technology-section__panel-lt" src = {ImagesRoute.Blazor_940x940}/>
+            <img class="img--sm-box technology-section__panel-center" src = {ImagesRoute.MAUI}/>
+            <img class="img--sm-box technology-section__panel-rb" src = {ImagesRoute.net_icon}/>
+        </div>
+    </div>
+</section>
+
+<style lang="scss">
+    .technology-section{
+        display:flex;
+        flex-direction: column;
+        box-sizing:border-box;
+        padding:3rem;
+
+        &__inner{
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            
+        }
+        &__panel{
+            display:grid;
+            grid-template-columns:1fr 1fr 1fr;
+            grid-template-rows: 1fr 1fr 1fr;  
+            &-lt{
+                grid-area:1 / 1;
+            }
+            &-center{
+                grid-area: 2 / 3;
+                display:grid;
+                place-items: center;
+                text-align:start;
+            }
+            &-rb{
+                grid-area:3 / 2;
+            }
+        }
+    }
+</style>

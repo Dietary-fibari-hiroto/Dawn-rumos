@@ -1,0 +1,27 @@
+---
+import { Hero,Concept,Gallery,Technology } from "../../sections/products/startrail";
+import { BaseLayout } from "../../layouts";
+import { ImagesRoute } from "../../assets/images/ImagesRoute";
+const bg = ImagesRoute.startrail_hero;
+---
+
+<BaseLayout>
+    <img class="fixed-background" src = {bg}/>
+    <Hero/>
+    <Concept/>
+    <Gallery/>
+    <Technology/>
+
+</BaseLayout>
+
+<script>
+  import { initMultiParallax } from "../../hooks/index";
+
+  window.addEventListener("load", () => {
+    initMultiParallax([
+      { selector: ".tracked-element", ratio: 0.1 },
+      { selector: ".tracked-element2", ratio: 0.3 },
+      { selector: ".tracked-element3", ratio: 0.5 },
+    ]);
+  });
+</script>

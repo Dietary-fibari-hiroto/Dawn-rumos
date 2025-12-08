@@ -1,0 +1,23 @@
+---
+import { ImagesRoute } from "../../assets/images/ImagesRoute";
+import { Hero ,Concept,Gallery,Technology} from "../../sections/products/reFkameJar";
+import { BaseLayout } from "../../layouts";
+const bg = ImagesRoute.IMG_7358;
+---
+
+<BaseLayout>
+    <img class="fixed-background" src = {bg}/>
+    <div class="z-correction">
+        <Hero/>
+        <Concept/>
+        <Gallery/>
+        <Technology/>
+    </div>
+</BaseLayout>
+
+<style>
+    .z-correction{
+        position: relative;
+        z-index:5;
+    }
+</style>

@@ -11,6 +11,20 @@
   justify-content: center;
 }
 
+.absolute-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.fixed-background {
+  position: fixed;
+  width: 100vw;
+  height: 100lvh;
+  z-index: 0;
+}
+
 .img {
   &--sm-horizontal {
     width: clamp(150px, 20vw, 350px);
@@ -40,6 +54,19 @@
   &--lg-vertical {
     height: clamp(450px, 30vw, 800px);
     aspect-ratio: 2 / 3;
+  }
+
+  &--big-horizontal {
+    width: clamp(450px, 55vw, 66rem);
+    aspect-ratio: 16 / 9;
+  }
+  &--big-vertical {
+    height: clamp(450px, 55vw, 50rem);
+    aspect-ratio: 9 / 16;
+  }
+  &--sm-box {
+    height: 15rem;
+    width: 15rem;
   }
 }
 

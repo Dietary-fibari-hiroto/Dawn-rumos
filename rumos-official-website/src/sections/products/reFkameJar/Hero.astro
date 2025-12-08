@@ -1,0 +1,33 @@
+---
+import { ImagesRoute } from "../../../assets/images/ImagesRoute";
+---
+
+<section class="section-frame hero-section">
+    <div class="hero-section__title">
+        <img class="hero-section__logo"  src = {ImagesRoute.reflamejar_icon}/>
+        <div>
+            <p class="text-6xl">Re:Flame Jar</p>
+            <p class="text-md">DAWN</p>
+        </div>
+    </div>
+    <p class="hero-section__concept text-xl">
+        キャンドルの炎を、再び。
+    </p>
+</section>
+
+<style lang="scss">
+    .hero-section{
+       display:flex;
+       justify-content:space-around;
+       align-items: center;
+        &__title{
+            display: flex;
+            align-items: center;
+            gap:1rem;
+        }
+        &__logo{
+            width:5rem;
+            height:5rem;
+        }
+    }
+</style>

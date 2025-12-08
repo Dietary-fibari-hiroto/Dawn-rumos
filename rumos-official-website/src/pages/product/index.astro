@@ -1,0 +1,24 @@
+---
+import { BaseLayout } from "../../layouts";
+---
+
+<BaseLayout>
+    <section class="title-section">
+        <p class="text-7xl">Product</p>
+        <p class="text-md">作成したシステムとデバイス</p>
+    </section>
+</BaseLayout>
+
+<style lang="scss">
+    .title-section{
+        width:100%;
+        height:20rem;
+        display:flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        > * + *{
+            margin-top:-1rem;
+        }
+    }
+</style>

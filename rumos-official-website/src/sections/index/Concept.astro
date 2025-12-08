@@ -1,0 +1,53 @@
+---
+
+import { ImagesRoute } from "../../assets/images/ImagesRoute"
+
+---
+<section class="concept-section">
+    <div class="section-frame flex-all-center">
+        <img class="img--big-horizontal" src = {ImagesRoute.IMG_7388}/>
+    </div>
+    <div class="concept-section__inner">
+        <div class="concept-section__inner-content">
+            <p class="concept-section__text concept-text">
+                使われなくなった雑貨も、毎日見慣れた日用品も、手放そうとしていた家具でさえも──<br/>
+                もし光をまとい、もう一度あなたの空間で息を吹き返したら？その瞬間、部屋の空気も、あなたの気持ちも、そっと表情を変えるかもしれない。
+            </p>
+            <img class="img--lg-horizontal" src = {ImagesRoute.IMG_7362}/>
+        </div>
+        <img class="img--lg-vertical" src = {ImagesRoute.IMG_7122}/>
+    </div>
+    <div class="concept-section__inner">
+        <img class="img--big-vertical" src = {ImagesRoute.IMG_7169}/>
+        <div class="concept-section__inner-content">
+            <img class="img--lg-horizontal" src = {ImagesRoute.IMG_7341}/>
+                        <p class="concept-section__text concept-text">
+                身の回りのあらゆるモノをライトインテリアとして再生し、部屋中の光をひとつに束ねて世界観ごと切り替える“空間の再編集”を目指し、Dawn-Rumosを作成しました。 光のデザインそのものを暮らしの一部に溶け込ませ、どんな空間でも手軽に雰囲気を切り替えられる、新しいライフスタイルの形を提供します。
+
+            </p>
+        </div>
+    </div>
+</section>
+
+<style lang = "scss">
+    .concept-section{
+        &__inner{
+            width:100vw;
+            height:100vh;
+            max-height:1080px;
+            display:flex;
+            align-items:center;
+            justify-content:space-around;
+
+
+            &-content{
+                display:flex;
+                flex-direction:column;
+                gap:5rem;
+            }
+        }
+        &__text{
+             max-width:32rem;
+        }
+    }
+</style>

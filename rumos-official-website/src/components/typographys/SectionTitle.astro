@@ -1,0 +1,17 @@
+---
+const {label,explain} = Astro.props;
+---
+
+<div class="title-container">
+    <p class="text-7xl">{label}</p>
+    <p class="text-md">{explain}</p>
+</div>
+
+<style lang="scss">
+    .title-container{
+        box-sizing:border-box;
+        width:100%;
+        padding:0 2rem;
+        text-align:start;
+    }
+</style>
