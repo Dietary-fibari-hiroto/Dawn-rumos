@@ -1,11 +1,28 @@
 ---
 import { BaseLayout } from "../../layouts";
+import {ProductCard} from "../../components/cards"
+import { ImagesRoute } from "../../assets/images/ImagesRoute";
+import { Concept } from "../../sections/index";
+
+const productList = [
+    {img:ImagesRoute.IMG_7112,title:"Sangria",concept:"空いたワインボトルを明りに",path:"/product/sangria"},
+    {img:ImagesRoute.startrail_hero,title:"Startrail",concept:"星のような間接照明",path:"/product/startrail"},
+    {img:ImagesRoute.IMG_7358,title:"Re:Flame Jar",concept:"使い終わったキャンドルの揺らぎを再び",path:"/product/reflamejar"},
+    {img:ImagesRoute.IMG_7381,title:"Rumos:Desktop",concept:"デバイスを操るコントロールソフト"}
+]
 ---
 
 <BaseLayout>
     <section class="title-section">
         <p class="text-7xl">Product</p>
         <p class="text-md">作成したシステムとデバイス</p>
+    </section>
+    <section class="list-section">
+        {
+            productList.map((product)=>(
+                <ProductCard {...product}/>
+            ))
+        }
     </section>
 </BaseLayout>
 
@@ -20,5 +37,14 @@ import { BaseLayout } from "../../layouts";
         > * + *{
             margin-top:-1rem;
         }
+    }
+    .list-section{
+        display: flex;
+        flex-direction: column;
+        width:100%;
+        align-items: center;
+        justify-content: start;
+        gap:3rem;
+
     }
 </style>

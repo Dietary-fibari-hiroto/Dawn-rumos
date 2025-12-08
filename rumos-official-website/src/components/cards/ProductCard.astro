@@ -1,0 +1,33 @@
+---
+import { ViewMoreButton } from "../buttons";
+const {img,title,path,concept}= Astro.props;
+---
+<a href={path}>
+<div class="card-container">
+    <img class="img--lg-horizontal" src = {img}/>
+    <div class="card-container__text">
+        <p class="text-3xl">{title}</p>
+        <p class="text-md">{concept}</p>
+        <div class="button-container">
+            <ViewMoreButton path={path} label="ViewMore"/>
+        </div>
+    </div>
+</div>
+</a>
+
+<style lang="scss">
+    .card-container{
+        display: flex;
+        align-items: center;
+        gap:3rem;
+
+        &__text > * + *{
+            margin-top:2rem;
+        }
+        
+    }
+
+    .button-container{
+        width:20rem;
+    }
+</style>
