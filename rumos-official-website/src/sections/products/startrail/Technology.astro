@@ -8,7 +8,7 @@ import { ImagesRoute } from "../../../assets/images/ImagesRoute";
     </div>
     <div class="technology-section__inner">
         <div class="technology-section__inner-top">
-            <img class="img--big-vertical" src = {ImagesRoute.blurprint}/>
+            <img class="img--big-vertical tracked-element3" src = {ImagesRoute.blurprint}/>
             <div class="technology-section__text">
                 <p class="text-5xl">ミニマムな技術選定。</p>
                 <p class="concept-text-width">
@@ -19,8 +19,8 @@ import { ImagesRoute } from "../../../assets/images/ImagesRoute";
             </div>
         </div>
         <div class="technology-section__inner-bottom">
-            <img class="img--sm-horizontal" src = {ImagesRoute.IMG_7182}/>
-            <img class="img--big-vertical" src = {ImagesRoute.blurprint2}/>
+            <img class="img--sm-horizontal tracked-element" src = {ImagesRoute.IMG_7182}/>
+            <img class="img--big-vertical tracked-element" src = {ImagesRoute.blurprint2}/>
         </div>
     </div>
     <img class="technology-section__line" src = {ImagesRoute.line}/>
@@ -61,7 +61,7 @@ import { ImagesRoute } from "../../../assets/images/ImagesRoute";
             box-sizing: border-box;
             width:100%;
             height:200lvh;
-            padding:5rem 15rem;
+            padding:5rem 0rem;
 
             display:flex;
             flex-direction: column;
@@ -71,25 +71,29 @@ import { ImagesRoute } from "../../../assets/images/ImagesRoute";
             &-top{
                 width:100%;
                 display: flex;
-                justify-content: space-between;
-                align-items: start;
+                justify-content: space-around;
+                align-items: center;
                 
             }
             &-bottom{
                 width:100%;
+                box-sizing: border-box;
+                padding:0 2rem;
                 display: flex;
-                justify-content: space-between;
+                justify-content: space-evenly;
                 align-items: end;
             }
             
         }
         &__line{
             height:200lvh;
+            width:100%;
             position:absolute;
             top:0;
             left:50%;
             z-index: 1;
             transform: translateX(-50%) scaleY(-1);
+            object-fit:fill;
         }
         &__figure{
             position:absolute;
@@ -97,6 +101,17 @@ import { ImagesRoute } from "../../../assets/images/ImagesRoute";
             width:100%;
             height: 100lvh;
             z-index: 5;
+        }
+    }
+
+    @media(max-width:1024px){
+        .technology-section{
+            &__inner{
+                &-top,&-bottom{
+                    flex-direction: column;
+                    gap:5rem;
+                }
+            }
         }
     }
 </style>

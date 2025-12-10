@@ -67,6 +67,7 @@ import IMG_7399 from "./photos/IMG_7399.jpg";
 import IMG_7401 from "./photos/IMG_7401.jpg";
 import IMG_7122 from "./photos/IMG_7122.jpg";
 import IMG_7116 from "./photos/IMG_7116.jpg";
+import rumos_stack from "./photos/rumos_stack.png";
 
 import yuzu_icon from "./icons/yuzu.png";
 import startrail_icon from "./icons/startrail_icon.png";
@@ -82,11 +83,13 @@ import blurprint3 from "./photos/blueprint3.png";
 
 import x from "./elements/x.svg";
 import line from "./elements/line.svg";
+import Ellipse from "./elements/Ellipse.png";
 
 export const ImagesRoute = {
   Blazor_940x940: Blazor_940x940.src,
   MAUI: MAUI.src,
   net_icon: net_icon.src,
+  Ellipse: Ellipse.src,
 
   startrail_hero: startrail_hero.src,
   IMG_7039: IMG_7039.src,
@@ -161,6 +164,7 @@ export const ImagesRoute = {
   blurprint: blueprint.src,
   blurprint2: blurprint2.src,
   blurprint3: blurprint3.src,
+  rumos_stack: rumos_stack.src,
 
   yuzu_icon: yuzu_icon.src,
   reflamejar_icon: reflamejar_icon.src,

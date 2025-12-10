@@ -5,7 +5,7 @@ const bg = ImagesRoute.IMG_7398
 ---
 
 <section
-class="hero-section section-frame"
+class="hero-section"
   style={`background-image:
     linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.2)),
     url(${bg})`}
@@ -16,8 +16,25 @@ class="hero-section section-frame"
     <div class="hero-section__inner">
         <div class="hero-section__content">
             <p class="hero-section__text concept-text">DawnRumosはもう使わなくなった雑貨から、いつもそばにある日用品、さらには家具に至るまであらゆるモノをライトインテリアとして再生し、それらをスマートかつ美しくコントロール。部屋に散らばる光のデバイスを一括で操り、空間全体の世界観そのものを切り替える“雰囲気演出プラットフォーム”です。</p>
-            <p class="hero-section__subtitle">変わらぬ日々に、魔法をかけて。</p>
+            <p class="hero-section__subtitle">
+                <span>変</span>
+                <span>わ</span>
+                <span>ら</span>
+                <span>ぬ</span>
+                <span>日</span>
+                <span>々</span>
+                <span>に</span>
+                <span>、</span>
+                <span>魔</span>
+                <span>法</span>
+                <span>を</span>
+                <span>か</span>
+                <span>け</span>
+                <span>て</span>
+                <span>。</span>
+            </p>
         </div>
+        <div class="hero-section__inner-margin" />
         <div class="hero-section__brand flex-all-center" aria-hidden="false">
             <div class="hero-section__brand-inner">
                 <p class="text-7xl hero-section__brand-name">Rumos</p>
@@ -29,6 +46,9 @@ class="hero-section section-frame"
 
 <style lang="scss">
     .hero-section{
+        width: 100vw;
+        height:100dvh;
+        overflow: hidden;
         position:relative;
         box-sizing:border-box;
         background-position:center;
@@ -37,43 +57,92 @@ class="hero-section section-frame"
         
 
         &__inner{
-            display:grid;
-            grid-template-columns:1fr 1fr;
-            align-items:end;
-            gap:1.25rem;
-            min-height: calc(100svh - 4rem);
+            display:flex;
+            box-sizing:border-box;
+            align-items: center;
+            justify-content: center;
+            height:100%;
+
+            &-margin{
+                flex:1;
+            }
+        }
+        &__text{
+            margin-bottom:1rem;
+            max-width:62.5rem;
+            text-shadow: 2px 2px 4px #00000088;
         }
         &__content{
             align-self:end;
-            max-width:62.5rem;
-        
+            width:100%;
+            box-sizing: border-box;
+            padding:2rem;
+            position:absolute;
+            bottom:0;
+            left:0;
+            
+
         }
-            &__text{
-                margin-bottom:1rem;
-            }
+
 
             &__subtitle {
-                font-size: 6rem;
-                white-space: nowrap;
+                font-size: 5.5rem;
+                overflow-wrap: break-word;
+                letter-spacing: -0.6rem;
+                >span{
+                    transition: all 0.1s ease-in-out;
+                }
+                > span:hover{
+                    filter: blur(5px) brightness(20);
+                }
             }
 
         &__brand{
-            display:flex;
-            align-items:center;
-            justify-content:center;
-            align-self:stretch;
-
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex:1;
+            height: 100%;
         }
 
         &__light {
             position: absolute;  
             top: 50%;
             left: 50%;
-            transform: translate(-50%, -50%);
-            opacity: 0.8;
+            z-index:5;
+            transform:translate(-50%, -50%);
+            opacity: 0.5;
             width: clamp(120px, 20vw, 420px);
             pointer-events: none;
+            animation: light-shake 20s ease-in-out infinite;
+            
         }
 
+    }
+
+@keyframes light-shake {
+  0%   { width: 10rem; }
+  7%   { width: 14rem; }
+  14%  { width: 30rem; }
+  21%  { width: 18rem; }
+  30%  { width: 45rem; }
+  38%  { width: 25rem; }
+  47%  { width: 50rem; } /* MAX */
+  55%  { width: 32rem; }
+  63%  { width: 12rem; }
+  72%  { width: 40rem; }
+  80%  { width: 20rem; }
+  90%  { width: 48rem; }
+  100% { width: 10rem; } /* MIN */
+}
+
+    
+
+    @media(max-width:1024px){
+        .hero-section{
+            &__inner{
+                flex-direction:column-reverse;
+            }
+        }
     }
 </style>

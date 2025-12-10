@@ -2,6 +2,7 @@
 import { BaseLayout } from "../../layouts";
 import { ImagesRoute } from "../../assets/images/ImagesRoute";
 import { FadeInOnScrollHero } from "../../components/exclusives";
+
 ---
 
 <BaseLayout>
@@ -95,11 +96,18 @@ import { FadeInOnScrollHero } from "../../components/exclusives";
     </section>
 
     <section class="last-section section-frame">
-        <br/>
         <img src={ImagesRoute.IMG_7120}/>
     </section>
 </BaseLayout>
 
+<script>
+    import { initMultiParallax } from "../../hooks/ScrollParallax";
+    initMultiParallax([
+    {selector:".tracked-element",ratio:0.1},
+    {selector:".tracked-element2",ratio:0.3},
+    {selector:".tracked-element3",ratio:0.5},
+    ])
+</script>
 
 
 
@@ -178,7 +186,7 @@ import { FadeInOnScrollHero } from "../../components/exclusives";
         display:flex;
         justify-content:end;
         img{
-            height:100%;
+            height:100dvh;
             width:50%;
         }
     }

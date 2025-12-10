@@ -3,7 +3,7 @@ import { ImagesRoute } from "../assets/images/ImagesRoute"
 const menuList= [
     {label:"Home",path:"/"},
     {label:"Product",path:"/product"},
-    {label:"Startrail",path:"/"},
+    {label:"Technology",path:"/technology"},
     {label:"DAWN",path:"https://dawn-waiting.com"},
 ]
 ---
@@ -92,29 +92,90 @@ const menuList= [
             padding:0.5rem;
         }
     }
-    #menu{
-        background-color: black;
-        position: fixed;
-        z-index: 99;
-        display: none;
-        flex-direction: column;
-        align-items: center;
-        justify-content: start;
-        gap: 3rem;
-        > a{
-            border-bottom: 1px solid white;
-            width:80%;
-            text-align: center;
-            padding-bottom: 1rem;
-        }
+    #menu {
+  position: fixed;
+  inset: 0;
+  z-index: 99;
+  display: none; // JSで display:block に切り替える
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2.5rem;
+
+  /* 背景：ガラスモーフィズム */
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(12px) saturate(160%);
+  -webkit-backdrop-filter: blur(12px) saturate(160%);
+
+  animation: menu-fade 0.4s ease-out forwards;
+
+  > a {
+    font-size: 2rem;
+    color: #fff;
+    text-decoration: none;
+    position: relative;
+    padding-bottom: 0.4rem;
+    transition: all 0.3s ease;
+
+    /* 下線（ホバー時にアニメーション） */
+    &::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      bottom: 0;
+      transform: translateX(-50%) scaleX(0);
+      width: 80%;
+      height: 2px;
+      background: #fff;
+      transition: transform 0.3s ease;
+      transform-origin: center;
     }
-    #close-button{
-        box-sizing: border-box;
-        width:100%;
-        padding: 3rem;
-        display: flex;
-        justify-content: start;
+
+    &:hover {
+      color: #d7f2ff;
+      text-shadow: 0 0 12px #aef5ff, 0 0 24px #d4fbff;
+
+      &::after {
+        transform: translateX(-50%) scaleX(1);
+      }
     }
+  }
+}
+
+/* 閉じるボタン */
+#close-button {
+  position: absolute;
+  top: 2rem;
+  right: 2rem;
+  padding: 1rem;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 50%;
+  transition: 0.3s ease;
+  cursor: pointer;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+
+  img {
+    width: 2rem;
+    height: 2rem;
+  }
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.15);
+    box-shadow: 0 0 15px #fff;
+  }
+}
+
+/* フェード + スライドイン演出 */
+@keyframes menu-fade {
+  0% {
+    opacity: 0;
+    transform: translateY(-2%);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
     @media (max-width: 1024px) {
         nav{
             display: none;

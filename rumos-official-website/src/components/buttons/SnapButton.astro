@@ -1,0 +1,50 @@
+---
+const {title,position,id} = Astro.props;
+---
+<button class="button-container" data-tech-id={id}>
+    <div class="button-container__inner">
+        <p class="text-3xl button-container__inner-title">{title}</p>
+        <p class="text-md">{position}</p>
+    </div>
+    <p class="text-md">↓</p>
+</button>
+
+<style lang = "scss">
+    .button-container{
+        display: flex;
+        align-items: center;
+        gap:3rem;
+        padding-right:2rem;
+        border-bottom:solid 1px white;
+        text-align:start;
+
+        font-family: "NotoSerifJP";
+        
+        &:hover{
+            .button-container__inner{
+                animation: slot-out 0.2s forwards, slot-in 0.2s 0.2s forwards;
+            }
+        }
+    }
+
+
+    /* 上に回転しながら消える */
+@keyframes slot-out {
+  0% {
+    transform:translateY(0);
+  }
+  100% {
+    transform: translateY(-20%);
+  }
+}
+
+/* 下から回転しながら現れる */
+@keyframes slot-in {
+  0% {
+    transform: translateY(-20%);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+</style>

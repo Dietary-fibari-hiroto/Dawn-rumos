@@ -16,12 +16,15 @@ import { ImagesRoute } from "../../assets/images/ImagesRoute"
                     <ProductButton path="/product/sangria" logo={ImagesRoute.sangria_icon} label="Sangria"/>
                     <ProductButton path="/product/startrail" logo={ImagesRoute.startrail_icon} label="Startrail"/>
                     <ProductButton path="/product/reflamejar" logo={ImagesRoute.reflamejar_icon} label="Re:flameJar"/>
-                    <ProductButton label="一覧へ"/>
+                    <ProductButton path="/product" label="一覧へ"/>
                 </div>
             </div>
-            <ViewMoreButton label="ViewMore..."/>
+            <ViewMoreButton label="ViewMore..." path="/product"/>
         </div>
-        <img class="img--big-horizontal" src = {ImagesRoute.IMG_7116}/>
+        <figure class="img--big-horizontal device-section__img flex-all-center">
+            <img class="tracked-element2 device-section__img-content" src = {ImagesRoute.IMG_7116}/>
+        </figure>
+        
     </div>
 
     <div class="section-frame controll-section">
@@ -39,6 +42,21 @@ import { ImagesRoute } from "../../assets/images/ImagesRoute"
 
 </section>
 
+<script>
+    const root = document.querySelector(".controll-section");
+    if(root){
+        root.querySelectorAll("img").forEach((img)=>{
+            img.classList.add("lamplight");
+        })
+                root.querySelectorAll("p").forEach((p)=>{
+            p.classList.add("lamplight");
+        })
+    }
+
+
+
+</script>
+
 <style lang="scss">
     .controll-section,
     .device-section{
@@ -55,6 +73,13 @@ import { ImagesRoute } from "../../assets/images/ImagesRoute"
             flex-direction: column;
             align-items: start;
             gap:2rem;
+        }
+
+        &__img{
+            overflow: hidden;
+            &-content{
+                height:60rem;
+            }
         }
         
         &__nav{
@@ -83,6 +108,15 @@ import { ImagesRoute } from "../../assets/images/ImagesRoute"
             &-rb{
                 grid-area:3 / 3;
             }
+        }
+    }
+
+    @media(max-width:1024px){
+        .controll-section{
+            flex-direction: column-reverse;
+        }
+        .device-section{
+            flex-direction: column;
         }
     }
 </style>

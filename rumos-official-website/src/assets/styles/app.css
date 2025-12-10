@@ -18,6 +18,9 @@ body {
 img {
   object-fit: cover;
 }
+section {
+  transition: all 0.5s ease-in-out;
+}
 ul,
 li {
   margin: 0; /* デフォルトの余白を削除 */
@@ -30,7 +33,8 @@ a {
   text-decoration: none;
 }
 
-p {
+p,
+span {
   padding: 0;
   margin: 0;
 }

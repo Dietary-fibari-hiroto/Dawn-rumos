@@ -6,7 +6,10 @@ import { ImagesRoute } from "../../../assets/images/ImagesRoute";
     <div class="gallery-section__black">
         <div class="gallery-section__black-pannel"/>
     </div>
-    <img class="gallery-section__line" src = {ImagesRoute.line}/>
+    <div class="gallery-section__line" style={{
+    backgroundImage: `url(${ImagesRoute.line})`,
+    backgroundRepeat: "no-repeat",
+  }} />
     <div class="gallery-section__inner">
         <figure class="gallery-section__top">
             <img class="img--md-vertical tracked-element" src ={ImagesRoute.IMG_7352}/>
@@ -23,17 +26,7 @@ import { ImagesRoute } from "../../../assets/images/ImagesRoute";
 
 </section>
 
-<script>
-  import { initMultiParallax } from "../../../hooks/index";
 
-  window.addEventListener("load", () => {
-    initMultiParallax([
-      { selector: ".tracked-element", ratio: 0.1 },
-      { selector: ".tracked-element2", ratio: 0.3 },
-      { selector: ".tracked-element3", ratio: 0.5 },
-    ]);
-  });
-</script>
 
 <style lang = "scss">
     .gallery-section{
@@ -77,11 +70,14 @@ import { ImagesRoute } from "../../../assets/images/ImagesRoute";
         }
         &__line{
             height:200lvh;
+            width:100%;
             position:absolute;
             top:0;
             left:50%;
             z-index: 1;
             transform: translateX(-50%);
+            object-fit:fill;
+            background-size: 100% 100%; 
         }
 
 
@@ -101,5 +97,9 @@ import { ImagesRoute } from "../../../assets/images/ImagesRoute";
         &__bottom{
             justify-content: center;
         }
+    }
+
+    @media(max-width:1024px){
+
     }
 </style>

@@ -1,6 +1,6 @@
 .section-frame {
   width: 100vw;
-  height: 100vh;
+  min-height: 100vh;
   max-height: 1080px;
 }
 
@@ -21,7 +21,7 @@
 .fixed-background {
   position: fixed;
   width: 100vw;
-  height: 100lvh;
+  height: 100dvh;
   z-index: 0;
 }
 
@@ -47,21 +47,21 @@
   }
 
   &--lg-horizontal {
-    width: clamp(450px, 30vw, 800px);
+    width: clamp(350px, 30vw, 800px);
     aspect-ratio: 3 / 2;
   }
 
   &--lg-vertical {
-    height: clamp(450px, 30vw, 800px);
+    height: clamp(400px, 30vw, 800px);
     aspect-ratio: 2 / 3;
   }
 
   &--big-horizontal {
-    width: clamp(450px, 55vw, 66rem);
+    width: clamp(400px, 55vw, 66rem);
     aspect-ratio: 16 / 9;
   }
   &--big-vertical {
-    height: clamp(450px, 55vw, 50rem);
+    height: clamp(400px, 55vw, 50rem);
     aspect-ratio: 9 / 16;
   }
   &--sm-box {

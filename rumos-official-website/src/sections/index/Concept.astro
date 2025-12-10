@@ -13,12 +13,18 @@ import { ImagesRoute } from "../../assets/images/ImagesRoute"
                 使われなくなった雑貨も、毎日見慣れた日用品も、手放そうとしていた家具でさえも──<br/>
                 もし光をまとい、もう一度あなたの空間で息を吹き返したら？その瞬間、部屋の空気も、あなたの気持ちも、そっと表情を変えるかもしれない。
             </p>
-            <img class="img--lg-horizontal" src = {ImagesRoute.IMG_7362}/>
+            <figure >
+                <img class="img--lg-horizontal" src = {ImagesRoute.IMG_7362}/>
+            </figure>
         </div>
-        <img class="img--lg-vertical" src = {ImagesRoute.IMG_7122}/>
+        <figure class="gallery-start tracked-element2">
+            <img class="img--lg-vertical" src = {ImagesRoute.IMG_7122}/>
+        </figure>
     </div>
     <div class="concept-section__inner">
-        <img class="img--big-vertical" src = {ImagesRoute.IMG_7169}/>
+        <figure class="gallery-end tracked-element3">
+            <img class="img--big-vertical" src = {ImagesRoute.IMG_7169}/>
+        </figure>
         <div class="concept-section__inner-content">
             <img class="img--lg-horizontal" src = {ImagesRoute.IMG_7341}/>
                         <p class="concept-section__text concept-text">
@@ -29,15 +35,25 @@ import { ImagesRoute } from "../../assets/images/ImagesRoute"
     </div>
 </section>
 
+<script>
+  const root = document.querySelector(".concept-section");
+
+  if (root) {
+    root.querySelectorAll("img").forEach(img => img.classList.add("lamplight"));
+    root.querySelectorAll("p").forEach(p => p.classList.add("lamplight"));
+  }
+</script>
+
+
 <style lang = "scss">
     .concept-section{
         &__inner{
-            width:100vw;
-            height:100vh;
-            max-height:1080px;
+            width:100%;
+            padding: 3rem 0;
             display:flex;
             align-items:center;
             justify-content:space-around;
+            overflow-x: hidden;
 
 
             &-content{
@@ -45,9 +61,41 @@ import { ImagesRoute } from "../../assets/images/ImagesRoute"
                 flex-direction:column;
                 gap:5rem;
             }
+
+
         }
         &__text{
-             max-width:32rem;
+            max-width:32rem;
+            padding:0 2rem;
+        }
+    }
+    .gallery{}
+
+    @media(max-width:1024px){
+        .concept-section{
+            &__inner{
+                flex-direction: column;
+                &-content{
+                    flex-direction: column-reverse;
+                }
+            }
+        }
+
+        .gallery{
+
+            &-start,&-center,&-end{
+                width: 100%;
+                display: flex;
+            }
+            &-start{
+                justify-content: start;
+            }
+            &-center{
+                justify-content: center;
+            }
+            &-end{
+                justify-content: end;
+            }
         }
     }
 </style>

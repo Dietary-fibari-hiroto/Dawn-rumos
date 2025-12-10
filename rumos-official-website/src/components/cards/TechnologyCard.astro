@@ -1,0 +1,49 @@
+---
+const {title,position,img,img2,body,id,onclick} = Astro.props;
+---
+
+<div class=`card-container` id = {id}>
+    <div class="card-container__title">
+        <p class="text-5xl">{title}</p>
+        <p class="text-md">{position}</p>
+    </div>
+    <div class="card-container__inner">
+        <figure class="card-container__inner-media">
+            <img src = {img} class="img--sm-box"/>
+            {img2 && <img class="img--sm-box" src = {img2} />}
+        </figure>
+        <div class="card-container__inner-text concept-text">
+            {body}
+        </div>
+    </div>
+</div>
+
+
+<style lang ="scss">
+    .card-container{
+        padding:2rem;
+        background-color: var(--color-deep-gray);
+        width:70%;
+        
+        
+        &__inner{
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-sizing: border-box;
+            padding: 3rem;
+            &-text{
+                max-width:40rem;
+            }
+        }
+    }
+
+    @media(max-width:768px){
+        .card-container{
+            width: 80%;
+            &__inner{
+                flex-direction: column;
+            }
+        }
+    }
+</style>

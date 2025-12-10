@@ -1,5 +1,6 @@
 ---
 import "../assets/styles/index.scss";
+import LoadingScreen from "../sections/LoadingScreen.astro";
 import {Header,Footer} from"./index";
 const {title = "rumos"} = Astro.props;
 ---
@@ -12,21 +13,24 @@ const {title = "rumos"} = Astro.props;
         <title>{title}</title>
     </head>
     <body>
+         <LoadingScreen/>
         <Header />
-        <main>
+        <main class="main-content">
             <slot/>
         </main>
         <Footer/>
         <script>
         import Lenis from 'lenis';
+        import { initLoadingScreenWithStages } from '../hooks/loadingScreen';
+
 
         const lenis = new Lenis({
-            duration: 1.5, // スクロールの速度（秒）
-            easing: (t:any) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), // イージング関数
-            smoothWheel: true, // マウスホイールのスムーズ化
-            smoothTouch: false, // タッチデバイスでのスムーズ化
-            wheelMultiplier: 1, // ホイールの感度
-            touchMultiplier: 2, // タッチの感度
+            duration: 1.5, //スクロールの速度
+            easing: (t:any) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), //イージング関数
+            smoothWheel: true, //マウスホイールのスムーズ化
+            smoothTouch: false, //タッチデバイスでのスムーズ化
+            wheelMultiplier: 1, //ホイールの感度
+            touchMultiplier: 2, //タッチの感度
         } as any);
 
         function raf(time: number) {
@@ -35,7 +39,23 @@ const {title = "rumos"} = Astro.props;
         }
 
         requestAnimationFrame(raf);
-        </script>
+
+
+  
+  initLoadingScreenWithStages({
+    trackImages: true,
+    minDisplayTime: 1000,// プログレスバー最低表示時間
+    loaderFadeDuration: 500,//ローダーフェードアウト時間
+    secondProcessFadeDuration: 800,//2段階目フェードイン/アウト時間
+    secondProcessDisplayTime: 2000,//2段階目の表示時間
+    finalFadeDuration: 1000,//全体のフェードアウト時間(これさわってりゃなんとかなる)
+    onComplete: () => {
+      console.log('ローディング終わり！');
+    }
+  });
+
+  
+    </script>
 
     </body>
 </html>

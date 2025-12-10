@@ -1,6 +1,90 @@
 ---
+
+import { ImagesRoute } from "../assets/images/ImagesRoute";
+import { SnapButton } from "../components/buttons";
+import { TechnologyCard } from "../components/cards";
 import { BaseLayout } from "../layouts";
+
+const snapList = [
+    {id:"backend",title:"ASP.NET Core",position:"バックエンド"},
+    {id:"frontend",title:".NET MAUI Blazor Hybrid",position:"フロントエンド"},
+    {id:"device",title:"Seeeduino XIAO ESP32C3",position:"組み込み基盤"}
+]
+
+const bodyContent = [
+    {id:"backend",title:"IoT×ソフト開発に最適な ASP.NET Core",position:"バックエンド:ASP.NET",img:ImagesRoute.net_icon,body:"ASP.NETは高性能な API サーバーを構築できるフレームワークであり、MQTT や gRPC を利用したリアルタイム通信と高い親和性を持ちます。 軽量な IoT デバイスと連携、そして .NET MAUI Blazor Hybrid アプリとの統一的な開発体験を実現できる点から、IoT システム全体の中核となる技術として最適であるため採用しました。"},
+    {id:"frontend",title:"Webとネイティブを融合したモダン UI基盤",position:"フロントエンド:.NET MAUI Blazor Hybrid",img:ImagesRoute.Blazor_940x940,img2:ImagesRoute.MAUI,body:".NET MAUI Blazor Hybrid は、Web 技術（Blazor）とネイティブアプリ開発を融合したクロスプラットフォーム UI フレームワークである。1つのコードベースで Windows、macOS、Android、iOS に対応し、IoT システムと連携する管理画面や操作用アプリを効率的に構築できる点が特徴となっています。素のHTML,CSS,Jsを用いてアプリUI構築ができる点も採用した理由の大きな要因です。"},
+    {id:"device",title:"小型・低消費電力なマイコン",position:"組み込み基盤:Seeeduino XIAO ESP32C3",img:ImagesRoute.IMG_7182,body:"Seeeduino XIAO ESP32C3 は、超小型で低消費電力ながら Wi-Fi と BLE を搭載した IoT 向けマイコンである。高い拡張性と手軽な開発性を備えており、センサーデータ収集やデバイス制御を行うフロントラインとして最適なハードウェアとなっています。今回作成したデバイスはどれも場所を取らない設計にしたいと思っていたので最適なマイコンでした。"}
+]
 ---
 <BaseLayout>
-    
+    <section class="hero-section">
+        <div>
+            <p class="text-7xl">Technology</p>
+            <p class="text-md">技術選定(技術者向け)</p>
+        </div>
+        <p class="concept-text hero-section__text">
+小型 IoT デバイス（ESP32C3）を MQTT でクラウド（ASP.NET Core）と連携させ、その上で .NET MAUI Blazor Hybrid を使ってクロスプラットフォームな UI を提供する、リアルタイム性と開発効率を重視したモダンな IoT アーキテクチャを採用。
+        </p>
+    </section>
+    <section class="snaps-section">
+        {snapList.map((snap)=>(
+            <SnapButton {...snap} />
+        ))}
+    </section>
+    <section class="technology-section">
+        {bodyContent.map((technology)=>(
+            <TechnologyCard {...technology} />
+        ))}
+    </section>
+
+    <img src = {ImagesRoute.rumos_stack} class="stack"/>
 </BaseLayout>
+
+<script>
+  import { initScrollCards } from "../hooks";
+  initScrollCards();
+</script>
+
+
+
+
+<style lang = "scss">
+    .hero-section{
+        width:100%;
+        padding:8rem 0;
+        display:flex;
+        align-items:center;
+        justify-content: center;
+        gap:3rem;
+
+        &__text{
+            max-width:60%;
+        }
+    }
+
+    .snaps-section{
+        display: flex;
+        gap:3rem;
+        padding:0 3rem;
+        flex-wrap: wrap;
+    }
+    .technology-section{
+        width:100%;
+        padding:10rem 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap:3rem;
+    }
+    .stack{
+        width:100%;
+    }
+
+    @media(max-width:768px){
+        .hero-section{
+            flex-direction: column;
+        }
+
+    }
+</style>

@@ -13,12 +13,18 @@ import {SectionTitle} from "../../components/typographys"
     <div class="technology-section__inner">
         <div>
             <p class="concept-text-width">小型 IoT デバイス（ESP32C3）を MQTT でクラウド（ASP.NET Core）と連携させ、その上で .NET MAUI Blazor Hybrid を使ってクロスプラットフォームな UI を提供する、リアルタイム性と開発効率を重視したモダンな IoT アーキテクチャを採用。</p>
-            <ViewMoreButton label="ViewMore" />
+            <ViewMoreButton label="ViewMore" path="/technology" />
         </div>
         <div class="technology-section__panel">
-            <img class="img--sm-box technology-section__panel-lt" src = {ImagesRoute.Blazor_940x940}/>
-            <img class="img--sm-box technology-section__panel-center" src = {ImagesRoute.MAUI}/>
-            <img class="img--sm-box technology-section__panel-rb" src = {ImagesRoute.net_icon}/>
+            <div class="technology-section__panel-lt">
+                <img class="img--sm-box lamplight" src = {ImagesRoute.Blazor_940x940}/>
+            </div>
+            <div class="technology-section__panel-center">
+                <img class="img--sm-box lamplight" src = {ImagesRoute.MAUI}/>
+            </div>
+            <div class="technology-section__panel-rb">
+                <img class="img--sm-box lamplight" src = {ImagesRoute.net_icon}/>
+            </div>
         </div>
     </div>
 </section>
@@ -34,24 +40,47 @@ import {SectionTitle} from "../../components/typographys"
             display:flex;
             justify-content:space-between;
             align-items:center;
-            
+            > *{
+                flex:1;
+            }
         }
         &__panel{
-            display:grid;
-            grid-template-columns:1fr 1fr 1fr;
-            grid-template-rows: 1fr 1fr 1fr;  
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            &-lt,&-center,&-rb{
+                width:100%;
+                display: flex;
+                box-sizing: border-box;
+                padding: 0 3rem;
+            }
             &-lt{
-                grid-area:1 / 1;
+                justify-content: start;
+                align-items: start;
             }
             &-center{
-                grid-area: 2 / 3;
-                display:grid;
-                place-items: center;
-                text-align:start;
+                justify-content: end;
+                align-items: end;
             }
             &-rb{
-                grid-area:3 / 2;
+                justify-content: center;
+                align-items: center;
             }
         }
     }
+
+    .technology-section > * + *{
+        margin-top: 2rem;
+    }
+
+@media(max-width:1024px){
+    .technology-section{
+        &__inner{
+            flex-direction: column;
+        }
+        &__panel{
+            width: 100%;
+        }
+    }
+}
 </style>

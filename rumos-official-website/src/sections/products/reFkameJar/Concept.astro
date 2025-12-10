@@ -6,14 +6,15 @@ import { FadeInOnScrollHero } from "../../../components/exclusives";
     <div class="concept-section__inner">
         <FadeInOnScrollHero client:load>
             <p class="text-5xl">
-                空間の"気配"までデザインする<br/>
-                表情豊かな間接照明
+使い終わった瓶に、<br/>
+もう一度“ゆらぎ”の魔法を。
             </p>
         </FadeInOnScrollHero>
 
         <FadeInOnScrollHero client:load>
             <p class="concept-section__text concept-text">
-                この間接照明は、TGBLEDカラーグレーディングによる繊細な色表現で、部屋の雰囲気を思い通りに演出できるライトです。柔らかい光が壁をなでるように広がり、空間そのものに奥行きを与えるデザインが特徴。雰囲気重視のミニマルな外観で、置くだけで部屋が“整う”ような存在感を放つ。
+                Re:Flame Jar は、キャンドルの空き瓶をそのまま生かし、新しい灯りとして再生させたアップサイクルライト。
+ランダムに光が揺れる“炎モード”が、まるで本物の火のような温度感のある雰囲気を作り出し、部屋にそっと寄り添うような柔らかな光を放ちます。飾るだけで空間がふっと落ち着き、心の余白をつくるような、小さな癒しのインテリアです。
             </p>
         </FadeInOnScrollHero>
 
@@ -38,6 +39,15 @@ import { FadeInOnScrollHero } from "../../../components/exclusives";
         }
         &__text{
             width:31.25rem;
+        }
+    }
+
+    @media(max-width:1024px){
+        .concept-section{
+            &__inner{
+                flex-direction: column;
+                justify-content:space-evenly;
+            }
         }
     }
 </style>

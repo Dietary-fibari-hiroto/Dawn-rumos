@@ -3,31 +3,55 @@ import { ViewMoreButton } from "../buttons";
 const {img,title,path,concept}= Astro.props;
 ---
 <a href={path}>
-<div class="card-container">
-    <img class="img--lg-horizontal" src = {img}/>
-    <div class="card-container__text">
-        <p class="text-3xl">{title}</p>
-        <p class="text-md">{concept}</p>
-        <div class="button-container">
-            <ViewMoreButton path={path} label="ViewMore"/>
+    <div class="card-container">
+        <figure class="img--lg-horizontal card-container__img">
+            <img class="img--lg-horizontal card-container__img-content" src = {img}/>
+        </figure>
+        <div class="card-container__text">
+            <p class="text-3xl">{title}</p>
+            <p class="text-md">{concept}</p>
+            <div class="button-container">
+                <ViewMoreButton path={path} label="ViewMore"/>
+            </div>
         </div>
     </div>
-</div>
 </a>
 
+
+
 <style lang="scss">
+
     .card-container{
         display: flex;
         align-items: center;
         gap:3rem;
-
+        &__img{
+            overflow: hidden;
+            &-content{
+                transition: all 0.2s ease-in-out;
+            }
+        }
         &__text > * + *{
             margin-top:2rem;
         }
         
+        &:hover{
+            .card-container__img-content{
+                scale: 1.1;
+            }
+        }
     }
 
     .button-container{
         width:20rem;
+    }
+
+    @media(max-width:1024px){
+        .card-container{
+            flex-direction: column;
+            box-sizing:border-box;
+            padding:0 2rem;
+        }
+
     }
 </style>

@@ -13,6 +13,7 @@ const productList = [
 ---
 
 <BaseLayout>
+    <img class="fixed-background" src ="" alt=""/>
     <section class="title-section">
         <p class="text-7xl">Product</p>
         <p class="text-md">作成したシステムとデバイス</p>
@@ -20,13 +21,33 @@ const productList = [
     <section class="list-section">
         {
             productList.map((product)=>(
-                <ProductCard {...product}/>
+                <div class="hover-item" data-bg-image={product.img}>
+                    <ProductCard {...product}/>
+                </div>
             ))
         }
     </section>
 </BaseLayout>
 
+<script>
+    import { initBackgroundHover } from "../../hooks";
+
+    initBackgroundHover({
+        targetSelector: '.hover-item',
+        backgroundSelector: '.fixed-background',
+        dataAttribute: 'data-bg-image',
+        fadeDuration: 500,
+    })
+</script>
+
 <style lang="scss">
+    .fixed-background{
+        position:fixed;
+        height:100dvh;
+        width:100vw;
+        top:0;
+        left:0;
+    }
     .title-section{
         width:100%;
         height:20rem;
@@ -34,6 +55,8 @@ const productList = [
         justify-content: center;
         align-items: center;
         flex-direction: column;
+        position: relative;
+        z-index: 3;
         > * + *{
             margin-top:-1rem;
         }
@@ -44,7 +67,13 @@ const productList = [
         width:100%;
         align-items: center;
         justify-content: start;
-        gap:3rem;
+        gap:5rem;
+        position: relative;
+        z-index: 3;
+    }
+
+    @media (max-width: 1024px) {
 
     }
+
 </style>

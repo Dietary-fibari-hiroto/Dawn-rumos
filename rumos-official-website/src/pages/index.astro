@@ -4,6 +4,7 @@ import {Hero,Concept,Device,Technology} from "../sections/index"
 import {BoundaryLine} from "../components/elements"
 ---
 <BaseLayout>
+  
   <Hero/>
   <Concept/>
   <BoundaryLine/>
@@ -14,13 +15,19 @@ import {BoundaryLine} from "../components/elements"
 
 
 <script>
-  import { initMultiParallax } from "../hooks/index";
+  import { initMultiParallax,initScrollFade } from "../hooks/index";
 
-  window.addEventListener("load", () => {
-    initMultiParallax([
-      { selector: ".tracked-element", ratio: 0.2 },
-      { selector: ".tracked-element2", ratio: 0.4 },
-      { selector: ".tracked-element3", ratio: 0.6 },
-    ]);
-  });
+
+  initMultiParallax([
+    { selector: ".tracked-element", ratio: 0.2 },
+    { selector: ".tracked-element2", ratio: 0.4 },
+    { selector: ".tracked-element3", ratio: 0.6 },
+  ]);
+
+  initScrollFade({
+    selector:'.lamplight',
+    threshold:0.1,
+  })
+
+
 </script>
