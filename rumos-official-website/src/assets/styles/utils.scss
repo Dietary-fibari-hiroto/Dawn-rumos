@@ -21,7 +21,7 @@
 .fixed-background {
   position: fixed;
   width: 100vw;
-  height: 100dvh;
+  height: 100lvh;
   z-index: 0;
 }
 
@@ -79,4 +79,8 @@
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+.text-shadow__black {
+  text-shadow: 2px 2px 4px #000000ff;
 }

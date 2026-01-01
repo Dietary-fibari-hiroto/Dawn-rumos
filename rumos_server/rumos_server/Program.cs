@@ -93,3 +93,16 @@ app.UseStaticFiles();
 
 
 app.Run();
+
+
+
+/*
+//開発環境で外部から接続したいときは以下をappsetting.jsonに追加
+  "Kestrel": {
+    "Endpoints": {
+      "Http": {
+        "Url": "http://0.0.0.0:7032"
+      }
+    }
+  }
+*/

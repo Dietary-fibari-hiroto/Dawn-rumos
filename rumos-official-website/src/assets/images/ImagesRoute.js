@@ -76,6 +76,7 @@ import reflamejar_icon from "./icons/reflamejar_icon.png";
 import Blazor_940x940 from "./icons/Blazor-940x940.png";
 import MAUI from "./icons/MAUI.png";
 import net_icon from "./icons/net_icon.png";
+import astro_icon from "./icons/astro_icon.png";
 import startrail_hero from "./photos/startrail_hero.png";
 import blueprint from "./photos/blueprint.png";
 import blurprint2 from "./photos/blueprint2.png";
@@ -84,12 +85,14 @@ import blurprint3 from "./photos/blueprint3.png";
 import x from "./elements/x.svg";
 import line from "./elements/line.svg";
 import Ellipse from "./elements/Ellipse.png";
+import menu from "./elements/menu.png";
 
 export const ImagesRoute = {
   Blazor_940x940: Blazor_940x940.src,
   MAUI: MAUI.src,
   net_icon: net_icon.src,
   Ellipse: Ellipse.src,
+  menu: menu.src,
 
   startrail_hero: startrail_hero.src,
   IMG_7039: IMG_7039.src,
@@ -167,6 +170,7 @@ export const ImagesRoute = {
   rumos_stack: rumos_stack.src,
 
   yuzu_icon: yuzu_icon.src,
+  astro_icon: astro_icon.src,
   reflamejar_icon: reflamejar_icon.src,
   sangria_icon: sangria_icon.src,
   startrail_icon: startrail_icon.src,

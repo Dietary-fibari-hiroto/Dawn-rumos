@@ -18,7 +18,7 @@ const menuList= [
         </ul>
     </nav>
     <button id="menu-button">
-        <img src = {ImagesRoute.yuzu_icon}/>
+        <img src = {ImagesRoute.menu}/>
     </button>
 </header>
 
@@ -62,12 +62,9 @@ const menuList= [
         left:0;
         z-index:10;
 
-        :first-child{
-            margin-left:10px;
-        }
-        :last-child{
-            margin-right:10px;
-        }  
+        box-sizing: border-box;
+        padding: 0 0.5rem;
+
         .rumos{
             letter-spacing: 1rem;
         }
@@ -181,7 +178,7 @@ const menuList= [
             display: none;
         }
         #menu-button{
-            display: block;
+          display: block;
         }
     }
 

@@ -8,8 +8,8 @@ import { ImagesRoute } from "../../../assets/images/ImagesRoute";
     </div>
     <div class="technology-section__inner">
         <div class="technology-section__inner-top">
-            <img class="img--big-vertical tracked-element3" src = {ImagesRoute.blurprint}/>
-            <div class="technology-section__text">
+            <img class="img--big-vertical tracked-element" src = {ImagesRoute.blurprint}/>
+            <div class="technology-section__text text-shadow__black">
                 <p class="text-5xl">ミニマムな技術選定。</p>
                 <p class="concept-text-width">
                     Wi-FiとBluetoothを搭載した超小型マイコン「Seeeduino XIAO ESP32C3」を中心に、テープライトとType-C給電モジュールを組み込んだシンプルな設計を採用し、できるだけコンパクトになるよう工夫しています。
@@ -19,7 +19,7 @@ import { ImagesRoute } from "../../../assets/images/ImagesRoute";
             </div>
         </div>
         <div class="technology-section__inner-bottom">
-            <img class="img--sm-horizontal tracked-element" src = {ImagesRoute.IMG_7182}/>
+            <img class="img--sm-horizontal tracked-element2" src = {ImagesRoute.IMG_7182}/>
             <img class="img--big-vertical tracked-element" src = {ImagesRoute.blurprint2}/>
         </div>
     </div>
@@ -33,6 +33,11 @@ import { ImagesRoute } from "../../../assets/images/ImagesRoute";
         width:100%;
         height: 300lvh;
         background:black;
+
+        &__text{
+            position: relative;
+            z-index:10;
+        }
         &__text > * + *{
             margin-top:2rem;
         }

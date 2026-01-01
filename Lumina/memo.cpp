@@ -7,7 +7,7 @@ const int NUM_LEDS = 16;          // LED の数
 // 基本色（オレンジっぽい炎色）
 // 明るさによってこの色をスケールして出力する
 const int baseR = 255;
-const int baseG = 50;
+const int baseG = 60;
 const int baseB = 0;
 
 // NeoPixel オブジェクトの生成

@@ -1,144 +1,242 @@
-// hooks/scrollFade.ts
+// hooks/loadingScreen.ts
 
-export interface ScrollFadeOptions {
-  selector?: string; // 対象要素のセレクタ
-  threshold?: number; // 表示判定の閾値（0.0 〜 1.0）
-  rootMargin?: string; // 判定エリアのマージン
-  showClass?: string; // 表示時に追加するクラス
-  hideClass?: string; // 非表示時に追加するクラス
-  once?: boolean; // 一度だけ表示するか
-  delay?: number; // 遅延時間（ms）
-  stagger?: number; // 複数要素の遅延間隔（ms）
+export interface LoadingScreenOptions {
+  loadingScreenId?: string;
+  mainContentId?: string;
+  minDisplayTime?: number; // 最低表示時間（ms）
+  fadeOutDuration?: number; // フェードアウト時間（ms）
+  onComplete?: () => void; // 完了時のコールバック
 }
 
-export const initScrollFade = (options: ScrollFadeOptions = {}) => {
+export const initLoadingScreen = (options: LoadingScreenOptions = {}) => {
   const {
-    selector = ".scroll-fade",
-    threshold = 0.2,
-    rootMargin = "0px 0px -20% 0px",
-    showClass = "show",
-    hideClass = "",
-    once = false,
-    delay = 0,
-    stagger = 0,
+    loadingScreenId = "loading-screen",
+    mainContentId = "main-content",
+    minDisplayTime = 500,
+    fadeOutDuration = 500,
+    onComplete,
   } = options;
 
-  const elements = document.querySelectorAll(selector);
+  const loadingScreen = document.getElementById(loadingScreenId);
+  const mainContent = document.getElementById(mainContentId);
 
-  if (elements.length === 0) {
-    console.warn(`No elements found with selector: ${selector}`);
+  if (!loadingScreen) {
+    console.warn(`Loading screen element not found: #${loadingScreenId}`);
     return;
   }
 
-  const observer = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          // 画面内に入った
-          const target = entry.target as HTMLElement;
-          const elementDelay =
-            delay + stagger * parseInt(target.dataset.index || "0");
+  const startTime = performance.now();
 
-          setTimeout(() => {
-            target.classList.add(showClass);
-            if (hideClass) {
-              target.classList.remove(hideClass);
-            }
-          }, elementDelay);
+  const hideLoading = () => {
+    const elapsedTime = performance.now() - startTime;
+    const remainingTime = Math.max(0, minDisplayTime - elapsedTime);
 
-          // 一度だけ表示する場合は監視を解除
-          if (once) {
-            observer.unobserve(entry.target);
-          }
-        } else {
-          // 画面外に出た
-          if (!once) {
-            const target = entry.target as HTMLElement;
-            target.classList.remove(showClass);
-            if (hideClass) {
-              target.classList.add(hideClass);
-            }
-          }
-        }
-      });
-    },
-    {
-      threshold,
-      rootMargin,
-    }
-  );
+    setTimeout(() => {
+      // フェードアウト開始
+      loadingScreen.classList.add("hidden");
+      mainContent?.classList.add("visible");
 
-  // 各要素を監視
-  elements.forEach((element, index) => {
-    // stagger用のインデックスを設定
-    (element as HTMLElement).dataset.index = index.toString();
-    observer.observe(element);
-  });
-
-  // クリーンアップ関数を返す
-  return () => {
-    observer.disconnect();
+      // アニメーション完了後に削除
+      setTimeout(() => {
+        loadingScreen.remove();
+        onComplete?.();
+      }, fadeOutDuration);
+    }, remainingTime);
   };
+
+  // ページ読み込み完了を待つ
+  if (document.readyState === "complete") {
+    hideLoading();
+  } else {
+    window.addEventListener("load", hideLoading);
+  }
 };
 
-// シンプル版（80%の位置で判定）
-export const initScrollFadeSimple = () => {
-  const elements = document.querySelectorAll(".scroll-fade");
+export interface LoadingScreenWithProgressOptions extends LoadingScreenOptions {
+  progressBarId?: string;
+  progressTextId?: string;
+  trackImages?: boolean; //画像の読み込みを追跡するか
+  trackResources?: boolean; //その他のリソースも追跡するか
+}
 
-  elements.forEach((element) => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add("show");
-          } else {
-            entry.target.classList.remove("show");
-          }
-        });
-      },
-      {
-        threshold: 0.2,
-        rootMargin: "0px 0px -20% 0px", // 画面の80%の位置で判定
-      }
-    );
+// プログレスバー付き + 段階的フェード版
+export interface LoadingScreenStageOptions
+  extends LoadingScreenWithProgressOptions {
+  loaderSelector?: string; // ローダー要素のセレクタ
+  secondProcessSelector?: string; // 2段階目の要素のセレクタ
+  loaderFadeDuration?: number; // ローダーのフェード時間（ms）
+  secondProcessFadeDuration?: number; // 2段階目のフェード時間（ms）
+  secondProcessDisplayTime?: number; // 2段階目の表示時間（ms）
+  finalFadeDuration?: number; // 最終フェードアウト時間（ms）
+  showOnce?: boolean; // セッション中一度だけ表示するか
+}
 
-    observer.observe(element);
-  });
-};
-
-// スクロールイベント版（Intersection Observer非対応ブラウザ用）
-export const initScrollFadeLegacy = (options: ScrollFadeOptions = {}) => {
+export const initLoadingScreenWithStages = (
+  options: LoadingScreenStageOptions = {}
+) => {
   const {
-    selector = ".scroll-fade",
-    showClass = "show",
-    hideClass = "",
+    loadingScreenId = "loading-screen",
+    mainContentId = "main-content",
+    progressBarId = "progress-bar",
+    progressTextId = "progress-text",
+    loaderSelector = ".loader",
+    secondProcessSelector = ".second-proccess",
+    minDisplayTime = 500,
+    loaderFadeDuration = 500,
+    secondProcessFadeDuration = 800,
+    secondProcessDisplayTime = 2000,
+    finalFadeDuration = 1000,
+    trackImages = true,
+    showOnce = true, // デフォルトで一度だけ表示
+    onComplete,
   } = options;
 
-  const elements = document.querySelectorAll(selector);
+  const loadingScreen = document.getElementById(loadingScreenId);
+  const mainContent = document.getElementById(mainContentId);
 
-  const handleScroll = () => {
-    elements.forEach((element) => {
-      const rect = element.getBoundingClientRect();
-      const isVisible = rect.top < window.innerHeight * 0.8;
+  if (!loadingScreen) return;
 
-      if (isVisible) {
-        element.classList.add(showClass);
-        if (hideClass) {
-          element.classList.remove(hideClass);
+  // セッション中に既に表示済みかチェック
+  if (showOnce && sessionStorage.getItem("loadingShown") === "true") {
+    // 即座に削除してメインコンテンツを表示
+    loadingScreen.remove();
+    if (mainContent) {
+      mainContent.style.opacity = "1";
+    }
+    onComplete?.();
+    return;
+  }
+
+  const progressBar = document.getElementById(progressBarId) as HTMLElement;
+  const progressText = document.getElementById(progressTextId) as HTMLElement;
+  const loader = document.querySelector(loaderSelector) as HTMLElement;
+  const secondProcess = document.querySelector(
+    secondProcessSelector
+  ) as HTMLElement;
+
+  // 2段階目を最初は非表示に
+  if (secondProcess) {
+    secondProcess.style.opacity = "0";
+    secondProcess.style.pointerEvents = "none";
+  }
+
+  let totalResources = 0;
+  let loadedResources = 0;
+  const startTime = performance.now();
+
+  const updateProgress = () => {
+    const progress =
+      totalResources > 0
+        ? Math.round((loadedResources / totalResources) * 100)
+        : 0;
+
+    if (progressBar) {
+      progressBar.style.width = `${progress}%`;
+    }
+    if (progressText) {
+      progressText.textContent = `${progress}%`;
+    }
+
+    return progress;
+  };
+
+  const startStageTransition = () => {
+    const elapsedTime = performance.now() - startTime;
+    const remainingTime = Math.max(0, minDisplayTime - elapsedTime);
+
+    setTimeout(() => {
+      // Stage 1: ローダーをフェードアウト
+      if (loader) {
+        loader.style.transition = `opacity ${loaderFadeDuration}ms ease-out`;
+        loader.style.opacity = "0";
+      }
+
+      setTimeout(() => {
+        // ローダーを削除
+        loader?.remove();
+
+        // Stage 2: 2段階目をフェードイン
+        if (secondProcess) {
+          secondProcess.style.transition = `opacity ${secondProcessFadeDuration}ms ease-in`;
+          secondProcess.style.opacity = "1";
         }
+
+        setTimeout(() => {
+          // Stage 3: 2段階目をフェードアウト
+          if (secondProcess) {
+            secondProcess.style.transition = `opacity ${secondProcessFadeDuration}ms ease-out`;
+            secondProcess.style.opacity = "0";
+          }
+
+          // Stage 4: 全体をフェードアウト & メインコンテンツをフェードイン
+          setTimeout(() => {
+            loadingScreen.style.transition = `opacity ${finalFadeDuration}ms ease-out`;
+            loadingScreen.style.opacity = "0";
+
+            if (mainContent) {
+              mainContent.style.transition = `opacity ${finalFadeDuration}ms ease-in`;
+              mainContent.style.opacity = "1";
+            }
+
+            // 最終的に削除
+            setTimeout(() => {
+              loadingScreen.remove();
+
+              // 表示済みフラグを立てる
+              if (showOnce) {
+                sessionStorage.setItem("loadingShown", "true");
+              }
+
+              onComplete?.();
+            }, finalFadeDuration);
+          }, secondProcessFadeDuration);
+        }, secondProcessDisplayTime);
+      }, loaderFadeDuration);
+    }, remainingTime);
+  };
+
+  // 画像の読み込みを追跡
+  if (trackImages) {
+    const images = Array.from(document.images);
+    totalResources = images.length;
+
+    if (totalResources === 0) {
+      startStageTransition();
+      return;
+    }
+
+    images.forEach((img) => {
+      if (img.complete) {
+        loadedResources++;
       } else {
-        element.classList.remove(showClass);
-        if (hideClass) {
-          element.classList.add(hideClass);
-        }
+        img.addEventListener("load", () => {
+          loadedResources++;
+          const progress = updateProgress();
+          if (progress === 100) {
+            startStageTransition();
+          }
+        });
+        img.addEventListener("error", () => {
+          loadedResources++;
+          const progress = updateProgress();
+          if (progress === 100) {
+            startStageTransition();
+          }
+        });
       }
     });
-  };
 
-  window.addEventListener("scroll", handleScroll);
-  handleScroll(); // 初期チェック
-
-  return () => {
-    window.removeEventListener("scroll", handleScroll);
-  };
+    // 初期プログレスを更新
+    const initialProgress = updateProgress();
+    if (initialProgress === 100) {
+      startStageTransition();
+    }
+  } else {
+    // 通常のload待機
+    if (document.readyState === "complete") {
+      startStageTransition();
+    } else {
+      window.addEventListener("load", startStageTransition);
+    }
+  }
 };

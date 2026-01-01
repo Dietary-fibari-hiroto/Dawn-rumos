@@ -8,13 +8,15 @@ import { BaseLayout } from "../layouts";
 const snapList = [
     {id:"backend",title:"ASP.NET Core",position:"バックエンド"},
     {id:"frontend",title:".NET MAUI Blazor Hybrid",position:"フロントエンド"},
-    {id:"device",title:"Seeeduino XIAO ESP32C3",position:"組み込み基盤"}
+    {id:"device",title:"Seeeduino XIAO ESP32C3",position:"組み込み基盤"},
+    {id:"web",title:"Astro.js",position:"Webサイト"}
 ]
 
 const bodyContent = [
-    {id:"backend",title:"IoT×ソフト開発に最適な ASP.NET Core",position:"バックエンド:ASP.NET",img:ImagesRoute.net_icon,body:"ASP.NETは高性能な API サーバーを構築できるフレームワークであり、MQTT や gRPC を利用したリアルタイム通信と高い親和性を持ちます。 軽量な IoT デバイスと連携、そして .NET MAUI Blazor Hybrid アプリとの統一的な開発体験を実現できる点から、IoT システム全体の中核となる技術として最適であるため採用しました。"},
-    {id:"frontend",title:"Webとネイティブを融合したモダン UI基盤",position:"フロントエンド:.NET MAUI Blazor Hybrid",img:ImagesRoute.Blazor_940x940,img2:ImagesRoute.MAUI,body:".NET MAUI Blazor Hybrid は、Web 技術（Blazor）とネイティブアプリ開発を融合したクロスプラットフォーム UI フレームワークである。1つのコードベースで Windows、macOS、Android、iOS に対応し、IoT システムと連携する管理画面や操作用アプリを効率的に構築できる点が特徴となっています。素のHTML,CSS,Jsを用いてアプリUI構築ができる点も採用した理由の大きな要因です。"},
-    {id:"device",title:"小型・低消費電力なマイコン",position:"組み込み基盤:Seeeduino XIAO ESP32C3",img:ImagesRoute.IMG_7182,body:"Seeeduino XIAO ESP32C3 は、超小型で低消費電力ながら Wi-Fi と BLE を搭載した IoT 向けマイコンである。高い拡張性と手軽な開発性を備えており、センサーデータ収集やデバイス制御を行うフロントラインとして最適なハードウェアとなっています。今回作成したデバイスはどれも場所を取らない設計にしたいと思っていたので最適なマイコンでした。"}
+    {id:"backend",title:"IoT×ソフト開発に最適な ASP.NET Core",position:"バックエンド:ASP.NET",img:ImagesRoute.net_icon,body:"ASP.NETは高性能な API サーバーを構築できるフレームワークであり、MQTT や gRPC を利用したリアルタイム通信と高い親和性を持ちます。 軽量な IoT デバイスと連携、そして .NET MAUI Blazor Hybrid アプリとの統一的な開発体験を実現できる点から、IoT システム全体の中核となる技術として最適であると考え採用しました。"},
+    {id:"frontend",title:"Webとネイティブを融合したモダン UI基盤",position:"フロントエンド:.NET MAUI Blazor Hybrid",img:ImagesRoute.Blazor_940x940,img2:ImagesRoute.MAUI,body:".NET MAUI Blazor Hybrid は、Web 技術（Blazor）とネイティブアプリ開発を融合したクロスプラットフォーム UI フレームワークです。1つのコードベースで Windows、macOS、Android、iOS に対応し、IoT システムと連携する管理画面や操作用アプリを効率的に構築できる点が特徴となっています。素のHTML,CSS,Jsを用いてアプリUI構築ができる点も採用した理由の大きな要因です。"},
+    {id:"device",title:"小型・低消費電力なマイコン",position:"組み込み基盤:Seeeduino XIAO ESP32C3",img:ImagesRoute.IMG_7182,body:"Seeeduino XIAO ESP32C3 は、超小型で低消費電力ながら Wi-Fi と Bluetooth を搭載しおり、拡張性と手軽な開発性を備えているマイコンです。今回作成したデバイスはどれも場所を取らない設計にしたいと思っていたので最適なマイコンでした。"},
+    {id:"web",title:"必要なところだけ動かす、超軽量サイト",position:"Webサイト(rumos.dawn-waiting.com):Astro",img:ImagesRoute.astro_icon,body:"Astroは 静的優先を採用し、必要な部分だけを最小限に再アクティブ化することで、圧倒的に高速なWebサイト構築できるフロントエンドフレームワークです。ページ全体をSPAとして動かすのではなく、動きが必要な場所だけを「島」としてJavaScript化し、それ以外はHTMLとして軽く配信する のが特徴です。"}
 ]
 ---
 <BaseLayout>

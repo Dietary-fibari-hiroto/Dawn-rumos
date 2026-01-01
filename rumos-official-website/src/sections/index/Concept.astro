@@ -22,7 +22,7 @@ import { ImagesRoute } from "../../assets/images/ImagesRoute"
         </figure>
     </div>
     <div class="concept-section__inner">
-        <figure class="gallery-end tracked-element3">
+        <figure class="gallery-end tracked-element">
             <img class="img--big-vertical" src = {ImagesRoute.IMG_7169}/>
         </figure>
         <div class="concept-section__inner-content">
@@ -53,7 +53,7 @@ import { ImagesRoute } from "../../assets/images/ImagesRoute"
             display:flex;
             align-items:center;
             justify-content:space-around;
-            overflow-x: hidden;
+            overflow: hidden;
 
 
             &-content{
@@ -67,6 +67,8 @@ import { ImagesRoute } from "../../assets/images/ImagesRoute"
         &__text{
             max-width:32rem;
             padding:0 2rem;
+            position: relative;
+            z-index: 10;
         }
     }
     .gallery{}

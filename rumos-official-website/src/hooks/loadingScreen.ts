@@ -155,15 +155,17 @@ export const initLoadingScreenWithProgress = (
   }
 };
 
+
 //プログレスバー付き+段階的フェード版
 export interface LoadingScreenStageOptions
   extends LoadingScreenWithProgressOptions {
   loaderSelector?: string; //ローダー要素のセレクタ
   secondProcessSelector?: string; //2段階目の要素のセレクタ
   loaderFadeDuration?: number; //ローダーのフェード時間
-  secondProcessFadeDuration?: number; // 2段階目のフェード時間
-  secondProcessDisplayTime?: number; // 2段階目の表示時間
-  finalFadeDuration?: number; // 最終フェードアウト時間
+  secondProcessFadeDuration?: number; //2段階目のフェード時間
+  secondProcessDisplayTime?: number; //2段階目の表示時間
+  finalFadeDuration?: number; //最終フェードアウト時間
+  showOnce?: boolean; //セッション中一度だけ表示するか
 }
 
 export const initLoadingScreenWithStages = (
@@ -182,19 +184,32 @@ export const initLoadingScreenWithStages = (
     secondProcessDisplayTime = 2000,
     finalFadeDuration = 1000,
     trackImages = true,
+    showOnce = true, // デフォルトで一度だけ表示
     onComplete,
   } = options;
 
   const loadingScreen = document.getElementById(loadingScreenId);
   const mainContent = document.getElementById(mainContentId);
+
+  if (!loadingScreen) return;
+
+  //セッション中に既に表示済みかチェック
+  if (showOnce && sessionStorage.getItem("loadingShown") === "true") {
+    //即座に削除してメインコンテンツを表示
+    loadingScreen.remove();
+    if (mainContent) {
+      mainContent.style.opacity = "1";
+    }
+    onComplete?.();
+    return;
+  }
+
   const progressBar = document.getElementById(progressBarId) as HTMLElement;
   const progressText = document.getElementById(progressTextId) as HTMLElement;
   const loader = document.querySelector(loaderSelector) as HTMLElement;
   const secondProcess = document.querySelector(
     secondProcessSelector
   ) as HTMLElement;
-
-  if (!loadingScreen) return;
 
   //2段階目を最初は非表示に
   if (secondProcess) {
@@ -259,19 +274,15 @@ export const initLoadingScreenWithStages = (
 
           // Stage4:全体をフェードアウトとメインコンテンツをフェードイン
           setTimeout(() => {
-            /*
-            loadingScreen.style.transition = `opacity ${finalFadeDuration}ms ease-out`;
-            loadingScreen.style.opacity = "0";
-
-            if (mainContent) {
-              mainContent.style.transition = `opacity ${finalFadeDuration}ms ease-in`;
-              mainContent.style.opacity = "1";
-            }
-              */
-
             //最後はローディングの要素全部消す
             setTimeout(() => {
               loadingScreen.remove();
+
+              // 表示済みフラグを立てる
+              if (showOnce) {
+                sessionStorage.setItem("loadingShown", "true");
+              }
+
               onComplete?.();
             }, finalFadeDuration);
           }, secondProcessFadeDuration);
