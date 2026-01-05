@@ -59,7 +59,7 @@ namespace Rumos_App
                 });
 
             var baseUrl = builder.Configuration["ApiSettings:BaseApiUrl"];
-            builder.Services.AddSingleton(new HttpClient { BaseAddress = new Uri(baseUrl) });
+
             builder.Services.AddMauiBlazorWebView();
 
 #if DEBUG
