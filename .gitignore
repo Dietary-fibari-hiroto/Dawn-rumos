@@ -1,7 +1,8 @@
 rumos_server/rumos_server/appsettings.json
-
+Rumos-App/Rumos-App/appsettings.json
 *.env
 certs/*
+
 
 
 
