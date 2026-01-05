@@ -1,5 +1,9 @@
+rumos_server/rumos_server/appsettings.json
+
 *.env
 certs/*
+
+
 
 #Node
 tp-link-test/node_modules/
