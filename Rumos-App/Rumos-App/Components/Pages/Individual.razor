@@ -1,123 +1,181 @@
-@page "/app/individual"
+Ôªø@page "/app/individual"
 @using Rumos_App.Services
+@using Rumos_App.DTOs
 @inject ApiService Api
 @inject IJSRuntime JS
-@using Rumos_App.DTOs
-<PageTitleLabel Title="Individual" SubTitle="å¬ï ÉRÉìÉgÉçÅ[Éã" />
-<div class="page-frame page-label-margin">
-    <section class="control-mode string-md">
-        <button @onclick="ControlModeChange" class="@(controlMode ? "selected" : "")">Control</button>
-        <button @onclick="ControlModeChange" class="@(controlMode ? "" : "selected")">Power</button>
+
+<PageTitleLabel Title="Individual" SubTitle="ÂÄãÂà•„Ç≥„É≥„Éà„É≠„Éº„É´" />
+
+<div class="individual-page">
+    <!-- „Ç≥„É≥„Éà„É≠„Éº„É´„É¢„Éº„ÉâÂàáÊõø -->
+    <section class="mode-toggle-section">
+        <div class="mode-toggle">
+            <button class="mode-button @(controlMode ? "active" : "")"
+                    @onclick="() => SetControlMode(true)">
+                <span class="mode-icon">‚ö°</span>
+                <span class="mode-label">Control</span>
+            </button>
+            <button class="mode-button @(!controlMode ? "active" : "")"
+                    @onclick="() => SetControlMode(false)">
+                <span class="mode-icon">üîå</span>
+                <span class="mode-label">Power</span>
+            </button>
+            <div class="mode-slider @(controlMode ? "left" : "right")"></div>
+        </div>
     </section>
-    <section class="device-section">
-        <div class="device-list">
-            @if (devices == null)
-            {
-                <p>...loading</p>
-            }else if (devices.Count == 0)
-            {
-                <p>No data found.</p>
-            }
-            else
-            {
-                @foreach(var platform in devices)
+
+    <!-- „É°„Ç§„É≥„Ç≥„É≥„ÉÜ„É≥„ÉÑ„Ç®„É™„Ç¢ -->
+    <section class="content-grid">
+        <!-- „Éá„Éê„Ç§„Çπ„É™„Çπ„Éà -->
+        <div class="panel device-list-panel">
+            <div class="panel-header">
+                <h2 class="panel-title">Devices</h2>
+                <span class="device-count">@GetDeviceCount()</span>
+            </div>
+
+            <div class="panel-content">
+                @if (devices == null)
                 {
-                    <p class="string-l series-label">@platform.PlatformName</p>
-                    <div class="list-container">
-                        @foreach(var device in platform.Devices)
+                    <div class="loading-state">
+                        <div class="loading-spinner"></div>
+                        <p class="loading-text">Loading devices...</p>
+                    </div>
+                }
+                else if (devices.Count == 0)
+                {
+                    <div class="empty-state">
+                        <div class="empty-icon">üì±</div>
+                        <p class="empty-text">No devices found</p>
+                    </div>
+                }
+                else
+                {
+                    <div class="device-list">
+                        @foreach (var platform in devices)
                         {
-                            <DeviceButton Device=@device  OnSelectDevice="ChangeControlDevice" />
+                            <div class="platform-section">
+                                <h3 class="platform-name">@platform.PlatformName</h3>
+                                <div class="device-grid">
+                                    @foreach (var device in platform.Devices)
+                                    {
+                                        <DeviceButton Device="@device"
+                                                      OnSelectDevice="SelectDevice"
+                                                      IsSelected="@(controlDevice?.Id == device.Id)" />
+                                    }
+                                </div>
+                            </div>
                         }
                     </div>
                 }
-            }
+            </div>
         </div>
-        <div class="device-list">
-            <div class="control-container">
-                <p class="string-l">@controlDevice?.Name</p>
-                <div class="string-m">
-                    <p>ID:@controlDevice?.Id</p>
-                    <p>
-                        Series:@(platforms?.FirstOrDefault(p => p.Id == controlDevice?.Series)?.Name ?? "ïsñæ")
-                    </p>
-                    <p>Power:On</p>
-                </div>
-                <select class="mode-select string-m">
-                    <option value="normal">Normal</option>
-                    <option value="fadein">Fadein</option>
-                    <option value="whitegradient">Whitegradient</option>
-                </select>
-                <input style="display:none;" @bind:after="OnColorPicked" type="color" @bind="SelectedColor" @oninput="UpdateRgb" @ref="colorInput" />
-                <p>Color: @SelectedColor</p>
-                <div @onclick="TriggerColorPicker" style="display:inline;">
-                    <button class="button-container">
-                        <div class="right-content absolute-position-center" style="box-shadow: 0 0 50px 20px @SelectedColor; background: @SelectedColor;" />
-                        <p class="string-md flex-all-center absolute-position-center content-blur name-plate;" />
-                    </button>
-                </div>
+
+        <!-- „Ç≥„É≥„Éà„É≠„Éº„É´„Éë„Éç„É´ -->
+        <div class="panel control-panel">
+            <div class="panel-header">
+                <h2 class="panel-title">Control</h2>
+                @if (controlDevice != null)
+                {
+                    <span class="control-status online">Online</span>
+                }
+            </div>
+
+            <div class="panel-content">
+                @if (controlDevice == null)
+                {
+                    <div class="no-device-state">
+                        <div class="no-device-icon">üéØ</div>
+                        <p class="no-device-text">Select a device to control</p>
+                    </div>
+                }
+                else
+                {
+                    <div class="control-container">
+                        <!-- „Éá„Éê„Ç§„ÇπÊÉÖÂ†± -->
+                        <div class="device-info-card">
+                            <h3 class="device-info-name">@controlDevice.Name</h3>
+                            <div class="device-info-details">
+                                <div class="info-item">
+                                    <span class="info-label">ID</span>
+                                    <span class="info-value">@controlDevice.Id</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-label">Series</span>
+                                    <span class="info-value">@GetPlatformName(controlDevice.Series)</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-label">Power</span>
+                                    <span class="info-value status-badge @(controlDevice.Brightness > 0 ? "on" : "off")">
+                                        @(controlDevice.Brightness > 0 ? "ON" : "OFF")
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- „É¢„Éº„ÉâÈÅ∏Êäû -->
+                        <div class="control-group">
+                            <label class="control-label">Mode</label>
+                            <div class="select-wrapper">
+                                <select class="mode-select" @bind="selectedMode">
+                                    <option value="normal">Normal</option>
+                                    <option value="fadein">Fade In</option>
+                                    <option value="whitegradient">White Gradient</option>
+                                </select>
+                                <div class="select-icon">‚ñº</div>
+                            </div>
+                        </div>
+
+                        <!-- „Ç´„É©„Éº„Éî„ÉÉ„Ç´„Éº -->
+                        <div class="control-group">
+                            <label class="control-label">Color</label>
+                            <div class="color-picker-container">
+                                <input type="color"
+                                       class="color-input-hidden"
+                                       @bind="selectedColor"
+                                       @bind:after="OnColorPicked"
+                                       @ref="colorInput" />
+
+                                <button class="color-picker-button" @onclick="TriggerColorPicker">
+                                    <div class="color-preview"
+                                         style="background: @selectedColor; box-shadow: 0 0 30px @selectedColor;">
+                                    </div>
+                                    <div class="color-info">
+                                        <span class="color-hex">@selectedColor</span>
+                                        <span class="color-rgb">@GetRgbString()</span>
+                                    </div>
+                                    <span class="picker-icon">üé®</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- „Ç¢„ÇØ„Ç∑„Éß„É≥„Éú„Çø„É≥ -->
+                        <div class="action-buttons">
+                            <button class="action-button primary" @onclick="ApplySettings">
+                                <span class="button-icon">‚úì</span>
+                                <span class="button-text">Apply</span>
+                            </button>
+                            <button class="action-button secondary" @onclick="ResetSettings">
+                                <span class="button-icon">‚Üª</span>
+                                <span class="button-text">Reset</span>
+                            </button>
+                        </div>
+                    </div>
+                }
             </div>
         </div>
     </section>
 </div>
+
 <BgImg Src="images/photos/IMG_7116.jpg" />
 
-
-
-@code{
+@code {
     private bool controlMode = true;
-    private string SelectedColor { get; set; } = "#FFA200";
-    private string? RgbColor { get; set; }
+    private string selectedColor = "#FFA200";
+    private string selectedMode = "normal";
     private DeviceDto? controlDevice;
     private List<Entities.Platform>? platforms;
-    //ëSÉfÉoÉCÉXèÓïÒÇPlatformÉxÅ[ÉXÇ≈äiî[Ç∑ÇÈÇΩÇﬂÇÃïœêî
     private List<PlatformWithDevicesDto>? devices;
-    private Task ControlModeChange()
-    {
-        controlMode = !controlMode;
-        return Task.CompletedTask;
-    }
-
-    private void UpdateRgb(ChangeEventArgs e)
-    {
-        SelectedColor = e.Value.ToString();
-        if (SelectedColor.StartsWith("#") && SelectedColor.Length == 7)
-        {
-            var r = Convert.ToInt32(SelectedColor.Substring(1, 2), 16);
-            var g = Convert.ToInt32(SelectedColor.Substring(3, 2), 16);
-            var b = Convert.ToInt32(SelectedColor.Substring(5, 2), 16);
-            RgbColor = $"rgb({r},{g},{b})";
-
-        }
-        StateHasChanged();
-    }
-
-    //êFëIëå„ÇÃèàóù
-    private async Task OnColorPicked()
-    {
-        if (SelectedColor.StartsWith("#") && SelectedColor.Length == 7)
-        {
-            var r = Convert.ToInt32(SelectedColor.Substring(1, 2), 16);
-            var g = Convert.ToInt32(SelectedColor.Substring(3, 2), 16);
-            var b = Convert.ToInt32(SelectedColor.Substring(5, 2), 16);
-
-            if (controlDevice != null)
-            {
-                controlDevice.R = r;
-                controlDevice.G = g;
-                controlDevice.B = b;
-                controlDevice.Brightness = 255;
-            }
-        }
-        await Api.TurnOnTheLightById(controlDevice);
-        StateHasChanged();
-    }
-
-
     private ElementReference colorInput;
-    private async Task TriggerColorPicker()
-    {
-        await JS.InvokeVoidAsync("clickTrigger", colorInput);
-    }
 
     protected override async Task OnInitializedAsync()
     {
@@ -126,13 +184,79 @@
         StateHasChanged();
     }
 
-    //controlÉRÉìÉeÉiÇ…Ç©ÇÒÇ∑ÇÈèàóù
-    private Task ChangeControlDevice(DeviceDto device)
+    private void SetControlMode(bool isControl)
+    {
+        controlMode = isControl;
+    }
+
+    private void SelectDevice(DeviceDto device)
     {
         controlDevice = device;
         string hex = $"#{device.R:X2}{device.G:X2}{device.B:X2}";
-        SelectedColor = hex;
+        selectedColor = hex;
         StateHasChanged();
-        return Task.CompletedTask;
+    }
+
+    private async Task TriggerColorPicker()
+    {
+        await JS.InvokeVoidAsync("eval", $"document.querySelector('input[type=color]').click()");
+    }
+
+    private async Task OnColorPicked()
+    {
+        if (controlDevice != null && selectedColor.StartsWith("#") && selectedColor.Length == 7)
+        {
+            var r = Convert.ToInt32(selectedColor.Substring(1, 2), 16);
+            var g = Convert.ToInt32(selectedColor.Substring(3, 2), 16);
+            var b = Convert.ToInt32(selectedColor.Substring(5, 2), 16);
+
+            controlDevice.R = r;
+            controlDevice.G = g;
+            controlDevice.B = b;
+            controlDevice.Brightness = 255;
+
+            await Api.TurnOnTheLightById(controlDevice);
+            StateHasChanged();
+        }
+    }
+
+    private async Task ApplySettings()
+    {
+        if (controlDevice != null)
+        {
+            await OnColorPicked();
+        }
+    }
+
+    private void ResetSettings()
+    {
+        if (controlDevice != null)
+        {
+            selectedColor = "#FFFFFF";
+            selectedMode = "normal";
+            StateHasChanged();
+        }
+    }
+
+    private string GetPlatformName(int seriesId)
+    {
+        return platforms?.FirstOrDefault(p => p.Id == seriesId)?.Name ?? "‰∏çÊòé";
+    }
+
+    private int GetDeviceCount()
+    {
+        return devices?.Sum(p => p.Devices.Count) ?? 0;
+    }
+
+    private string GetRgbString()
+    {
+        if (selectedColor.StartsWith("#") && selectedColor.Length == 7)
+        {
+            var r = Convert.ToInt32(selectedColor.Substring(1, 2), 16);
+            var g = Convert.ToInt32(selectedColor.Substring(3, 2), 16);
+            var b = Convert.ToInt32(selectedColor.Substring(5, 2), 16);
+            return $"RGB({r}, {g}, {b})";
+        }
+        return "RGB(0, 0, 0)";
     }
 }

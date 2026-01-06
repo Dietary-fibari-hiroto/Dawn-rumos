@@ -97,7 +97,10 @@ public static class ServiceExtensions
 
     public static IServiceCollection AddDatabaseContext(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddDbContext<AppDbContext>(options => options.UseMySql(configuration.GetConnectionString("DefaultConnection"), new MySqlServerVersion(new Version(8, 0, 38))));
+        services.AddDbContext<AppDbContext>(options =>
+            options.UseSqlServer(
+                Environment.GetEnvironmentVariable("DEFAULTCONNECTION")
+            ));
         return services;
     }
 }

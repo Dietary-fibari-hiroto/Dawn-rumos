@@ -1,44 +1,359 @@
-.screen-container {
-    background: linear-gradient(135deg,black,#560097);
-    position:relative;
-    transition:opacity 1s ease-in-out;
-    text-align:center;
+/*スプラッシュスクリーン */
+.splash-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: linear-gradient(180deg, #0D081A 0%, #1F1340 50%, #000000 100% );
+    overflow: hidden;
+    z-index: 9999;
+    opacity: 1;
+    transition: opacity 0.6s ease-out;
 }
-   .hidden {
+
+    .splash-screen.fade-out {
         opacity: 0;
-        
+        pointer-events: none;
     }
 
-
-
-.app-logo {
-    letter-spacing: 20px;
+/*星空効*/
+.stars-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
 }
-.company-logo {
-    letter-spacing: 10px;
+
+.stars {
+    position: absolute;
+    width: 200%;
+    height: 200%;
+    background: transparent;
 }
 
-.blur-element {
-    width: 600px;
-    height: 170px;
-    border-radius: 100%;
-    background: radial-gradient(circle, #ffffff00, #ffffffff);
-    backdrop-filter: blur(15px);
-    -webkit-backdrop-filter: blur(15px);
+    .stars::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-image: radial-gradient(2px 2px at 20% 30%, rgba(232, 230, 240, 0.8), transparent), radial-gradient(2px 2px at 60% 70%, rgba(232, 230, 240, 0.6), transparent), radial-gradient(1px 1px at 50% 50%, rgba(232, 230, 240, 0.4), transparent), radial-gradient(1px 1px at 80% 10%, rgba(232, 230, 240, 0.7), transparent), radial-gradient(2px 2px at 90% 60%, rgba(232, 230, 240, 0.5), transparent), radial-gradient(1px 1px at 33% 80%, rgba(232, 230, 240, 0.3), transparent);
+        background-size: 200% 200%, 300% 300%, 250% 250%, 280% 280%, 220% 220%, 260% 260%;
+        background-position: 0% 0%, 40% 60%, 130% 270%, 70% 100%, 200% 50%, 340% 180%;
+        animation: sparkle 120s linear infinite;
+    }
+
+.stars-2::before {
+    animation-delay: 1s;
+    animation-duration: 150s;
+}
+
+.stars-3::before {
+    animation-delay: 2s;
+    animation-duration: 180s;
     opacity: 0.5;
-    z-index: 0;
-    transition: opacity 2s ease-in-out 2s;
-}
-.logo-container {
-    z-index: 3;
-    transition: opacity 2s ease-in-out 1s;
 }
 
-.text-animation {
-    color: black;
-    transition: color 2s ease-in-out 2s;
-}
-    .text-animation.white {
-        color: white;
+@keyframes sparkle {
+    from {
+        transform: translateY(0);
     }
 
+    to {
+        transform: translateY(-100%);
+    }
+}
+
+/*夜明けのグラデーション*/
+.dawn-gradient {
+    position: absolute;
+    top: -50%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 150%;
+    height: 150%;
+    background: radial-gradient( ellipse at center, rgba(31, 19, 64, 0.4) 0%, rgba(31, 19, 64, 0.2) 30%, transparent 60% );
+    opacity: 0;
+    transition: opacity 1s ease-in-out;
+}
+
+    .dawn-gradient.show {
+        opacity: 1;
+    }
+
+/*スプラッシュコンテンツ*/
+.splash-content {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 10;
+}
+
+/*ロゴグループ*/
+.logo-group {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: clamp(20px, 3vh, 40px);
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 1s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+    .logo-group.show {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+/*グローサークル*/
+.glow-circle {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: clamp(300px, 50vw, 600px);
+    height: clamp(150px, 25vh, 300px);
+    background: radial-gradient( ellipse, rgba(31, 19, 64, 0.6) 0%, rgba(31, 19, 64, 0.3) 40%, transparent 70% );
+    filter: blur(40px);
+    animation: pulse 4s ease-in-out infinite;
+    z-index: -1;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 0.6;
+    }
+
+    50% {
+        transform: translate(-50%, -50%) scale(1.1);
+        opacity: 0.8;
+    }
+}
+
+/*アプリタイトル*/
+.app-title {
+    margin: 0;
+    padding: 0;
+    text-align: center;
+}
+
+.title-main {
+    display: block;
+    font-size: clamp(48px, 8vw, 96px);
+    font-weight: 300;
+    letter-spacing: 0.3em;
+    color: rgba(232, 230, 240, 0.95);
+    text-shadow: 0 0 20px rgba(31, 19, 64, 0.8), 0 0 40px rgba(31, 19, 64, 0.4), 0 0 60px rgba(31, 19, 64, 0.2);
+    animation: glow 3s ease-in-out infinite alternate;
+}
+
+@keyframes glow {
+    from {
+        text-shadow: 0 0 20px rgba(31, 19, 64, 0.8), 0 0 40px rgba(31, 19, 64, 0.4), 0 0 60px rgba(31, 19, 64, 0.2);
+    }
+
+    to {
+        text-shadow: 0 0 30px rgba(31, 19, 64, 1), 0 0 60px rgba(31, 19, 64, 0.6), 0 0 90px rgba(31, 19, 64, 0.3);
+    }
+}
+
+/* おれのデザイン名 */
+.company-name {
+    margin: 0;
+    font-size: clamp(20px, 3vw, 32px);
+    font-weight: 400;
+    letter-spacing: 0.5em;
+    color: rgba(232, 230, 240, 0.7);
+    text-transform: uppercase;
+}
+
+/*ローディングインジケーター*/
+.loading-indicator {
+    margin-top: clamp(40px, 8vh, 80px);
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.6s ease-out;
+}
+
+    .loading-indicator.show {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+.loading-dots {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    align-items: center;
+}
+
+.dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: rgba(232, 230, 240, 0.6);
+    animation: dot-bounce 1.4s infinite ease-in-out both;
+}
+
+    .dot:nth-child(1) {
+        animation-delay: -0.32s;
+    }
+
+    .dot:nth-child(2) {
+        animation-delay: -0.16s;
+    }
+
+@keyframes dot-bounce {
+    0%, 80%, 100% {
+        transform: scale(0.8);
+        opacity: 0.5;
+    }
+
+    40% {
+        transform: scale(1.2);
+        opacity: 1;
+    }
+}
+
+/*光の粒子エフェクト*/
+.particles {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 1s ease-in-out;
+}
+
+    .particles.show {
+        opacity: 1;
+    }
+
+.particle {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: rgba(232, 230, 240, 0.8);
+    border-radius: 50%;
+    top: 50%;
+    left: 50%;
+    animation: float-particle 3s ease-in-out infinite;
+    animation-delay: var(--delay, 0s);
+    box-shadow: 0 0 10px rgba(232, 230, 240, 0.6);
+}
+
+@keyframes float-particle {
+    0% {
+        transform: translate(0, 0) scale(0);
+        opacity: 0;
+    }
+
+    10% {
+        opacity: 1;
+    }
+
+    90% {
+        opacity: 1;
+    }
+
+    100% {
+        transform: translate(var(--x, 0), var(--y, -100px)) scale(1);
+        opacity: 0;
+    }
+}
+
+/* レスポンシブ対応 */
+
+/* タブレット */
+@media (max-width: 1024px) {
+    .glow-circle {
+        width: clamp(250px, 60vw, 500px);
+        height: clamp(125px, 30vh, 250px);
+    }
+
+    .title-main {
+        letter-spacing: 0.25em;
+    }
+
+    .company-name {
+        letter-spacing: 0.4em;
+    }
+}
+
+/* モバイル */
+@media (max-width: 768px) {
+    .glow-circle {
+        width: clamp(200px, 80vw, 400px);
+        height: clamp(100px, 40vh, 200px);
+    }
+
+    .title-main {
+        letter-spacing: 0.2em;
+    }
+
+    .company-name {
+        letter-spacing: 0.3em;
+    }
+
+    .logo-group {
+        gap: 20px;
+    }
+
+    .loading-indicator {
+        margin-top: 40px;
+    }
+}
+
+/* 小さいモバイル */
+@media (max-width: 480px) {
+    .title-main {
+        font-size: 36px;
+        letter-spacing: 0.15em;
+    }
+
+    .company-name {
+        font-size: 16px;
+        letter-spacing: 0.25em;
+    }
+
+    .dot {
+        width: 6px;
+        height: 6px;
+    }
+}
+
+/* アクセシビリティ: モーション軽減 */
+@media (prefers-reduced-motion: reduce) {
+    .stars::before,
+    .glow-circle,
+    .title-main,
+    .particle {
+        animation: none;
+    }
+
+    .dot {
+        animation: simple-fade 1.4s infinite ease-in-out both;
+    }
+
+    @keyframes simple-fade {
+        0%, 100% {
+            opacity: 0.5;
+        }
+
+        50% {
+            opacity: 1;
+        }
+    }
+}

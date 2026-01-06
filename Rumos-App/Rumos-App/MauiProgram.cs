@@ -14,7 +14,6 @@ using Microsoft.UI;
 using Windows.Graphics;
 #endif
 
-
 namespace Rumos_App
 {
     public static class MauiProgram
@@ -30,46 +29,43 @@ namespace Rumos_App
                 .AddJsonStream(stream!)
                 .Build();
             builder.Configuration.AddConfiguration(config);
+
             builder
                 .UseMauiApp<App>()
                 .ConfigureFonts(fonts =>
                 {
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
-
                 })
                 .ConfigureLifecycleEvents(events => {
-                    #if WINDOWS
+#if WINDOWS
                         events.AddWindows(windows =>
                         {
                             windows.OnWindowCreated(window =>
                             {
-                                // MAUI の Window から WinUI3 のネイティブウィンドウを取得
                                 var hwnd = WindowNative.GetWindowHandle(window);
                                 var windowId = Win32Interop.GetWindowIdFromWindow(hwnd);
                                 var appWindow = AppWindow.GetFromWindowId(windowId);
-
-                                // WinUI3 の OverlappedPresenter で最大化
+                                
                                 if (appWindow.Presenter is OverlappedPresenter presenter)
                                 {
                                     presenter.Maximize();
                                 }
                             });
                         });
-                    #endif
+#endif
                 });
 
-            var baseUrl = builder.Configuration["ApiSettings:BaseApiUrl"];
-            builder.Services.AddSingleton(new HttpClient { BaseAddress = new Uri(baseUrl) });
             builder.Services.AddMauiBlazorWebView();
 
 #if DEBUG
-    		builder.Services.AddBlazorWebViewDeveloperTools();
-    		builder.Logging.AddDebug();
+            builder.Services.AddBlazorWebViewDeveloperTools();
+            builder.Logging.AddDebug();
 #endif
-            builder.Services.AddSingleton(new HttpClient());
-            builder.Services.AddScoped<ApiService>();
-            builder.Services.AddScoped<MagicRoutineApiService>();
-            builder.Services.AddSingleton<SignalRService>();            
+
+            builder.Services.AddHttpClient<ApiService>();
+            builder.Services.AddHttpClient<MagicRoutineApiService>();
+
+
             return builder.Build();
         }
     }

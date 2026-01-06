@@ -1,35 +1,70 @@
 ﻿@inherits LayoutComponentBase
 @inject NavigationManager Nav
 
-<aside class="side-viewer  @(isOpenSideMenu?"open":"")">
-    <img @onclick="OpenDialog" class="open-button" src="images/elements/menu.svg" />
-    <div class="sideline" />
-    @if (isOpenSideMenu)
-    {
-        <div class=" font-Montserrat opend-menu @(isOpenSideMenu ? "show" : "")">
-            <button @onclick='() => NavFunction("/app/individual")'>Individual</button>
-            <button @onclick='() => NavFunction("/app/magicroutine")'>MagicRoutine</button>
-            <button @onclick='() => NavFunction("/app/device")'>Device</button>
-            <button @onclick='() => NavFunction("/app/test")'>Test</button>
-        </div>
-    }
-</aside>
-<p class="app-logo string-l">Rumos</p>
-<div class="section-frame flex-all-center main-viewer">
+<div class="layout-container">
+    <!-- サイドナビゲーション -->
+    <aside class="side-navigation @(isMenuOpen ? "open" : "")">
+        <button class="menu-toggle" @onclick="ToggleMenu" aria-label="メニュー切り替え">
+            <svg class="menu-icon @(isMenuOpen ? "open" : "")" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line class="line line-1" x1="3" y1="6" x2="21" y2="6" />
+                <line class="line line-2" x1="3" y1="12" x2="21" y2="12" />
+                <line class="line line-3" x1="3" y1="18" x2="21" y2="18" />
+            </svg>
+        </button>
+
+        <div class="menu-divider"></div>
+
+        @if (isMenuOpen)
+        {
+            <nav class="nav-menu @(isMenuOpen ? "show" : "")">
+                <button class="nav-item" @onclick='() => NavigateTo("/app/individual")'>
+                    <span class="nav-label">Individual</span>
+                    <span class="nav-indicator"></span>
+                </button>
+                <button class="nav-item" @onclick='() => NavigateTo("/app/magicroutine")'>
+                    <span class="nav-label">MagicRoutine</span>
+                    <span class="nav-indicator"></span>
+                </button>
+                <button class="nav-item" @onclick='() => NavigateTo("/app/device")'>
+                    <span class="nav-label">Device</span>
+                    <span class="nav-indicator"></span>
+                </button>
+                <button class="nav-item" @onclick='() => NavigateTo("/app/test")'>
+                    <span class="nav-label">Test</span>
+                    <span class="nav-indicator"></span>
+                </button>
+            </nav>
+        }
+    </aside>
+
+    <!-- ヘッダーロゴ -->
+    <header class="app-header">
+        <h1 class="app-logo">Dawn Rumos</h1>
+    </header>
+
+    <!-- メインコンテンツ -->
+    <main class="main-content">
         @Body
-</div>
-@code {
-    private bool isOpenSideMenu = false;
-    private  Task OpenDialog()
+    </main>
+
+    <!-- 背景のオーバーレイ（メニューが開いた時） -->
+    @if (isMenuOpen)
     {
-        isOpenSideMenu = !isOpenSideMenu;
-        return Task.CompletedTask;
+        <div class="menu-overlay" @onclick="ToggleMenu"></div>
+    }
+</div>
+
+@code {
+    private bool isMenuOpen = false;
+
+    private void ToggleMenu()
+    {
+        isMenuOpen = !isMenuOpen;
     }
 
-    private Task NavFunction(String path)
+    private void NavigateTo(string path)
     {
-        isOpenSideMenu = false;
+        isMenuOpen = false;
         Nav.NavigateTo(path);
-        return Task.CompletedTask;
     }
 }

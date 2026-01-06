@@ -1,14 +1,93 @@
-.label-container
-{
-    padding:0 15px;
-    border-bottom:1px solid white;
-    position:absolute;
-    top:5%;
-    left:10%;
-    z-index:5;
+.page-title-header {
+    position: fixed;
+    top: clamp(80px, 12vh, 120px);
+    left: clamp(100px, 12vw, 180px);
+    z-index: 40;
+    max-width: 600px;
 }
 
-.title{
-    text-align:start;
-    width:100%;
+.title-content {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.page-title {
+    margin: 0;
+    font-size: clamp(32px, 4vw, 48px);
+    font-weight: 300;
+    letter-spacing: 0.15em;
+    color: rgba(232, 230, 240, 0.95);
+    text-shadow: 0 0 20px rgba(31, 19, 64, 0.6);
+}
+
+.page-subtitle {
+    margin: 0;
+    font-size: clamp(14px, 1.8vw, 18px);
+    font-weight: normal;
+    color: rgba(232, 230, 240, 0.7);
+    letter-spacing: 0.1em;
+}
+
+.title-underline {
+    width: 60px;
+    height: 2px;
+    margin-top: 12px;
+    background: linear-gradient( 90deg, rgba(31, 19, 64, 0.8) 0%, rgba(232, 230, 240, 0.6) 50%, transparent 100% );
+    animation: expand 0.6s ease-out;
+}
+
+@keyframes expand {
+    from {
+        width: 0;
+        opacity: 0;
+    }
+
+    to {
+        width: 60px;
+        opacity: 1;
+    }
+}
+
+/* タブレット */
+@media (max-width: 1024px) {
+    .page-title-header {
+        top: clamp(70px, 10vh, 100px);
+        left: clamp(80px, 10vw, 140px);
+    }
+}
+
+/* モバイル */
+@media (max-width: 768px) {
+    .page-title-header {
+        top: 80px;
+        left: 20px;
+        right: 20px;
+        max-width: calc(100vw - 40px);
+    }
+
+    .page-title {
+        font-size: 24px;
+        letter-spacing: 0.1em;
+    }
+
+    .page-subtitle {
+        font-size: 13px;
+    }
+
+    .title-underline {
+        width: 40px;
+        margin-top: 8px;
+    }
+}
+
+/* 小さいモバイル */
+@media (max-width: 480px) {
+    .page-title {
+        font-size: 20px;
+    }
+
+    .page-subtitle {
+        font-size: 12px;
+    }
 }

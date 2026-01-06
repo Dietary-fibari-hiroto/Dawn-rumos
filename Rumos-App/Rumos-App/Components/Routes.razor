@@ -1,26 +1,41 @@
-﻿<Router AppAssembly="@typeof(MauiProgram).Assembly">
+﻿@using Microsoft.AspNetCore.Components.Routing
+
+<Router AppAssembly="@typeof(MauiProgram).Assembly">
     <Found Context="routeData">
         <LayoutView Layout="@GetLayout(routeData)">
             <RouteView RouteData="@routeData" />
             <FocusOnNavigate RouteData="@routeData" Selector="h1" />
         </LayoutView>
     </Found>
+    <NotFound>
+        <LayoutView Layout="@typeof(RumosLayout)">
+            <div class="section-frame flex-center">
+                <div class="flex-col-center gap-lg">
+                    <h1 class="text-2xl font-montserrat">404</h1>
+                    <p class="text-md opacity-70">ページが見つかりません</p>
+                </div>
+            </div>
+        </LayoutView>
+    </NotFound>
 </Router>
 
+@code {
+    [Inject]
+    private NavigationManager Nav { get; set; } = default!;
 
-@code{
-    [Inject] NavigationManager Nav { get; set; }
-
-    private Type GetLayout(RouteData routeData)
+    private Type? GetLayout(RouteData routeData)
     {
         var path = Nav.Uri.Replace(Nav.BaseUri, "");
-        // app系のパスで MainBg を使いたい場合
-        string[] mainBgPaths = { "app" };
 
-        if (mainBgPaths.Any(p => path.StartsWith(p)))
+        // アプリケーション内のパスではRumosLayoutを使用
+        string[] appPaths = { "app" };
+
+        if (appPaths.Any(p => path.StartsWith(p, StringComparison.OrdinalIgnoreCase)))
         {
             return typeof(RumosLayout);
         }
-        return null;
+
+        // デフォルトではRumosLayoutを使用
+        return typeof(RumosLayout);
     }
 }

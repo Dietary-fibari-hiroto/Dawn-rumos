@@ -1,166 +1,1038 @@
-.page-setting{
-    overflow-y:scroll;
-}
-    .page-setting > * + *{
-        margin-top:30px;
-    }
-    .device-list {
-        width: 80%;
-        height: 700px;
-        border-radius: 10px;
-        overflow-y: scroll;
-        backdrop-filter: blur(15px);
-        -webkit-backdrop-filter: blur(15px);
-    }
-
-    .device-list > .title-label {
-        width: 100%;
-        height: 50px;
-        border-radius: 10px 10px 0 0;
-    }
-
-.device-control {
-    width: 800px;
-    height: 700px;
-    border-radius: 10px;
-    overflow-y: scroll;
-    backdrop-filter: blur(15px);
-    -webkit-backdrop-filter: blur(15px);
-    background: #00000044;
-}
-
-.list-container {
+/* ===== MagicRoutine Page ===== */
+.magic-routine-page {
+    position: relative;
+    z-index:3;
+    width: 100%;
+    min-height: 100vh;
+    padding: clamp(160px, 20vh, 220px) clamp(20px, 3vw, 40px) clamp(40px, 6vh, 80px);
     display: flex;
+    flex-direction: column;
+    gap: clamp(25px, 4vh, 40px);
+}
+
+/* ===== プリセットカルーセル ===== */
+.preset-carousel-section {
+    width: 100%;
+    margin-bottom: clamp(10px, 2vh, 20px);
+}
+
+.preset-carousel {
+    display: flex;
+    gap: clamp(15px, 2vw, 20px);
+    overflow-x: auto;
+    padding: clamp(10px, 2vh, 15px) 0;
+    scroll-behavior: smooth;
+}
+
+    .preset-carousel::-webkit-scrollbar {
+        height: 6px;
+    }
+
+    .preset-carousel::-webkit-scrollbar-track {
+        background: rgba(0, 0, 0, 0.2);
+        border-radius: 3px;
+    }
+
+    .preset-carousel::-webkit-scrollbar-thumb {
+        background: rgba(31, 19, 64, 0.5);
+        border-radius: 3px;
+    }
+
+        .preset-carousel::-webkit-scrollbar-thumb:hover {
+            background: rgba(31, 19, 64, 0.7);
+        }
+
+/* プリセットカード共通 */
+.preset-card {
+    position: relative;
+    min-width: clamp(280px, 35vw, 400px);
+    height: clamp(160px, 20vh, 200px);
+    background: rgba(13, 8, 26, 0.6);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(31, 19, 64, 0.4);
+    border-radius: 16px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+    .preset-card:hover {
+        transform: translateY(-4px);
+        border-color: rgba(31, 19, 64, 0.7);
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+    }
+
+    .preset-card.selected {
+        border: 2px solid rgba(31, 19, 64, 1);
+        box-shadow: 0 0 30px rgba(31, 19, 64, 0.6);
+    }
+
+/* 新規作成カード */
+.create-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    background: linear-gradient( 135deg, rgba(31, 19, 64, 0.3) 0%, rgba(13, 8, 26, 0.6) 100% );
+    border-style: dashed;
+}
+
+    .create-card:hover {
+        background: linear-gradient( 135deg, rgba(31, 19, 64, 0.5) 0%, rgba(13, 8, 26, 0.8) 100% );
+        border-style: solid;
+    }
+
+.create-icon-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 60px;
+    height: 60px;
+    background: rgba(31, 19, 64, 0.4);
+    border-radius: 50%;
+    transition: all 0.3s ease;
+}
+
+.create-card:hover .create-icon-wrapper {
+    background: rgba(31, 19, 64, 0.7);
+    box-shadow: 0 0 20px rgba(31, 19, 64, 0.5);
+}
+
+.create-icon {
+    font-size: 32px;
+    font-weight: 300;
+    color: rgba(232, 230, 240, 0.9);
+}
+
+.create-label {
+    font-size: clamp(14px, 1.8vw, 16px);
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    color: rgba(232, 230, 240, 0.8);
+}
+
+/* プリセットサムネイル */
+.preset-thumbnail {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 1;
+}
+
+.preset-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient( 180deg, rgba(0, 0, 0, 0.2) 0%, rgba(13, 8, 26, 0.8) 100% );
+    z-index: 2;
+    transition: background 0.3s ease;
+}
+
+.preset-card:hover .preset-overlay {
+    background: linear-gradient( 180deg, rgba(0, 0, 0, 0.1) 0%, rgba(13, 8, 26, 0.7) 100% );
+}
+
+.preset-info {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: clamp(15px, 2vh, 20px) clamp(15px, 2vw, 20px);
+    z-index: 3;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+
+.preset-name {
+    margin: 0;
+    font-size: clamp(16px, 2vw, 20px);
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    color: rgba(232, 230, 240, 0.95);
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+}
+
+.selected-badge {
+    padding: 6px 14px;
+    background: rgba(31, 19, 64, 0.9);
+    border-radius: 20px;
+    font-size: clamp(11px, 1.3vw, 13px);
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    color: rgba(232, 230, 240, 0.95);
+    box-shadow: 0 0 15px rgba(31, 19, 64, 0.6);
+    animation: pulse-badge 2s ease-in-out infinite;
+}
+
+@keyframes pulse-badge {
+    0%, 100% {
+        box-shadow: 0 0 15px rgba(31, 19, 64, 0.6);
+    }
+
+    50% {
+        box-shadow: 0 0 25px rgba(31, 19, 64, 0.8);
+    }
+}
+
+/* ローディング・空状態 */
+.preset-loading,
+.preset-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-width: 300px;
+    height: 180px;
+    padding: 30px;
+}
+
+.empty-hint {
+    margin-top: 8px;
+    font-size: clamp(12px, 1.5vw, 14px);
+    color: rgba(232, 230, 240, 0.5);
+}
+
+/* ===== モードセレクター ===== */
+.mode-selector-section {
+    display: flex;
+    justify-content: flex-start;
+}
+
+.mode-buttons {
+    display: flex;
+    gap: 12px;
     flex-wrap: wrap;
 }
 
-.series-label {
-    padding-left: 10px;
+/* ===== 編集パネル ===== */
+.edit-panel {
+    width: 100%;
+    padding: clamp(20px, 3vh, 30px) clamp(20px, 3vw, 30px);
+    background: rgba(13, 8, 26, 0.6);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(31, 19, 64, 0.5);
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    animation: slideDown 0.3s ease-out;
 }
 
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
 
-.function-list{
-    display:flex;
-    justify-content:start;
-    align-items:center;   
-}
-.magic-list{
-    width:100%;
-    overflow-x:scroll;
-    display:flex;
-    justify-content:start;
-    align-items:center;
-}
-    .magic-list > .magic-button {
-        min-width: 400px;
-        min-height: 200px;
-        position: relative;
-        border-radius: 10px;
-        overflow: hidden;
-        margin-left:20px;
+    to {
+        opacity: 1;
+        transform: translateY(0);
     }
-    .magic-list > .magic-button.create {
-        border:1px solid white;
-    }
-.magic-button > .thumbnail{
-    width:100%;
-    height:100%;
-    z-index:1;
-    opacity:0.8;
 }
-.magic-button > .title {
-    position:absolute;
-    z-index:3;
-    bottom:5%;
-    right:5%;
+
+.edit-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: clamp(15px, 2vh, 20px);
+    margin-bottom: clamp(20px, 3vh, 25px);
+    border-bottom: 1px solid rgba(31, 19, 64, 0.3);
 }
-.magic-button.selected {
-    border:green solid 2px;
+
+.edit-title {
+    margin: 0;
+    font-size: clamp(20px, 2.5vw, 24px);
+    font-weight: 400;
+    letter-spacing: 0.1em;
+    color: rgba(232, 230, 240, 0.95);
+}
+
+.edit-preset-name {
+    padding: 6px 16px;
+    background: rgba(31, 19, 64, 0.5);
+    border-radius: 20px;
+    font-size: clamp(12px, 1.5vw, 14px);
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    color: rgba(232, 230, 240, 0.9);
+}
+
+.edit-controls {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(20px, 3vh, 25px);
+}
+
+/* デバイス情報（コンパクト版） */
+.device-info-compact {
+    padding: clamp(15px, 2vh, 20px);
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(31, 19, 64, 0.3);
+    border-radius: 10px;
+}
+
+.device-name {
+    margin: 0 0 10px 0;
+    font-size: clamp(16px, 2vw, 18px);
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    color: rgba(232, 230, 240, 0.95);
+}
+
+.device-meta {
+    display: flex;
+    gap: 20px;
+    font-size: clamp(12px, 1.5vw, 13px);
+    color: rgba(232, 230, 240, 0.6);
+}
+
+.device-id,
+.device-series {
+    letter-spacing: 0.05em;
+}
+
+/* 編集コントロール */
+.edit-control-group {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: clamp(15px, 2vw, 20px);
+}
+
+.control-item {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.control-label {
+    font-size: clamp(12px, 1.5vw, 14px);
+    font-weight: 500;
+    color: rgba(232, 230, 240, 0.8);
+    letter-spacing: 0.05em;
+}
+
+.select-wrapper {
+    position: relative;
 }
 
 .mode-select {
-    width: 250px;
-    height: 60px;
-    color: white;
-    background: black;
-    text-align: start;
-    padding-left: 10px;
+    width: 100%;
+    height: 46px;
+    padding: 0 40px 0 15px;
+    background: rgba(0, 0, 0, 0.4);
+    border: 1px solid rgba(31, 19, 64, 0.4);
+    border-radius: 8px;
+    font-size: clamp(13px, 1.6vw, 14px);
+    color: rgba(232, 230, 240, 0.9);
+    cursor: pointer;
+    transition: all 0.3s ease;
 }
-.button-container {
+
+    .mode-select:hover {
+        border-color: rgba(31, 19, 64, 0.6);
+        background: rgba(0, 0, 0, 0.5);
+    }
+
+    .mode-select:focus {
+        outline: none;
+        border-color: rgba(31, 19, 64, 0.8);
+        box-shadow: 0 0 12px rgba(31, 19, 64, 0.3);
+    }
+
+    .mode-select option {
+        background: #0D081A;
+        color: rgba(232, 230, 240, 0.9);
+    }
+
+.select-icon {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 11px;
+    color: rgba(232, 230, 240, 0.6);
+    pointer-events: none;
+}
+
+/* カラーピッカー（コンパクト版） */
+.color-picker-container {
     position: relative;
-    width: 200px;
-    height: 70px;
-    margin: 20px;
-    border-radius: 10px;
 }
 
-.right-content {
-    width: 150px;
-    height: 50px;
-    z-index: 1;
-    border-radius: 10px;
+.color-input-hidden {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+    pointer-events: none;
 }
 
-.device-setting-panel {
+.color-picker-button.compact {
     display: flex;
-    justify-content: start;
     align-items: center;
+    gap: 12px;
+    width: 100%;
+    padding: 10px 15px;
+    background: rgba(0, 0, 0, 0.4);
+    border: 1px solid rgba(31, 19, 64, 0.4);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
 }
 
-    .device-setting-panel > * + * {
-        margin-left: 20px;
+    .color-picker-button.compact:hover {
+        border-color: rgba(31, 19, 64, 0.6);
+        background: rgba(0, 0, 0, 0.5);
     }
 
-
-.delete-dialog{
-    position:fixed;
-    top:0;
-    left:0;
-    z-index:10;
-    width:100vw;
-    height:100vh;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    backdrop-filter:blur(15px);
-    -webkit-backdrop-filter:blur(15px);
-
-}
-.delete-container{
-    position:relative;
-    width:1300px;
-    height:700px;
-    display:flex;
-    flex-direction:column;
-    justify-content:center;
-    align-items:center;
-    background:black;
-    
-}
-.delete-container > * + *{
-    margin-top:20px;
-}
-    .delete-container > .cancel-button {
-        position:absolute;
-        top:10px;
-        left:10px;
-    }
-    .delete-container > .delete-button {
-        background: #4500BC;
-        text-align:center;
-        width:500px;
-        height:50px;
+    .color-picker-button.compact .color-preview {
+        width: 36px;
+        height: 36px;
+        border-radius: 6px;
+        border: 2px solid rgba(232, 230, 240, 0.2);
+        flex-shrink: 0;
     }
 
-.routine-save-button{
-    width:100%;
-    display:flex;
-    justify-content:center;
-    align-items:center;
+    .color-picker-button.compact .color-hex {
+        flex: 1;
+        font-family: 'Montserrat', sans-serif;
+        font-size: clamp(13px, 1.6vw, 15px);
+        font-weight: 600;
+        color: rgba(232, 230, 240, 0.9);
+        letter-spacing: 0.05em;
+    }
+
+    .color-picker-button.compact .picker-icon {
+        font-size: 20px;
+        opacity: 0.6;
+    }
+
+/* 編集空状態 */
+.edit-empty {
+    padding: 40px 20px;
+    text-align: center;
 }
-    .routine-save-button > button {
-        width: 500px;
+
+.edit-empty-text {
+    margin: 0;
+    font-size: clamp(14px, 1.8vw, 16px);
+    color: rgba(232, 230, 240, 0.6);
+}
+
+/* 編集アクション */
+.edit-actions {
+    margin-top: clamp(20px, 3vh, 25px);
+    padding-top: clamp(20px, 3vh, 25px);
+    border-top: 1px solid rgba(31, 19, 64, 0.3);
+    display: flex;
+    justify-content: center;
+}
+
+.save-button {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 40px;
+    background: linear-gradient( 135deg, rgba(31, 19, 64, 0.8) 0%, rgba(31, 19, 64, 0.6) 100% );
+    border: 1px solid rgba(31, 19, 64, 0.6);
+    border-radius: 10px;
+    font-size: clamp(14px, 1.8vw, 16px);
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    color: rgba(232, 230, 240, 0.95);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+    .save-button:hover {
+        background: linear-gradient( 135deg, rgba(31, 19, 64, 0.9) 0%, rgba(31, 19, 64, 0.7) 100% );
+        box-shadow: 0 6px 20px rgba(31, 19, 64, 0.4);
+        transform: translateY(-2px);
+    }
+
+    .save-button:active {
+        transform: translateY(0) scale(0.98);
+    }
+
+.button-icon {
+    font-size: clamp(16px, 2vw, 18px);
+}
+
+.button-text {
+    text-transform: uppercase;
+}
+
+/* ===== デバイスリストセクション ===== */
+.device-list-section {
+    width: 100%;
+}
+
+.panel {
+    background: rgba(13, 8, 26, 0.5);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(31, 19, 64, 0.4);
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
+}
+
+    .panel:hover {
+        border-color: rgba(31, 19, 64, 0.6);
+    }
+
+.panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: clamp(20px, 3vh, 30px) clamp(20px, 3vw, 30px);
+    border-bottom: 1px solid rgba(31, 19, 64, 0.3);
+    background: linear-gradient( 180deg, rgba(31, 19, 64, 0.2) 0%, transparent 100% );
+}
+
+.panel-title {
+    margin: 0;
+    font-family: 'Montserrat', sans-serif;
+    font-size: clamp(20px, 2.5vw, 28px);
+    font-weight: 300;
+    letter-spacing: 0.1em;
+    color: rgba(232, 230, 240, 0.95);
+}
+
+.device-count {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 32px;
+    height: 28px;
+    padding: 0 12px;
+    background: rgba(31, 19, 64, 0.6);
+    border-radius: 14px;
+    font-size: clamp(12px, 1.5vw, 14px);
+    font-weight: 600;
+    color: rgba(232, 230, 240, 0.9);
+}
+
+.panel-content {
+    height: clamp(400px, 50vh, 600px);
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+    /* カスタムスクロールバー */
+    .panel-content::-webkit-scrollbar {
+        width: 6px;
+    }
+
+    .panel-content::-webkit-scrollbar-track {
+        background: rgba(0, 0, 0, 0.2);
+    }
+
+    .panel-content::-webkit-scrollbar-thumb {
+        background: rgba(31, 19, 64, 0.5);
+        border-radius: 3px;
+    }
+
+        .panel-content::-webkit-scrollbar-thumb:hover {
+            background: rgba(31, 19, 64, 0.7);
+        }
+
+.device-list {
+    padding: clamp(15px, 2vw, 20px);
+}
+
+.platform-section {
+    margin-bottom: clamp(25px, 4vh, 40px);
+}
+
+    .platform-section:last-child {
+        margin-bottom: 0;
+    }
+
+.platform-name {
+    margin: 0 0 clamp(12px, 2vh, 20px) 0;
+    font-size: clamp(16px, 2vw, 20px);
+    font-weight: 400;
+    letter-spacing: 0.08em;
+    color: rgba(232, 230, 240, 0.8);
+    padding-left: clamp(8px, 1vw, 12px);
+    border-left: 3px solid rgba(31, 19, 64, 0.6);
+}
+
+.device-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: clamp(8px, 1vw, 12px);
+}
+
+/* ローディング・空状態 */
+.loading-state,
+.empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 350px;
+    padding: 40px 20px;
+}
+
+.loading-spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid rgba(31, 19, 64, 0.3);
+    border-top-color: rgba(31, 19, 64, 0.8);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.loading-text,
+.empty-text {
+    margin-top: 20px;
+    font-size: clamp(14px, 1.8vw, 16px);
+    color: rgba(232, 230, 240, 0.6);
+}
+
+.empty-icon {
+    font-size: clamp(48px, 8vw, 64px);
+    opacity: 0.3;
+}
+
+/* ===== ダイアログ ===== */
+.dialog-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+.dialog-container {
+    position: relative;
+    width: min(500px, 90vw);
+    max-height: 90vh;
+    background: rgba(13, 8, 26, 0.95);
+    backdrop-filter: blur(30px);
+    -webkit-backdrop-filter: blur(30px);
+    border: 1px solid rgba(31, 19, 64, 0.6);
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+    animation: slideUp 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.dialog-close {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(31, 19, 64, 0.4);
+    border-radius: 8px;
+    font-size: 18px;
+    color: rgba(232, 230, 240, 0.8);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    z-index: 10;
+}
+
+    .dialog-close:hover {
+        background: rgba(0, 0, 0, 0.5);
+        border-color: rgba(31, 19, 64, 0.6);
+        color: rgba(232, 230, 240, 1);
+    }
+
+.dialog-header {
+    padding: clamp(30px, 5vh, 40px) clamp(25px, 4vw, 35px);
+    border-bottom: 1px solid rgba(31, 19, 64, 0.3);
+    text-align: center;
+}
+
+.dialog-icon {
+    font-size: clamp(48px, 8vw, 64px);
+    margin-bottom: 15px;
+}
+
+    .dialog-icon.danger {
+        color: rgba(255, 182, 193, 0.8);
+    }
+
+.dialog-title {
+    margin: 0 0 10px 0;
+    font-size: clamp(24px, 3.5vw, 32px);
+    font-weight: 300;
+    letter-spacing: 0.1em;
+    color: rgba(232, 230, 240, 0.95);
+}
+
+.dialog-subtitle {
+    margin: 0;
+    font-size: clamp(13px, 1.6vw, 15px);
+    color: rgba(232, 230, 240, 0.6);
+}
+
+.dialog-content {
+    padding: clamp(25px, 4vh, 35px) clamp(25px, 4vw, 35px);
+    max-height: 60vh;
+    overflow-y: auto;
+}
+
+.confirmation-info {
+    padding: 20px;
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(31, 19, 64, 0.3);
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+
+.confirmation-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+}
+
+.confirmation-label {
+    font-size: clamp(13px, 1.6vw, 14px);
+    color: rgba(232, 230, 240, 0.6);
+}
+
+.confirmation-value {
+    font-size: clamp(13px, 1.6vw, 14px);
+    font-weight: 500;
+    color: rgba(232, 230, 240, 0.9);
+}
+
+.warning-text {
+    margin: 0;
+    padding: 15px 20px;
+    background: rgba(139, 0, 0, 0.2);
+    border-left: 3px solid rgba(220, 20, 60, 0.6);
+    border-radius: 6px;
+    font-size: clamp(13px, 1.6vw, 14px);
+    color: rgba(255, 182, 193, 0.9);
+}
+
+.dialog-actions {
+    display: flex;
+    gap: 12px;
+    padding: clamp(20px, 3vh, 25px) clamp(25px, 4vw, 35px);
+    border-top: 1px solid rgba(31, 19, 64, 0.3);
+    background: linear-gradient( 180deg, transparent 0%, rgba(31, 19, 64, 0.1) 100% );
+}
+
+.dialog-button {
+    flex: 1;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    font-size: clamp(14px, 1.8vw, 16px);
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+    .dialog-button.secondary {
+        background: rgba(0, 0, 0, 0.4);
+        border: 1px solid rgba(232, 230, 240, 0.3);
+        color: rgba(232, 230, 240, 0.8);
+    }
+
+        .dialog-button.secondary:hover {
+            background: rgba(0, 0, 0, 0.5);
+            border-color: rgba(232, 230, 240, 0.5);
+        }
+
+    .dialog-button.danger {
+        background: rgba(139, 0, 0, 0.4);
+        border: 1px solid rgba(220, 20, 60, 0.5);
+        color: rgba(255, 182, 193, 0.95);
+    }
+
+        .dialog-button.danger:hover {
+            background: rgba(139, 0, 0, 0.6);
+            border-color: rgba(220, 20, 60, 0.7);
+            box-shadow: 0 4px 15px rgba(139, 0, 0, 0.4);
+        }
+
+    .dialog-button:active {
+        transform: scale(0.98);
+    }
+
+/* ===== レスポンシブ対応 ===== */
+
+/* タブレット */
+@media (max-width: 1024px) {
+    .magic-routine-page {
+        padding: 140px 20px 40px;
+        gap: 25px;
+    }
+
+    .preset-card {
+        min-width: clamp(250px, 40vw, 350px);
+        height: 180px;
+    }
+
+    .edit-control-group {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* モバイル */
+@media (max-width: 768px) {
+    .magic-routine-page {
+        padding: 140px 15px 30px;
+        gap: 20px;
+    }
+
+    .preset-carousel {
+        gap: 12px;
+        padding: 10px 0;
+    }
+
+    .preset-card {
+        min-width: clamp(220px, 70vw, 300px);
+        height: 160px;
+    }
+
+    .create-icon-wrapper {
+        width: 50px;
         height: 50px;
-        border-radius: 10px;
-        background: #4500BC;
     }
+
+    .create-icon {
+        font-size: 28px;
+    }
+
+    .preset-info {
+        padding: 12px 15px;
+    }
+
+    .preset-name {
+        font-size: 16px;
+    }
+
+    .selected-badge {
+        padding: 4px 10px;
+        font-size: 11px;
+    }
+
+    .mode-buttons {
+        gap: 10px;
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    .edit-panel {
+        padding: 20px 15px;
+    }
+
+    .edit-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+        padding-bottom: 15px;
+        margin-bottom: 20px;
+    }
+
+    .edit-control-group {
+        gap: 15px;
+    }
+
+    .edit-actions {
+        margin-top: 20px;
+        padding-top: 20px;
+    }
+
+    .save-button {
+        width: 100%;
+        padding: 12px 30px;
+    }
+
+    .panel-header {
+        padding: 15px 20px;
+    }
+
+    .panel-content {
+        height: 400px;
+    }
+
+    .device-list {
+        padding: 15px;
+    }
+
+    .platform-section {
+        margin-bottom: 25px;
+    }
+
+    .device-grid {
+        gap: 8px;
+    }
+
+    .dialog-actions {
+        flex-direction: column;
+        padding: 15px 20px;
+    }
+
+    .dialog-button {
+        width: 100%;
+    }
+}
+
+/* 小さいモバイル */
+@media (max-width: 480px) {
+    .magic-routine-page {
+        padding: 120px 12px 20px;
+        gap: 18px;
+    }
+
+    .preset-card {
+        min-width: clamp(200px, 85vw, 280px);
+        height: 140px;
+    }
+
+    .edit-title {
+        font-size: 18px;
+    }
+
+    .edit-preset-name {
+        font-size: 12px;
+        padding: 4px 12px;
+    }
+
+    .device-info-compact {
+        padding: 12px;
+    }
+
+    .device-name {
+        font-size: 16px;
+        margin-bottom: 8px;
+    }
+
+    .device-meta {
+        flex-direction: column;
+        gap: 6px;
+        font-size: 11px;
+    }
+
+    .mode-select {
+        height: 44px;
+    }
+
+    .color-picker-button.compact {
+        padding: 8px 12px;
+    }
+
+        .color-picker-button.compact .color-preview {
+            width: 32px;
+            height: 32px;
+        }
+
+    .save-button {
+        padding: 10px 24px;
+        font-size: 14px;
+    }
+
+    .panel-title {
+        font-size: 18px;
+    }
+
+    .device-count {
+        min-width: 28px;
+        height: 24px;
+        padding: 0 10px;
+        font-size: 12px;
+    }
+
+    .panel-content {
+        height: 350px;
+    }
+
+    .device-list {
+        padding: 12px;
+    }
+
+    .platform-name {
+        font-size: 15px;
+        margin-bottom: 12px;
+    }
+}
+
+/* アクセシビリティ: モーション軽減 */
+@media (prefers-reduced-motion: reduce) {
+    .preset-card,
+    .save-button,
+    .dialog-button,
+    .mode-select,
+    .color-picker-button {
+        transition: none;
+    }
+
+    .loading-spinner {
+        animation: none;
+        border-top-color: rgba(31, 19, 64, 0.8);
+    }
+
+    .dialog-overlay,
+    .dialog-container,
+    .edit-panel {
+        animation: none;
+    }
+
+    .selected-badge {
+        animation: none;
+    }
+}

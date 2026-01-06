@@ -13,6 +13,7 @@
             either BOTH runtimes must be indicated or ONLY macatalyst-x64. -->
         <!-- For example: <RuntimeIdentifiers>maccatalyst-x64;maccatalyst-arm64</RuntimeIdentifiers> -->
 
+		
         <OutputType>Exe</OutputType>
         <RootNamespace>Rumos_App</RootNamespace>
         <UseMaui>true</UseMaui>
@@ -37,6 +38,8 @@
         <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</SupportedOSPlatformVersion>
         <TargetPlatformMinVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</TargetPlatformMinVersion>
         <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'tizen'">6.5</SupportedOSPlatformVersion>
+
+		<NullabilityInfoContextSupport>true</NullabilityInfoContextSupport>
     </PropertyGroup>
 
     <ItemGroup>
@@ -67,6 +70,7 @@
 
     <ItemGroup>
         <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="10.0.0" />
+        <PackageReference Include="Microsoft.Extensions.Http" Version="8.0.0" />
         <PackageReference Include="Microsoft.Maui.Controls" Version="$(MauiVersion)" />
         <PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="$(MauiVersion)" />
         <PackageReference Include="Microsoft.AspNetCore.Components.WebView.Maui" Version="$(MauiVersion)" />
@@ -82,6 +86,12 @@
       <Folder Include="wwwroot\css\animations\" />
       <Folder Include="wwwroot\images\icons\" />
     </ItemGroup>
+	<ItemGroup>
+		<MauiAsset Include="wwwroot\fonts\**\*.ttf" />
+		<MauiAsset Include="wwwroot\fonts\**\*.otf" />
+		<MauiAsset Include="wwwroot\fonts\**\*.woff" />
+		<MauiAsset Include="wwwroot\fonts\**\*.woff2" />
+	</ItemGroup>
 
 
 

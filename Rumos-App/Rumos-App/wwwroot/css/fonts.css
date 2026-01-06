@@ -1,14 +1,15 @@
 @font-face {
     font-family: 'NotoSerifJP';
-    src: url("../fonts/NotoSerifJp/NotoSerifJP-Regular.ttf") format('truetype');
+    src: url('/fonts/NotoSerifJp/NotoSerifJP-Regular.ttf') format('truetype');
     font-weight: normal;
     font-style: normal;
 }
+
 @font-face {
     font-family: 'Cormorant';
     src: url("../fonts/Cormorant/Cormorant-Regular.ttf") format('truetype');
-    font-weight:normal;
-    font-style:normal;
+    font-weight: normal;
+    font-style: normal;
 }
 
 @font-face {
@@ -39,86 +40,82 @@
     font-style: normal;
 }
 
-html,body {
-    font-family: 'NotoSerifJP',sans-serif;
-}
-.font-Montserrat {
-    font-family: 'Montserrat',sans-serif;
+/* フォントファミリー */
+html, body {
+    font-family: 'NotoSerifJP', serif;
 }
 
-
-.string-ss {
-    font-size: 12px;
+.font-montserrat {
+    font-family: 'NotoSerifJP', sans-serif;
 }
 
-.string-ss-bold {
-    font-size: 12px;
+.font-noto-sans {
+    font-family: 'NotoSerifJP', sans-serif;
+}
+
+.font-cormorant {
+    font-family: 'NotoSerifJP', serif;
+}
+
+/* タイポグラフィ */
+.text-mini {
+    font-size: clamp(8px, 1vw, 10px);
+}
+
+.text-sss {
+    font-size: clamp(10px, 1.2vw, 12px);
+}
+
+.text-ss {
+    font-size: clamp(12px, 1.5vw, 14px);
+}
+
+.text-s {
+    font-size: clamp(14px, 1.8vw, 16px);
+}
+
+.text-base {
+    font-size: clamp(16px, 2vw, 18px);
+}
+
+.text-md {
+    font-size: clamp(18px, 2.5vw, 20px);
+}
+
+.text-m {
+    font-size: clamp(20px, 3vw, 24px);
+}
+
+.text-l {
+    font-size: clamp(28px, 4vw, 36px);
+}
+
+.text-xl {
+    font-size: clamp(36px, 5vw, 50px);
+}
+
+.text-2xl {
+    font-size: clamp(40px, 6vw, 60px);
+}
+
+/* フォントウェイト */
+.font-normal {
+    font-weight: normal;
+}
+
+.font-bold {
     font-weight: bold;
 }
 
-.string-reg {
-    font-size: 18px;
-    font-weight: bold;
+/* レターレスパシング */
+.tracking-wide {
+    letter-spacing: 0.1em;
 }
 
-.string-reg-bold {
-    font-size: 18px;
-    font-weight: bold;
+.tracking-wider {
+    letter-spacing: 0.2em;
 }
 
-.string-big-bold {
-    font-size: 50px;
-    font-weight: bold;
-}
-
-.string-big {
-    font-size: 50px;
-}
-
-.string-s {
-    font-size: 15px;
-}
-
-.string-s-bold {
-    font-size: 15px;
-    font-weight: bold;
-}
-
-.string-l {
-    font-size: 36px;
-}
-
-.string-l-bold {
-    font-size: 36px;
-    font-weight: bold;
-}
-
-.string-md {
-    font-size: 20px;
-}
-
-.string-md-bold {
-    font-size: 20px;
-    font-weight: bold;
-}
-
-.string-label {
-    font-size: 13px;
-}
-
-.string-sss {
-    font-size: 10px;
-}
-
-.string-mini {
-    font-size: 8px;
-}
-
-.string-m-bold {
-    font-size: 24px;
-    font-weight: bold;
-}
-
-.string-m {
-    font-size: 24px;
+.tracking-widest {
+    letter-spacing: 0.3em;
 }

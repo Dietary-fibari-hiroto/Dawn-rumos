@@ -6,55 +6,261 @@
 @inject IJSRuntime JS
 @inject NavigationManager Nav
 
-<PageTitleLabel Title="RoutineCreate" SubTitle="プリセット作成" />
-<div class="form-container">
-    <input class="input-name" type="text" @bind=data.Name placeholder="ルーチン名" />
-    <InputFile class="input-hidden" OnChange="OnFileSelected" @ref="inputFile" />
+<PageTitleLabel Title="Create Preset" SubTitle="プリセット作成" />
 
-    <div class="input-image flex-all-center" @onclick="TriggerImageInput">
-        <p class="string-big">+</p>
-    </div>
-  
-    <button class="register-submit" @onclick="OnSubmit">
-     登録
-    </button>
-    @if (isExecute)
-    {
-        <p>セーブしています...</p>
-    }
+<div class="create-preset-page">
+    <!-- メインフォームコンテナ -->
+    <section class="form-section">
+        <div class="form-card">
+            <!-- フォームヘッダー -->
+            <div class="form-header">
+                <div class="header-icon">✨</div>
+                <h2 class="form-title">New Preset</h2>
+                <p class="form-subtitle">新しいプリセットを作成します</p>
+            </div>
+
+            <!-- フォームコンテンツ -->
+            <div class="form-content">
+                <!-- プリセット名入力 -->
+                <div class="form-group">
+                    <label class="form-label">
+                        <span class="label-text">Preset Name</span>
+                        <span class="label-required">*</span>
+                    </label>
+                    <input type="text"
+                           class="form-input"
+                           placeholder="例: リラックスタイム"
+                           @bind="data.Name"
+                           maxlength="50"
+                           required />
+                    <span class="input-hint">最大50文字</span>
+                </div>
+
+                <!-- サムネイル画像選択 -->
+                <div class="form-group">
+                    <label class="form-label">
+                        <span class="label-text">Thumbnail Image</span>
+                        <span class="label-required">*</span>
+                    </label>
+
+                    <InputFile class="file-input-hidden"
+                               OnChange="OnFileSelected"
+                               accept="image/*"
+                               @ref="inputFile" />
+
+                    <div class="image-upload-area @(hasImage ? "has-image" : "")"
+                         @onclick="TriggerImageInput">
+                        @if (hasImage && previewImageUrl != null)
+                        {
+                            <!-- プレビュー表示 -->
+                            <div class="image-preview-container">
+                                <img src="@previewImageUrl" alt="Preview" class="image-preview" />
+                                <div class="image-overlay">
+                                    <span class="change-icon">🔄</span>
+                                    <span class="change-text">Click to change</span>
+                                </div>
+                            </div>
+                        }
+                        else
+                        {
+                            <!-- アップロードプロンプト -->
+                            <div class="upload-prompt">
+                                <div class="upload-icon-wrapper">
+                                    <span class="upload-icon">📷</span>
+                                </div>
+                                <p class="upload-text">Click to upload image</p>
+                                <p class="upload-hint">PNG, JPG, WEBP (Max 5MB)</p>
+                            </div>
+                        }
+                    </div>
+
+                    @if (!string.IsNullOrEmpty(selectedFileName))
+                    {
+                        <div class="file-info">
+                            <span class="file-icon">📎</span>
+                            <span class="file-name">@selectedFileName</span>
+                        </div>
+                    }
+                </div>
+
+                <!-- 説明（オプション） -->
+                <div class="form-group">
+                    <label class="form-label">
+                        <span class="label-text">Description</span>
+                        <span class="label-optional">(Optional)</span>
+                    </label>
+                    <textarea class="form-textarea"
+                              placeholder="プリセットの説明を入力..."
+                              @bind="description"
+                              maxlength="200"
+                              rows="4"></textarea>
+                    <span class="input-hint">最大200文字</span>
+                </div>
+            </div>
+
+            <!-- フォームアクション -->
+            <div class="form-actions">
+                <button class="action-btn cancel-btn"
+                        @onclick="OnCancel"
+                        disabled="@isSubmitting">
+                    <span class="btn-icon">✕</span>
+                    <span class="btn-text">Cancel</span>
+                </button>
+
+                <button class="action-btn submit-btn"
+                        @onclick="OnSubmit"
+                        disabled="@(!IsFormValid() || isSubmitting)">
+                    @if (isSubmitting)
+                    {
+                        <span class="loading-spinner-small"></span>
+                        <span class="btn-text">Creating...</span>
+                    }
+                    else
+                    {
+                        <span class="btn-icon">✓</span>
+                        <span class="btn-text">Create Preset</span>
+                    }
+                </button>
+            </div>
+        </div>
+
+        <!-- プログレスインジケーター -->
+        @if (isSubmitting)
+        {
+            <div class="progress-overlay">
+                <div class="progress-card">
+                    <div class="progress-spinner"></div>
+                    <p class="progress-text">Creating preset...</p>
+                    <p class="progress-hint">Please wait</p>
+                </div>
+            </div>
+        }
+    </section>
+
+    <!-- プレビューセクション（オプション） -->
+    <section class="preview-section">
+        <div class="preview-card">
+            <div class="preview-header">
+                <h3 class="preview-title">Preview</h3>
+            </div>
+            <div class="preview-content">
+                @if (IsFormValid())
+                {
+                    <!-- プリセットカードプレビュー -->
+                    <div class="preset-preview">
+                        @if (hasImage && previewImageUrl != null)
+                        {
+                            <img src="@previewImageUrl" alt="@data.Name" class="preview-thumbnail" />
+                        }
+                        else
+                        {
+                            <div class="preview-placeholder">
+                                <span class="placeholder-icon">📋</span>
+                            </div>
+                        }
+                        <div class="preview-overlay"></div>
+                        <div class="preview-info">
+                            <h4 class="preview-name">@(string.IsNullOrEmpty(data.Name) ? "Preset Name" : data.Name)</h4>
+                        </div>
+                    </div>
+
+                    @if (!string.IsNullOrEmpty(description))
+                    {
+                        <div class="preview-description">
+                            <p class="description-label">Description:</p>
+                            <p class="description-text">@description</p>
+                        </div>
+                    }
+                }
+                else
+                {
+                    <div class="preview-empty">
+                        <div class="empty-icon">👀</div>
+                        <p class="empty-text">Fill in the form to see preview</p>
+                    </div>
+                }
+            </div>
+        </div>
+    </section>
 </div>
 
+<BgImg Src="images/photos/IMG_7116.jpg" />
 
 @code {
     private PresetCreateDto data = new();
-    private static List<Preset> presetList;
-    private bool isExecute = false;
-
+    private string description = string.Empty;
+    private string? selectedFileName;
+    private string? previewImageUrl;
+    private bool hasImage = false;
+    private bool isSubmitting = false;
     private InputFile? inputFile;
 
-    protected override async Task OnInitializedAsync()
+    private async Task OnFileSelected(InputFileChangeEventArgs e)
     {
-        presetList = await MRApiService.GetPresetList();
-        StateHasChanged();
+        var file = e.File;
+        if (file != null)
+        {
+            data.File = file;
+            selectedFileName = file.Name;
+            hasImage = true;
+
+            // プレビュー用にBase64変換
+            try
+            {
+                var buffer = new byte[file.Size];
+                await file.OpenReadStream(maxAllowedSize: 5 * 1024 * 1024).ReadAsync(buffer);
+                previewImageUrl = $"data:{file.ContentType};base64,{Convert.ToBase64String(buffer)}";
+                StateHasChanged();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Image preview error: {ex.Message}");
+            }
+        }
     }
 
-    private void OnFileSelected(InputFileChangeEventArgs e)
-    {
-        data.File = e.File;
-    }
     private async Task OnSubmit()
     {
-        Preset createdData = await MRApiService.PostRoutine(data);
-        isExecute = true;
-        presetList.Add(createdData);
+        if (!IsFormValid() || isSubmitting) return;
+
+        isSubmitting = true;
+        StateHasChanged();
+
+        try
+        {
+            Preset createdData = await MRApiService.PostRoutine(data);
+
+            // 少し待機（UX向上）
+            await Task.Delay(500);
+
+            // 成功したら一覧ページへ
+            Nav.NavigateTo("/app/magicroutine");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Submit error: {ex.Message}");
+            isSubmitting = false;
+            StateHasChanged();
+        }
+    }
+
+    private void OnCancel()
+    {
         Nav.NavigateTo("/app/magicroutine");
     }
 
-
-
     private async Task TriggerImageInput()
     {
-        // InputFile の DOM 要素を JS 側で取得して click()
-        await JS.InvokeVoidAsync("clickTrigger", inputFile!.Element);
+        if (inputFile?.Element != null)
+        {
+            await JS.InvokeVoidAsync("eval",
+                "arguments[0].click()",
+                inputFile.Element);
+        }
+    }
+
+    private bool IsFormValid()
+    {
+        return !string.IsNullOrWhiteSpace(data.Name) && data.File != null;
     }
 }

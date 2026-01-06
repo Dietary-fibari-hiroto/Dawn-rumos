@@ -1,27 +1,47 @@
 @using Rumos_App.DTOs
 
-@if(Device.Brightness != 0)
-{
-    <button class="button-container" @onclick="()=>Select(Device)">
-        <div class="right-content absolute-position-center" style="box-shadow: 0 0 50px 20px rgb(@Device.R,@Device.G,@Device.B); background: rgb(@Device.R,@Device.G,@Device.B);" />
-        <p class="string-md flex-all-center absolute-position-center content-blur name-plate;" />
-        <p class="string-md flex-all-center absolute-position-center content-blur name-plate">@Device.Name</p>
-    </button>
-}
-else
-{
-    <button class="button-container black-mode" @onclick="() => Select(Device)">
-        <div class="right-content absolute-position-center"  />
-        <p class="string-md flex-all-center absolute-position-center name-plate">@Device.Name</p>
-    </button>
-}
+<button class="device-button @(IsActive ? "active" : "inactive") @(IsSelected ? "selected" : "")"
+        @onclick="HandleClick"
+        aria-label="@Device.Name">
+
+    <!-- 光のエフェクト -->
+    @if (IsActive)
+    {
+        <div class="light-glow" style="background: radial-gradient(circle, rgba(@Device.R,@Device.G,@Device.B,0.4) 0%, transparent 70%);"></div>
+        <div class="light-core" style="background: rgb(@Device.R,@Device.G,@Device.B); box-shadow: 0 0 30px rgba(@Device.R,@Device.G,@Device.B,0.8), 0 0 60px rgba(@Device.R,@Device.G,@Device.B,0.4);"></div>
+    }
+    else
+    {
+        <div class="light-core inactive-core"></div>
+    }
+
+    <!-- デバイス名 -->
+    <div class="device-name-plate">
+        <span class="device-name">@Device.Name</span>
+        @if (IsActive)
+        {
+            <span class="status-indicator active-indicator"></span>
+        }
+    </div>
+
+    <!-- ホバーエフェクト -->
+    <div class="hover-overlay"></div>
+</button>
 
 @code {
-    [Parameter] public DeviceDto Device { get; set; } = new();
-    [Parameter] public EventCallback<DeviceDto> OnSelectDevice { get; set; }
+    [Parameter]
+    public DeviceDto Device { get; set; } = new();
 
-    private Task Select(DeviceDto d)
+    [Parameter]
+    public EventCallback<DeviceDto> OnSelectDevice { get; set; }
+
+    [Parameter]
+    public bool IsSelected { get; set; } = false;
+
+    private bool IsActive => Device.Brightness > 0;
+
+    private async Task HandleClick()
     {
-        return OnSelectDevice.InvokeAsync(d);
+        await OnSelectDevice.InvokeAsync(Device);
     }
 }
