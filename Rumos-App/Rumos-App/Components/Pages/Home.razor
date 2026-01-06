@@ -2,28 +2,91 @@
 @inject NavigationManager Nav
 @inject IJSRuntime JS
 
-<section class="section-frame flex-all-center screen-container @(IsShow ? "" : "hidden")">
-    <div class="absolute-position-center logo-container @(IsShow ? "" : "hidden")">
-        <p class="string-big app-logo text-animation @(IsShow ? "white" : "")">
-            Rumos
-        </p>
-        <p class="string-reg company-logo text-animation @(IsShow ? "white" : "")">
-            DAWN
-        </p>
+<div class="splash-screen @GetAnimationClass()">
+    <!--背景の星空効果-->
+    <div class="stars-container">
+        <div class="stars"></div>
+        <div class="stars stars-2"></div>
+        <div class="stars stars-3"></div>
     </div>
-    <div class=" absolute-position-center blur-element @(IsShow ? "" : "hidden")" />
-</section>
 
-@code{
-    private bool IsShow = false;
+    <!--夜明けのグラデーション-->
+    <div class="dawn-gradient @(showGradient ? "show" : "")"></div>
+
+    <!--メインコンテン-->
+    <div class="splash-content">
+        <!--ロゴとタイトル-->
+        <div class="logo-group @(showLogo ? "show" : "")">
+            <div class="glow-circle"></div>
+            <h1 class="app-title">
+                <span class="title-main">Dawn Rumos</span>
+            </h1>
+            <p class="company-name">DAWN</p>
+        </div>
+
+        <!--ローディングインジケーター-->
+        <div class="loading-indicator @(showLoading ? "show" : "")">
+            <div class="loading-dots">
+                <span class="dot"></span>
+                <span class="dot"></span>
+                <span class="dot"></span>
+            </div>
+        </div>
+    </div>
+
+    <!--光の粒子エフェクト-->
+    <div class="particles @(showParticles ? "show" : "")">
+        @for (int i = 0; i < 20; i++)
+        {
+            <div class="particle" style="--delay: @(i * 0.2)s; --x: @(Random.Shared.Next(-50, 50))%; --y: @(Random.Shared.Next(-50, 50))%"></div>
+        }
+    </div>
+</div>
+
+@code {
+    private bool showGradient = false;
+    private bool showLogo = false;
+    private bool showLoading = false;
+    private bool showParticles = false;
+    private bool startFadeOut = false;
+
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
         {
-            IsShow = true;
+            //アニメーションシーケンス
+            await Task.Delay(100);
+            showGradient = true;
             StateHasChanged();
-            await Task.Delay(4000);
+
+            await Task.Delay(500);
+            showLogo = true;
+            StateHasChanged();
+
+            await Task.Delay(800);
+            showParticles = true;
+            StateHasChanged();
+
+            await Task.Delay(400);
+            showLoading = true;
+            StateHasChanged();
+
+            //スプラッシュ表示時間
+            await Task.Delay(2000);
+
+            //フェードアウト開始
+            startFadeOut = true;
+            StateHasChanged();
+
+            await Task.Delay(600);
+
+            //メインアプリへ遷移
             Nav.NavigateTo("/app/individual");
         }
+    }
+
+    private string GetAnimationClass()
+    {
+        return startFadeOut ? "fade-out" : "";
     }
 }

@@ -1,30 +1,232 @@
-.button-container {
+.device-button {
     position: relative;
-    width: 200px;
-    height: 70px;
-    margin: 20px;
-    border-radius: 10px;
-}
-.right-content {
-    width: 150px;
-    height: 50px;
-    z-index: 1;
-    border-radius: 10px;
-}
-.name-plate{
-    z-index:3;
-    width:100%;
-    height:100%;
-    border-radius:10px;
-}
-
-.content-blur {
-    background: #00000022;
+    width: clamp(160px, 18vw, 200px);
+    height: clamp(60px, 8vh, 80px);
+    margin: clamp(8px, 1vw, 12px);
+    background: rgba(13, 8, 26, 0.5);
     backdrop-filter: blur(15px);
     -webkit-backdrop-filter: blur(15px);
+    border: 1px solid rgba(31, 19, 64, 0.4);
+    border-radius: 12px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.black-mode{
-    border:white 1px solid;
-    background:black;
+    .device-button:hover {
+        transform: translateY(-2px);
+        border-color: rgba(31, 19, 64, 0.8);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    .device-button.selected {
+        border: 2px solid rgba(31, 19, 64, 1);
+        box-shadow: 0 0 20px rgba(31, 19, 64, 0.6);
+    }
+
+    .device-button.inactive {
+        background: rgba(0, 0, 0, 0.6);
+        border-color: rgba(232, 230, 240, 0.2);
+    }
+
+        .device-button.inactive:hover {
+            border-color: rgba(232, 230, 240, 0.4);
+        }
+
+/* 光のエフェクト */
+.light-glow {
+    position: absolute;
+    top: 50%;
+    left: 20px;
+    transform: translateY(-50%);
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    pointer-events: none;
+    animation: pulse-glow 2s ease-in-out infinite;
+}
+
+@keyframes pulse-glow {
+    0%, 100% {
+        opacity: 0.6;
+        transform: translateY(-50%) scale(1);
+    }
+
+    50% {
+        opacity: 0.8;
+        transform: translateY(-50%) scale(1.1);
+    }
+}
+
+.light-core {
+    position: absolute;
+    top: 50%;
+    left: 30px;
+    transform: translateY(-50%);
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    pointer-events: none;
+}
+
+.inactive-core {
+    background: rgba(232, 230, 240, 0.1);
+    border: 1px solid rgba(232, 230, 240, 0.3);
+    box-shadow: none;
+}
+
+/* デバイス名プレート */
+.device-name-plate {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    height: 100%;
+    padding: 0 clamp(12px, 2vw, 20px) 0 clamp(70px, 10vw, 80px);
+    z-index: 10;
+}
+
+.device-name {
+    font-size: clamp(13px, 1.5vw, 16px);
+    font-weight: normal;
+    color: rgba(232, 230, 240, 0.9);
+    text-align: left;
+    line-height: 1.4;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 100%;
+}
+
+.device-button.inactive .device-name {
+    color: rgba(232, 230, 240, 0.6);
+}
+
+/* ステータスインジケーター */
+.status-indicator {
+    flex-shrink: 0;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    margin-left: 8px;
+}
+
+.active-indicator {
+    background: rgba(31, 19, 64, 0.8);
+    box-shadow: 0 0 8px rgba(31, 19, 64, 0.6);
+    animation: blink 2s ease-in-out infinite;
+}
+
+@keyframes blink {
+    0%, 100% {
+        opacity: 0.6;
+    }
+
+    50% {
+        opacity: 1;
+    }
+}
+
+/* ホバーオーバーレイ */
+.hover-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient( 135deg, rgba(31, 19, 64, 0.1) 0%, transparent 100% );
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+}
+
+.device-button:hover .hover-overlay {
+    opacity: 1;
+}
+
+/* アクティブ状態のエフェクト */
+.device-button:active {
+    transform: translateY(0) scale(0.98);
+}
+
+/* タブレット */
+@media (max-width: 1024px) {
+    .device-button {
+        width: clamp(140px, 20vw, 180px);
+        height: clamp(55px, 7vh, 70px);
+    }
+
+    .light-core {
+        width: 28px;
+        height: 28px;
+        left: 25px;
+    }
+
+    .light-glow {
+        width: 70px;
+        height: 70px;
+        left: 15px;
+    }
+
+    .device-name-plate {
+        padding: 0 12px 0 60px;
+    }
+}
+
+/* モバイル */
+@media (max-width: 768px) {
+    .device-button {
+        width: calc(50% - 16px);
+        height: 70px;
+        margin: 8px;
+    }
+
+    .light-core {
+        width: 24px;
+        height: 24px;
+        left: 20px;
+    }
+
+    .light-glow {
+        width: 60px;
+        height: 60px;
+        left: 12px;
+    }
+
+    .device-name-plate {
+        padding: 0 10px 0 55px;
+    }
+
+    .device-name {
+        font-size: 14px;
+    }
+}
+
+/* 小さいモバイル */
+@media (max-width: 480px) {
+    .device-button {
+        width: 100%;
+        height: 60px;
+        margin: 6px 0;
+    }
+
+    .device-name {
+        font-size: 13px;
+    }
+}
+
+/* アクセシビリティ: モーション軽減 */
+@media (prefers-reduced-motion: reduce) {
+    .device-button,
+    .light-glow,
+    .light-core,
+    .status-indicator {
+        animation: none;
+        transition: none;
+    }
+
+        .device-button:hover {
+            transform: none;
+        }
 }

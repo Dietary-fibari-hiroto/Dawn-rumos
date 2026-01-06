@@ -1,34 +1,949 @@
-.form-container
-{
-    width:100%;
-    display:flex;
-    flex-direction:column;
-    justify-content:center;
-    align-items:center;
-    
+/* ===== Create Preset Page ===== */
+.create-preset-page {
+    position: relative;
+    z-index: 3;
+    width: 100%;
+    min-height: 100vh;
+    padding: clamp(160px, 20vh, 220px) clamp(20px, 3vw, 40px) clamp(40px, 6vh, 80px);
+    display: grid;
+    grid-template-columns: 1fr 400px;
+    gap: clamp(30px, 4vw, 50px);
+    max-width: 1400px;
+    margin: 0 auto;
 }
-    .form-container > * + *{
-        margin-top:20px;
+
+/* ===== フォームセクション ===== */
+.form-section {
+    position: relative;
+}
+
+.form-card {
+    background: rgba(13, 8, 26, 0.6);
+    backdrop-filter: blur(30px);
+    -webkit-backdrop-filter: blur(30px);
+    border: 1px solid rgba(31, 19, 64, 0.5);
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+    animation: slideUp 0.5s ease-out;
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
     }
-    .input-name, .input-image {
-        border: solid 1px white;
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
     }
-.input-name {
-    width: 500px;
-    height: 50px;
-    padding-left: 10px;
-    color: white;
 }
-.input-image{
-    width:500px;
-    height:300px;
-}
-.register-submit {
-    width: 500px;
-    height: 50px;
+
+/* フォームヘッダー */
+.form-header {
+    padding: clamp(30px, 5vh, 40px) clamp(30px, 4vw, 40px);
     text-align: center;
-    background: #4500BC;
+    border-bottom: 1px solid rgba(31, 19, 64, 0.3);
+    background: linear-gradient( 180deg, rgba(31, 19, 64, 0.3) 0%, transparent 100% );
 }
-.input-hidden{
-    display:none;
+
+.header-icon {
+    font-size: clamp(40px, 6vw, 56px);
+    margin-bottom: 15px;
+    animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+.form-title {
+    margin: 0 0 10px 0;
+    font-size: clamp(28px, 4vw, 36px);
+    font-weight: 300;
+    letter-spacing: 0.15em;
+    color: rgba(232, 230, 240, 0.95);
+}
+
+.form-subtitle {
+    margin: 0;
+    font-size: clamp(14px, 1.8vw, 16px);
+    color: rgba(232, 230, 240, 0.6);
+}
+
+/* フォームコンテンツ */
+.form-content {
+    padding: clamp(30px, 5vh, 40px) clamp(30px, 4vw, 40px);
+}
+
+.form-group {
+    margin-bottom: clamp(25px, 4vh, 35px);
+}
+
+    .form-group:last-child {
+        margin-bottom: 0;
+    }
+
+.form-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 12px;
+}
+
+.label-text {
+    font-size: clamp(14px, 1.8vw, 16px);
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    color: rgba(232, 230, 240, 0.9);
+}
+
+.label-required {
+    color: rgba(220, 20, 60, 0.8);
+    font-weight: 600;
+}
+
+.label-optional {
+    font-size: clamp(12px, 1.5vw, 14px);
+    color: rgba(232, 230, 240, 0.5);
+    font-style: italic;
+}
+
+/* テキスト入力 */
+.form-input {
+    width: 100%;
+    height: 54px;
+    padding: 0 20px;
+    background: rgba(0, 0, 0, 0.4);
+    border: 1px solid rgba(31, 19, 64, 0.4);
+    border-radius: 12px;
+    font-size: clamp(15px, 2vw, 17px);
+    color: rgba(232, 230, 240, 0.95);
+    transition: all 0.3s ease;
+}
+
+    .form-input:hover {
+        border-color: rgba(31, 19, 64, 0.6);
+        background: rgba(0, 0, 0, 0.5);
+    }
+
+    .form-input:focus {
+        outline: none;
+        border-color: rgba(31, 19, 64, 0.9);
+        background: rgba(0, 0, 0, 0.6);
+        box-shadow: 0 0 20px rgba(31, 19, 64, 0.4);
+    }
+
+    .form-input::placeholder {
+        color: rgba(232, 230, 240, 0.4);
+    }
+
+/* テキストエリア */
+.form-textarea {
+    width: 100%;
+    padding: 15px 20px;
+    background: rgba(0, 0, 0, 0.4);
+    border: 1px solid rgba(31, 19, 64, 0.4);
+    border-radius: 12px;
+    font-size: clamp(14px, 1.8vw, 16px);
+    line-height: 1.6;
+    color: rgba(232, 230, 240, 0.95);
+    resize: vertical;
+    min-height: 100px;
+    transition: all 0.3s ease;
+}
+
+    .form-textarea:hover {
+        border-color: rgba(31, 19, 64, 0.6);
+        background: rgba(0, 0, 0, 0.5);
+    }
+
+    .form-textarea:focus {
+        outline: none;
+        border-color: rgba(31, 19, 64, 0.9);
+        background: rgba(0, 0, 0, 0.6);
+        box-shadow: 0 0 20px rgba(31, 19, 64, 0.4);
+    }
+
+    .form-textarea::placeholder {
+        color: rgba(232, 230, 240, 0.4);
+    }
+
+.input-hint {
+    display: block;
+    margin-top: 8px;
+    font-size: clamp(11px, 1.3vw, 13px);
+    color: rgba(232, 230, 240, 0.5);
+    letter-spacing: 0.03em;
+}
+
+/* 画像アップロードエリア */
+.file-input-hidden {
+    display: none;
+}
+
+.image-upload-area {
+    position: relative;
+    width: 100%;
+    height: clamp(250px, 35vh, 350px);
+    background: rgba(0, 0, 0, 0.3);
+    border: 2px dashed rgba(31, 19, 64, 0.5);
+    border-radius: 16px;
+    cursor: pointer;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+    .image-upload-area:hover {
+        border-color: rgba(31, 19, 64, 0.8);
+        background: rgba(0, 0, 0, 0.4);
+        border-style: solid;
+    }
+
+    .image-upload-area.has-image {
+        border-style: solid;
+        border-color: rgba(31, 19, 64, 0.6);
+    }
+
+/* アップロードプロンプト */
+.upload-prompt {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    padding: 30px;
+}
+
+.upload-icon-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 80px;
+    height: 80px;
+    margin-bottom: 20px;
+    background: rgba(31, 19, 64, 0.3);
+    border-radius: 50%;
+    transition: all 0.3s ease;
+}
+
+.image-upload-area:hover .upload-icon-wrapper {
+    background: rgba(31, 19, 64, 0.5);
+    transform: scale(1.1);
+}
+
+.upload-icon {
+    font-size: 40px;
+}
+
+.upload-text {
+    margin: 0 0 8px 0;
+    font-size: clamp(15px, 2vw, 18px);
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    color: rgba(232, 230, 240, 0.9);
+}
+
+.upload-hint {
+    margin: 0;
+    font-size: clamp(12px, 1.5vw, 14px);
+    color: rgba(232, 230, 240, 0.5);
+}
+
+/* 画像プレビュー */
+.image-preview-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.image-preview {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.image-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    background: rgba(0, 0, 0, 0.7);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.image-upload-area:hover .image-overlay {
+    opacity: 1;
+}
+
+.change-icon {
+    font-size: 32px;
+}
+
+.change-text {
+    font-size: clamp(14px, 1.8vw, 16px);
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    color: rgba(232, 230, 240, 0.95);
+}
+
+/* ファイル情報 */
+.file-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 12px;
+    padding: 10px 15px;
+    background: rgba(31, 19, 64, 0.3);
+    border-radius: 8px;
+}
+
+.file-icon {
+    font-size: 18px;
+}
+
+.file-name {
+    font-size: clamp(13px, 1.6vw, 14px);
+    color: rgba(232, 230, 240, 0.8);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* フォームアクション */
+.form-actions {
+    display: flex;
+    gap: 15px;
+    padding: clamp(25px, 4vh, 30px) clamp(30px, 4vw, 40px);
+    border-top: 1px solid rgba(31, 19, 64, 0.3);
+    background: linear-gradient( 180deg, transparent 0%, rgba(31, 19, 64, 0.1) 100% );
+}
+
+.action-btn {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    height: 56px;
+    border-radius: 12px;
+    font-size: clamp(15px, 2vw, 17px);
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+    .action-btn:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+
+.cancel-btn {
+    background: rgba(0, 0, 0, 0.4);
+    border: 1px solid rgba(232, 230, 240, 0.3);
+    color: rgba(232, 230, 240, 0.8);
+}
+
+    .cancel-btn:hover:not(:disabled) {
+        background: rgba(0, 0, 0, 0.6);
+        border-color: rgba(232, 230, 240, 0.5);
+    }
+
+.submit-btn {
+    background: linear-gradient( 135deg, rgba(31, 19, 64, 0.9) 0%, rgba(31, 19, 64, 0.7) 100% );
+    border: 1px solid rgba(31, 19, 64, 0.7);
+    color: rgba(232, 230, 240, 0.95);
+    box-shadow: 0 4px 20px rgba(31, 19, 64, 0.3);
+}
+
+    .submit-btn:hover:not(:disabled) {
+        background: linear-gradient( 135deg, rgba(31, 19, 64, 1) 0%, rgba(31, 19, 64, 0.8) 100% );
+        box-shadow: 0 6px 30px rgba(31, 19, 64, 0.5);
+        transform: translateY(-2px);
+    }
+
+    .submit-btn:active:not(:disabled) {
+        transform: translateY(0);
+    }
+
+.btn-icon {
+    font-size: clamp(18px, 2.5vw, 20px);
+}
+
+.btn-text {
+    letter-spacing: 0.1em;
+}
+
+/* 小さいローディングスピナー */
+.loading-spinner-small {
+    width: 16px;
+    height: 16px;
+    border: 2px solid rgba(232, 230, 240, 0.3);
+    border-top-color: rgba(232, 230, 240, 0.9);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* プログレスオーバーレイ */
+.progress-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+.progress-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    padding: 40px 60px;
+    background: rgba(13, 8, 26, 0.95);
+    border: 1px solid rgba(31, 19, 64, 0.6);
+    border-radius: 20px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+}
+
+.progress-spinner {
+    width: 50px;
+    height: 50px;
+    border: 4px solid rgba(31, 19, 64, 0.3);
+    border-top-color: rgba(31, 19, 64, 0.9);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+.progress-text {
+    margin: 0;
+    font-family: 'Montserrat', sans-serif;
+    font-size: clamp(16px, 2vw, 18px);
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    color: rgba(232, 230, 240, 0.95);
+}
+
+.progress-hint {
+    margin: 0;
+    font-family: 'NotoSansJP', sans-serif;
+    font-size: clamp(13px, 1.6vw, 14px);
+    color: rgba(232, 230, 240, 0.6);
+}
+
+/* ===== プレビューセクション ===== */
+.preview-section {
+    position: sticky;
+    top: clamp(160px, 20vh, 220px);
+    height: fit-content;
+}
+
+.preview-card {
+    background: rgba(13, 8, 26, 0.6);
+    backdrop-filter: blur(30px);
+    -webkit-backdrop-filter: blur(30px);
+    border: 1px solid rgba(31, 19, 64, 0.5);
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+    animation: slideUp 0.5s ease-out 0.2s both;
+}
+
+.preview-header {
+    padding: clamp(20px, 3vh, 25px) clamp(20px, 3vw, 25px);
+    border-bottom: 1px solid rgba(31, 19, 64, 0.3);
+    background: linear-gradient( 180deg, rgba(31, 19, 64, 0.2) 0%, transparent 100% );
+}
+
+.preview-title {
+    margin: 0;
+    font-family: 'Montserrat', sans-serif;
+    font-size: clamp(18px, 2.5vw, 22px);
+    font-weight: 400;
+    letter-spacing: 0.1em;
+    color: rgba(232, 230, 240, 0.95);
+}
+
+.preview-content {
+    padding: clamp(20px, 3vh, 25px) clamp(20px, 3vw, 25px);
+}
+
+/* プリセットプレビュー */
+.preset-preview {
+    position: relative;
+    width: 100%;
+    height: clamp(180px, 25vh, 220px);
+    background: rgba(0, 0, 0, 0.4);
+    border: 1px solid rgba(31, 19, 64, 0.4);
+    border-radius: 16px;
+    overflow: hidden;
+    margin-bottom: 20px;
+}
+
+.preview-thumbnail,
+.preview-placeholder {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.preview-thumbnail {
+    object-fit: cover;
+    z-index: 1;
+}
+
+.preview-placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.3);
+    z-index: 1;
+}
+
+.placeholder-icon {
+    font-size: clamp(48px, 8vw, 64px);
+    opacity: 0.3;
+}
+
+.preview-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient( 180deg, rgba(0, 0, 0, 0.2) 0%, rgba(13, 8, 26, 0.8) 100% );
+    z-index: 2;
+}
+
+.preview-info {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: clamp(15px, 2vh, 20px);
+    z-index: 3;
+}
+
+.preview-name {
+    margin: 0;
+    font-family: 'Montserrat', sans-serif;
+    font-size: clamp(16px, 2vw, 20px);
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    color: rgba(232, 230, 240, 0.95);
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+}
+
+/* プレビュー説明 */
+.preview-description {
+    padding: 15px;
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(31, 19, 64, 0.3);
+    border-radius: 10px;
+}
+
+.description-label {
+    margin: 0 0 8px 0;
+    font-family: 'Montserrat', sans-serif;
+    font-size: clamp(12px, 1.5vw, 14px);
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    color: rgba(232, 230, 240, 0.7);
+    text-transform: uppercase;
+}
+
+.description-text {
+    margin: 0;
+    font-family: 'NotoSansJP', sans-serif;
+    font-size: clamp(13px, 1.6vw, 14px);
+    line-height: 1.6;
+    color: rgba(232, 230, 240, 0.85);
+}
+
+/* プレビュー空状態 */
+.preview-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 200px;
+    padding: 30px;
+}
+
+.empty-icon {
+    font-size: clamp(40px, 6vw, 48px);
+    margin-bottom: 15px;
+    opacity: 0.4;
+}
+
+.empty-text {
+    margin: 0;
+    font-family: 'NotoSansJP', sans-serif;
+    font-size: clamp(14px, 1.8vw, 15px);
+    text-align: center;
+    color: rgba(232, 230, 240, 0.5);
+}
+
+/* ===== レスポンシブ対応 ===== */
+
+/* タブレット横 */
+@media (max-width: 1200px) {
+    .create-preset-page {
+        grid-template-columns: 1fr 350px;
+        gap: 30px;
+    }
+}
+
+/* タブレット */
+@media (max-width: 1024px) {
+    .create-preset-page {
+        padding: 140px 20px 40px;
+        grid-template-columns: 1fr;
+        gap: 30px;
+    }
+
+    .preview-section {
+        position: relative;
+        top: 0;
+    }
+
+    .image-upload-area {
+        height: clamp(220px, 30vh, 300px);
+    }
+}
+
+/* モバイル */
+@media (max-width: 768px) {
+    .create-preset-page {
+        padding: 140px 15px 30px;
+        gap: 25px;
+    }
+
+    .form-card {
+        border-radius: 16px;
+    }
+
+    .form-header {
+        padding: 25px 20px;
+    }
+
+    .header-icon {
+        font-size: 48px;
+        margin-bottom: 12px;
+    }
+
+    .form-title {
+        font-size: 24px;
+    }
+
+    .form-content {
+        padding: 25px 20px;
+    }
+
+    .form-group {
+        margin-bottom: 25px;
+    }
+
+    .form-input {
+        height: 50px;
+    }
+
+    .form-textarea {
+        min-height: 90px;
+    }
+
+    .image-upload-area {
+        height: 200px;
+    }
+
+    .upload-icon-wrapper {
+        width: 60px;
+        height: 60px;
+        margin-bottom: 15px;
+    }
+
+    .upload-icon {
+        font-size: 30px;
+    }
+
+    .upload-text {
+        font-size: 16px;
+    }
+
+    .form-actions {
+        padding: 20px;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .action-btn {
+        width: 100%;
+        height: 52px;
+    }
+
+    .preview-card {
+        border-radius: 16px;
+    }
+
+    .preview-header {
+        padding: 15px 20px;
+    }
+
+    .preview-content {
+        padding: 20px;
+    }
+
+    .preset-preview {
+        height: 180px;
+        margin-bottom: 15px;
+    }
+
+    .progress-card {
+        padding: 30px 40px;
+    }
+}
+
+/* 小さいモバイル */
+@media (max-width: 480px) {
+    .create-preset-page {
+        padding: 120px 12px 20px;
+        gap: 20px;
+    }
+
+    .form-header {
+        padding: 20px 15px;
+    }
+
+    .header-icon {
+        font-size: 40px;
+        margin-bottom: 10px;
+    }
+
+    .form-title {
+        font-size: 22px;
+    }
+
+    .form-subtitle {
+        font-size: 13px;
+    }
+
+    .form-content {
+        padding: 20px 15px;
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    .label-text {
+        font-size: 14px;
+    }
+
+    .form-input {
+        height: 48px;
+        padding: 0 15px;
+        font-size: 15px;
+    }
+
+    .form-textarea {
+        padding: 12px 15px;
+        font-size: 14px;
+        min-height: 80px;
+    }
+
+    .image-upload-area {
+        height: 180px;
+    }
+
+    .upload-icon-wrapper {
+        width: 50px;
+        height: 50px;
+        margin-bottom: 12px;
+    }
+
+    .upload-icon {
+        font-size: 26px;
+    }
+
+    .upload-text {
+        font-size: 15px;
+    }
+
+    .upload-hint {
+        font-size: 12px;
+    }
+
+    .change-icon {
+        font-size: 28px;
+    }
+
+    .change-text {
+        font-size: 14px;
+    }
+
+    .file-info {
+        padding: 8px 12px;
+    }
+
+    .file-icon {
+        font-size: 16px;
+    }
+
+    .file-name {
+        font-size: 13px;
+    }
+
+    .form-actions {
+        padding: 15px;
+    }
+
+    .action-btn {
+        height: 48px;
+        font-size: 14px;
+    }
+
+    .btn-icon {
+        font-size: 16px;
+    }
+
+    .preview-header {
+        padding: 12px 15px;
+    }
+
+    .preview-title {
+        font-size: 16px;
+    }
+
+    .preview-content {
+        padding: 15px;
+    }
+
+    .preset-preview {
+        height: 160px;
+    }
+
+    .preview-name {
+        font-size: 16px;
+    }
+
+    .preview-description {
+        padding: 12px;
+    }
+
+    .description-label {
+        font-size: 12px;
+        margin-bottom: 6px;
+    }
+
+    .description-text {
+        font-size: 13px;
+    }
+
+    .progress-card {
+        padding: 25px 30px;
+        border-radius: 16px;
+    }
+
+    .progress-spinner {
+        width: 40px;
+        height: 40px;
+    }
+
+    .progress-text {
+        font-size: 15px;
+    }
+
+    .progress-hint {
+        font-size: 13px;
+    }
+}
+
+/* 横向きモバイル */
+@media (max-width: 768px) and (orientation: landscape) {
+    .create-preset-page {
+        padding: 100px 15px 30px;
+    }
+
+    .image-upload-area {
+        height: 150px;
+    }
+
+    .preset-preview {
+        height: 150px;
+    }
+}
+
+/* アクセシビリティ: モーション軽減 */
+@media (prefers-reduced-motion: reduce) {
+    .form-card,
+    .preview-card,
+    .action-btn,
+    .form-input,
+    .form-textarea,
+    .image-upload-area,
+    .upload-icon-wrapper,
+    .image-overlay {
+        animation: none;
+        transition: none;
+    }
+
+    .header-icon {
+        animation: none;
+    }
+
+    .loading-spinner-small,
+    .progress-spinner {
+        animation: spin 2s linear infinite;
+    }
+
+    .progress-overlay {
+        animation: none;
+    }
+}
+
+/* ダークモード対応（オプション） */
+@media (prefers-color-scheme: dark) {
+    /* すでにダークテーマなので特別な調整不要 */
+    /* 必要に応じて微調整 */
 }

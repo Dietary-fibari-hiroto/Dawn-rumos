@@ -1,201 +1,308 @@
-@page "/app/device"
+Ôªø@page "/app/device"
 @using Rumos_App.Services
 @using Rumos_App.DTOs
 @using Rumos_App.Entities
 @inject ApiService Api
 @inject IJSRuntime JS
 
-<PageTitleLabel Title="Device" SubTitle="ÉfÉoÉCÉXê›íË"/>
+<PageTitleLabel Title="Device" SubTitle="„Éá„Éê„Ç§„ÇπË®≠ÂÆö" />
 
-<div class="page-frame  page-label-margin">
-    <section>
-        <button class="option-button" @onclick="()=>isOpenDialog = true">
-            <img src="images/elements/badge-plus.svg" />
-            <p class="string-md">Register</p>
+<div class="device-page">
+    <!-- „Ç¢„ÇØ„Ç∑„Éß„É≥„Éê„Éº -->
+    <section class="action-bar">
+        <button class="action-btn register-btn" @onclick="() => isRegisterDialogOpen = true">
+            <span class="btn-icon">+</span>
+            <span class="btn-label">Register</span>
         </button>
     </section>
-    <div class="page-container">
-    <section class="device-list">
 
-        @if (devices == null)
-        {
-            <p>...loading</p>
-        }
-        else if (devices.Count == 0)
-        {
-            <p>No data found.</p>
-        }
-        else
-        {
-            @foreach (var platform in devices)
-            {
-                <p class="string-l series-label">@platform.PlatformName</p>
-                <div class="list-container">
-                    @foreach (var device in platform.Devices)
-                    {
-                        <DeviceButton Device=@device OnSelectDevice="ChangeControlDevice" />
-                    }
-                </div>
-            }
-        }
-    </section>
-    <setion class="device-list">
-        <div class="control-container">
-            <p class="string-l">@controlDevice?.Name</p>
-            <div class="string-m">
-                <p>ID:@controlDevice?.Id</p>
-                    <p>Series:@(platforms?.FirstOrDefault(p => p.Id == controlDevice?.Series)?.Name ?? "ïsñæ")</p>
-                <p>Power:On</p>
+    <!-- „É°„Ç§„É≥„Ç≥„É≥„ÉÜ„É≥„ÉÑ -->
+    <section class="content-grid">
+        <!-- „Éá„Éê„Ç§„Çπ„É™„Çπ„Éà„Éë„Éç„É´ -->
+        <div class="panel device-list-panel">
+            <div class="panel-header">
+                <h2 class="panel-title">Devices</h2>
+                <span class="device-count">@GetDeviceCount()</span>
             </div>
-            <select class="mode-select string-m">
-                <option value="normal">Normal</option>
-                <option value="fadein">Fadein</option>
-                <option value="whitegradient">Whitegradient</option>
-            </select>
-            <input style="display:none;" @bind:after="OnColorPicked" type="color" @bind="SelectedColor" @oninput="UpdateRgb" @ref="colorInput" />
-            <p>Color: @SelectedColor</p>
-            <div @onclick="TriggerColorPicker" style="display:inline;">
-                <button class="button-container">
-                    <div class="right-content absolute-position-center" style="box-shadow: 0 0 50px 20px @SelectedColor; background: @SelectedColor;" />
-                    <p class="string-md flex-all-center absolute-position-center content-blur name-plate;" />
-                </button>
+
+            <div class="panel-content">
+                @if (devices == null)
+                {
+                    <div class="loading-state">
+                        <div class="loading-spinner"></div>
+                        <p class="loading-text">Loading devices...</p>
+                    </div>
+                }
+                else if (devices.Count == 0)
+                {
+                    <div class="empty-state">
+                        <div class="empty-icon">üì±</div>
+                        <p class="empty-text">No devices found</p>
+                    </div>
+                }
+                else
+                {
+                    <div class="device-list">
+                        @foreach (var platform in devices)
+                        {
+                            <div class="platform-section">
+                                <h3 class="platform-name">@platform.PlatformName</h3>
+                                <div class="device-grid">
+                                    @foreach (var device in platform.Devices)
+                                    {
+                                        <DeviceButton Device="@device"
+                                                      OnSelectDevice="SelectDevice"
+                                                      IsSelected="@(controlDevice?.Id == device.Id)" />
+                                    }
+                                </div>
+                            </div>
+                        }
+                    </div>
+                }
             </div>
-            <button class="option-button" @onclick="() => isOpenDeleteDialog=true">
-                <img src="images/elements/trash.svg" />
-                <p class="string-md">Delete</p>
-            </button>
         </div>
-    </setion>
-    </div>
+
+        <!-- „Éá„Éê„Ç§„ÇπË©≥Á¥∞„Éë„Éç„É´ -->
+        <div class="panel detail-panel">
+            <div class="panel-header">
+                <h2 class="panel-title">Details</h2>
+                @if (controlDevice != null)
+                {
+                    <span class="status-badge online">Active</span>
+                }
+            </div>
+
+            <div class="panel-content">
+                @if (controlDevice == null)
+                {
+                    <div class="no-device-state">
+                        <div class="no-device-icon">üéØ</div>
+                        <p class="no-device-text">Select a device to view details</p>
+                    </div>
+                }
+                else
+                {
+                    <div class="detail-container">
+                        <!-- „Éá„Éê„Ç§„ÇπÊÉÖÂ†±„Ç´„Éº„Éâ -->
+                        <div class="device-info-card">
+                            <h3 class="device-info-name">@controlDevice.Name</h3>
+                            <div class="device-info-details">
+                                <div class="info-item">
+                                    <span class="info-label">ID</span>
+                                    <span class="info-value">@controlDevice.Id</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-label">Series</span>
+                                    <span class="info-value">@GetPlatformName(controlDevice.Series)</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-label">Power</span>
+                                    <span class="info-value status-badge @(controlDevice.Brightness > 0 ? "on" : "off")">
+                                        @(controlDevice.Brightness > 0 ? "ON" : "OFF")
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- „Ç≥„É≥„Éà„É≠„Éº„É´„Çª„ÇØ„Ç∑„Éß„É≥ -->
+                        <div class="control-section">
+                            <!-- „É¢„Éº„ÉâÈÅ∏Êäû -->
+                            <div class="control-group">
+                                <label class="control-label">Mode</label>
+                                <div class="select-wrapper">
+                                    <select class="mode-select" @bind="selectedMode">
+                                        <option value="normal">Normal</option>
+                                        <option value="fadein">Fade In</option>
+                                        <option value="whitegradient">White Gradient</option>
+                                    </select>
+                                    <div class="select-icon">‚ñº</div>
+                                </div>
+                            </div>
+
+                            <!-- „Ç´„É©„Éº„Éî„ÉÉ„Ç´„Éº -->
+                            <div class="control-group">
+                                <label class="control-label">Color</label>
+                                <div class="color-picker-container">
+                                    <input type="color"
+                                           class="color-input-hidden"
+                                           @bind="selectedColor"
+                                           @bind:after="OnColorPicked"
+                                           @ref="colorInput" />
+
+                                    <button class="color-picker-button" @onclick="TriggerColorPicker">
+                                        <div class="color-preview"
+                                             style="background: @selectedColor; box-shadow: 0 0 30px @selectedColor;">
+                                        </div>
+                                        <div class="color-info">
+                                            <span class="color-hex">@selectedColor</span>
+                                            <span class="color-rgb">@GetRgbString()</span>
+                                        </div>
+                                        <span class="picker-icon">üé®</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- „Ç¢„ÇØ„Ç∑„Éß„É≥„Éú„Çø„É≥ -->
+                        <div class="action-buttons">
+                            <button class="action-button danger" @onclick="() => isDeleteDialogOpen = true">
+                                <span class="button-icon">üóëÔ∏è</span>
+                                <span class="button-text">Delete Device</span>
+                            </button>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </section>
 </div>
 
-@if (isOpenDialog)
+<!-- ÁôªÈå≤„ÉÄ„Ç§„Ç¢„É≠„Ç∞ -->
+@if (isRegisterDialogOpen)
 {
-    <section class="function-dialog section-frame absolute-position-center bg-blur flex-all-center">
-        <div class="dialog-container">
-            <button @onclick="() => isOpenDialog = false" class="x-button"><img src="images/elements/x.svg" /></button>
-            <div class="function-logo-container string-big">Register</div>
-            <div class="function-form-container">
-                <input placeholder = "ÉfÉoÉCÉXñº" type="text" @bind=newDeviceData.Name required />
-                <input placeholder="IP" type="text" @bind=newDeviceData.Ip_v4 required />
-                @if (platforms == null)
-                {
-                    <p>Platform Loading...</p>
-                }
-                else
-                {
-                    <select @bind=newDeviceData.Platform_id placeholder= "ÉfÉoÉCÉXÇÃÉVÉäÅ[ÉYÇëIë" required>
-                        <option value="">-- ÉfÉoÉCÉXÇÃÉVÉäÅ[ÉYÇëIëÇµÇƒÇ≠ÇæÇ≥Ç¢ --</option>
-                        @foreach (var platform in platforms)
-                        {
+    <div class="dialog-overlay" @onclick="() => isRegisterDialogOpen = false">
+        <div class="dialog-container" @onclick:stopPropagation="true">
+            <button class="dialog-close" @onclick="() => isRegisterDialogOpen = false">‚úï</button>
 
-                            <option value="@platform.Id">@platform.Name</option>
-                        }
-                    </select>
-                }
-                @if (rooms == null)
-                {
-                    <p>Room Loading...</p>
-                }
-                else
-                {
-                    <select @bind=newDeviceData.Room_id placeholder="ïîâÆÇëIë" required>
-                        <option value="">-- ÉãÅ[ÉÄÇëIëÇµÇƒÇ≠ÇæÇ≥Ç¢ --</option>
-                        @foreach (var room in rooms)
-                        {
-                            
-                            <option value="@room.Id">@room.Name</option>
-                        }
-                    </select>
-                }
-                <button @onclick="RegisterDevice" class="submit string-m">
-                    ìoò^
+            <div class="dialog-header">
+                <h2 class="dialog-title">Register Device</h2>
+                <p class="dialog-subtitle">Êñ∞„Åó„ÅÑ„Éá„Éê„Ç§„Çπ„ÇíÁôªÈå≤</p>
+            </div>
+
+            <div class="dialog-content">
+                <div class="form-group">
+                    <label class="form-label">Device Name</label>
+                    <input type="text"
+                           class="form-input"
+                           placeholder="„Éá„Éê„Ç§„ÇπÂêç"
+                           @bind="newDeviceData.Name"
+                           required />
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">IP Address</label>
+                    <input type="text"
+                           class="form-input"
+                           placeholder="192.168.1.100"
+                           @bind="newDeviceData.Ip_v4"
+                           required />
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Platform Series</label>
+                    @if (platforms == null)
+                    {
+                        <p class="form-loading">Loading platforms...</p>
+                    }
+                    else
+                    {
+                        <div class="select-wrapper">
+                            <select class="form-select"
+                                    @bind="newDeviceData.Platform_id"
+                                    required>
+                                <option value="">-- „Éó„É©„ÉÉ„Éà„Éï„Ç©„Éº„É†„ÇíÈÅ∏Êäû --</option>
+                                @foreach (var platform in platforms)
+                                {
+                                    <option value="@platform.Id">@platform.Name</option>
+                                }
+                            </select>
+                            <div class="select-icon">‚ñº</div>
+                        </div>
+                    }
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Room</label>
+                    @if (rooms == null)
+                    {
+                        <p class="form-loading">Loading rooms...</p>
+                    }
+                    else
+                    {
+                        <div class="select-wrapper">
+                            <select class="form-select"
+                                    @bind="newDeviceData.Room_id"
+                                    required>
+                                <option value="">-- „É´„Éº„É†„ÇíÈÅ∏Êäû --</option>
+                                @foreach (var room in rooms)
+                                {
+                                    <option value="@room.Id">@room.Name</option>
+                                }
+                            </select>
+                            <div class="select-icon">‚ñº</div>
+                        </div>
+                    }
+                </div>
+            </div>
+
+            <div class="dialog-actions">
+                <button class="dialog-button secondary" @onclick="() => isRegisterDialogOpen = false">
+                    Cancel
+                </button>
+                <button class="dialog-button primary" @onclick="RegisterDevice">
+                    Register
                 </button>
             </div>
         </div>
-    </section>
+    </div>
 }
 
-@if (isOpenDeleteDialog)
+<!-- ÂâäÈô§Á¢∫Ë™ç„ÉÄ„Ç§„Ç¢„É≠„Ç∞ -->
+@if (isDeleteDialogOpen)
 {
-    <section class="function-dialog section-frame absolute-position-center bg-blur flex-all-center">
-        <div class="dialog-container delete">
-            <button @onclick="() => isOpenDeleteDialog = false" class="x-button"><img src="images/elements/x.svg" /></button>
-           <p class="string-big">Deleted</p>
-           <p>à»â∫ÇÃÉfÉoÉCÉXèÓïÒÇäÆëSÇ…çÌèúÇµÇ‹Ç∑ÅBÇÊÇÎÇµÇ¢Ç≈Ç∑Ç©ÅH</p>
-            <div class="flex-all-center-vertical">
-                <p>@controlDevice?.Name</p>
-                <p>ID:@controlDevice?.Id</p>
-                <p>Series:@(platforms?.FirstOrDefault(p => p.Id == controlDevice?.Series)?.Name ?? "ïsñæ")</p>
-           </div>
-            <button @onclick="DeleteDevice" class="submit string-m">
-                çÌèú
-            </button>
+    <div class="dialog-overlay" @onclick="() => isDeleteDialogOpen = false">
+        <div class="dialog-container delete" @onclick:stopPropagation="true">
+            <button class="dialog-close" @onclick="() => isDeleteDialogOpen = false">‚úï</button>
+
+            <div class="dialog-header">
+                <div class="dialog-icon danger">‚ö†Ô∏è</div>
+                <h2 class="dialog-title">Delete Device</h2>
+                <p class="dialog-subtitle">„Åì„ÅÆ„Éá„Éê„Ç§„Çπ„ÇíÂÆåÂÖ®„Å´ÂâäÈô§„Åó„Åæ„Åô</p>
+            </div>
+
+            <div class="dialog-content">
+                <div class="confirmation-info">
+                    <div class="confirmation-item">
+                        <span class="confirmation-label">Name:</span>
+                        <span class="confirmation-value">@controlDevice?.Name</span>
+                    </div>
+                    <div class="confirmation-item">
+                        <span class="confirmation-label">ID:</span>
+                        <span class="confirmation-value">@controlDevice?.Id</span>
+                    </div>
+                    <div class="confirmation-item">
+                        <span class="confirmation-label">Series:</span>
+                        <span class="confirmation-value">@GetPlatformName(controlDevice?.Series ?? 0)</span>
+                    </div>
+                </div>
+                <p class="warning-text">„Åì„ÅÆÊìç‰Ωú„ÅØÂèñ„ÇäÊ∂à„Åõ„Åæ„Åõ„Çì„ÄÇ„Çà„Çç„Åó„ÅÑ„Åß„Åô„ÅãÔºü</p>
+            </div>
+
+            <div class="dialog-actions">
+                <button class="dialog-button secondary" @onclick="() => isDeleteDialogOpen = false">
+                    Cancel
+                </button>
+                <button class="dialog-button danger" @onclick="DeleteDevice">
+                    Delete
+                </button>
+            </div>
         </div>
-    </section>
+    </div>
 }
 
-
+<BgImg Src="images/photos/IMG_7116.jpg" />
 
 @code {
-    private bool isOpenDialog = false;
-    private bool isOpenDeleteDialog = false;
+    private bool isRegisterDialogOpen = false;
+    private bool isDeleteDialogOpen = false;
     private List<Room>? rooms;
     private List<Platform>? platforms;
     private CreateDeviceDto newDeviceData = new();
-    private bool controlMode = true;
-    private string SelectedColor { get; set; } = "#FFA200";
-    private string? RgbColor { get; set; }
+    private string selectedColor = "#FFA200";
+    private string selectedMode = "normal";
     private DeviceDto? controlDevice;
-    //ëSÉfÉoÉCÉXèÓïÒÇPlatformÉxÅ[ÉXÇ≈äiî[Ç∑ÇÈÇΩÇﬂÇÃïœêî
     private List<PlatformWithDevicesDto>? devices;
-    private Task ControlModeChange()
-    {
-        controlMode = !controlMode;
-        return Task.CompletedTask;
-    }
-
-    private void UpdateRgb(ChangeEventArgs e)
-    {
-        SelectedColor = e.Value.ToString();
-        if (SelectedColor.StartsWith("#") && SelectedColor.Length == 7)
-        {
-            var r = Convert.ToInt32(SelectedColor.Substring(1, 2), 16);
-            var g = Convert.ToInt32(SelectedColor.Substring(3, 2), 16);
-            var b = Convert.ToInt32(SelectedColor.Substring(5, 2), 16);
-            RgbColor = $"rgb({r},{g},{b})";
-
-        }
-        StateHasChanged();
-    }
-
-    //êFëIëå„ÇÃèàóù
-    private async Task OnColorPicked()
-    {
-        if (SelectedColor.StartsWith("#") && SelectedColor.Length == 7)
-        {
-            var r = Convert.ToInt32(SelectedColor.Substring(1, 2), 16);
-            var g = Convert.ToInt32(SelectedColor.Substring(3, 2), 16);
-            var b = Convert.ToInt32(SelectedColor.Substring(5, 2), 16);
-
-            if (controlDevice != null)
-            {
-                controlDevice.R = r;
-                controlDevice.G = g;
-                controlDevice.B = b;
-                controlDevice.Brightness = 255;
-            }
-        }
-        await Api.TurnOnTheLightById(controlDevice);
-        StateHasChanged();
-    }
-
-
     private ElementReference colorInput;
-    private async Task TriggerColorPicker()
-    {
-        await JS.InvokeVoidAsync("clickTrigger", colorInput);
-    }
 
     protected override async Task OnInitializedAsync()
     {
@@ -205,17 +312,37 @@
         StateHasChanged();
     }
 
-    //controlÉRÉìÉeÉiÇ…Ç©ÇÒÇ∑ÇÈèàóù
-    private Task ChangeControlDevice(DeviceDto device)
+    private void SelectDevice(DeviceDto device)
     {
         controlDevice = device;
         string hex = $"#{device.R:X2}{device.G:X2}{device.B:X2}";
-        SelectedColor = hex;
+        selectedColor = hex;
         StateHasChanged();
-        return Task.CompletedTask;
     }
 
-    //ÉfÉoÉCÉXÇÃìoò^èàóù
+    private async Task TriggerColorPicker()
+    {
+        await JS.InvokeVoidAsync("eval", "document.querySelector('input[type=color]').click()");
+    }
+
+    private async Task OnColorPicked()
+    {
+        if (controlDevice != null && selectedColor.StartsWith("#") && selectedColor.Length == 7)
+        {
+            var r = Convert.ToInt32(selectedColor.Substring(1, 2), 16);
+            var g = Convert.ToInt32(selectedColor.Substring(3, 2), 16);
+            var b = Convert.ToInt32(selectedColor.Substring(5, 2), 16);
+
+            controlDevice.R = r;
+            controlDevice.G = g;
+            controlDevice.B = b;
+            controlDevice.Brightness = 255;
+
+            await Api.TurnOnTheLightById(controlDevice);
+            StateHasChanged();
+        }
+    }
+
     private async Task RegisterDevice()
     {
         Entities.Device createdData = await Api.PostDevice(newDeviceData);
@@ -226,24 +353,55 @@
             Series = createdData.Platform_id
         };
         var platform = devices?.FirstOrDefault(p => p.PlatformId == createdData.Platform_id);
-
         platform?.Devices.Add(addDevicesData);
 
-        isOpenDialog = false;
+        isRegisterDialogOpen = false;
+        newDeviceData = new();
+        StateHasChanged();
     }
-    //ÉfÉoÉCÉXÇÃçÌèúèàóù
+
     private async Task DeleteDevice()
     {
-        bool isSccess = await Api.DeleteDeviceAsync(controlDevice!.Id);
-        foreach(var platform in devices!)
+        if (controlDevice == null) return;
+
+        bool isSuccess = await Api.DeleteDeviceAsync(controlDevice.Id);
+        if (isSuccess)
         {
-            var device = platform.Devices.FirstOrDefault(d => d.Id == controlDevice.Id);
-            if(device != null)
+            foreach (var platform in devices!)
             {
-                platform.Devices.Remove(device);
+                var device = platform.Devices.FirstOrDefault(d => d.Id == controlDevice.Id);
+                if (device != null)
+                {
+                    platform.Devices.Remove(device);
+                    break;
+                }
             }
+            controlDevice = null;
         }
 
-        isOpenDeleteDialog = false;
+        isDeleteDialogOpen = false;
+        StateHasChanged();
+    }
+
+    private string GetPlatformName(int seriesId)
+    {
+        return platforms?.FirstOrDefault(p => p.Id == seriesId)?.Name ?? "‰∏çÊòé";
+    }
+
+    private int GetDeviceCount()
+    {
+        return devices?.Sum(p => p.Devices.Count) ?? 0;
+    }
+
+    private string GetRgbString()
+    {
+        if (selectedColor.StartsWith("#") && selectedColor.Length == 7)
+        {
+            var r = Convert.ToInt32(selectedColor.Substring(1, 2), 16);
+            var g = Convert.ToInt32(selectedColor.Substring(3, 2), 16);
+            var b = Convert.ToInt32(selectedColor.Substring(5, 2), 16);
+            return $"RGB({r}, {g}, {b})";
+        }
+        return "RGB(0, 0, 0)";
     }
 }

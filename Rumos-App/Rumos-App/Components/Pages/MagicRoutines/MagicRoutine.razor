@@ -1,4 +1,4 @@
-@page "/app/magicroutine"
+﻿@page "/app/magicroutine"
 @using Rumos_App.Services
 @using Rumos_App.DTOs
 @using Rumos_App.Entities
@@ -7,118 +7,253 @@
 @inject NavigationManager Nav
 @inject IJSRuntime JS
 
-<PageTitleLabel Title="MagicRoutine" SubTitle="�v���Z�b�g�ꊇ����" />
-<div class="page-frame page-label-margin page-setting">
-<section class="magic-list">
-        <button @onclick='() => Nav.NavigateTo("/app/magicroutine/create")' class="magic-button create flex-all-center">
-        <img src = "images/elements/badge-plus.svg"/>
-        
-    </button>
-        @if(presetList == null)
-        {
-            <p>...loading</p>
-        }else if(presetList.Count== 0)
-        {
-            <p>No data found.</p>
-        }
-        else
-        {
-            @foreach(Preset preset in presetList)
-            {
-                <button @onclick="() => OnPreset(preset)" class="magic-button flex-all-center @(selectedPreset?.Id == preset.Id ? "selected " : "")">
-                    <img src="@preset.Img_url" class="thumbnail absolute-position-center"/>
-                    <p class="title string-md">@preset.Name</p>
-                </button>
-            }
-        }
+<PageTitleLabel Title="MagicRoutine" SubTitle="プリセット一括制御" />
 
-        
-</section>
-<section class="space-x-10 function-list">
-        <FunctionButton Selected='state==ControlMode.normal' OnClick='()=>state =ControlMode.normal' Label="Control" Img="images/elements/spotlight.svg" />
-        <FunctionButton Selected='state == ControlMode.edit' OnClick='() => state = ControlMode.edit' Label="Edit" Img="images/elements/square-pen.svg" />
-        <FunctionButton Selected='state == ControlMode.delete' OnClick='() => state = ControlMode.delete' Label="Delete" Img="images/elements/badge-plus.svg" />
-</section>
-    @if(state == ControlMode.edit)
-    {
-        <section>
-            <p class="string-l">@controlDevice?.Name</p>
-            <div class="device-setting-panel">
-                <p>ID:@controlDevice?.Id</p>
-                <p>Series:@(platforms?.FirstOrDefault(p => p.Id == controlDevice?.Series)?.Name ?? "�s��")</p>
-                <select class="mode-select string-m">
-                    <option value="normal">Normal</option>
-                    <option value="fadein">Fadein</option>
-                    <option value="whitegradient">Whitegradient</option>
-                </select>
-                <input style="display:none;" @bind:after="OnColorPicked" type="color" @bind="SelectedColor" @oninput="UpdateRgb" @ref="colorInput" />
-                <p>Color: @SelectedColor</p>
-                <div @onclick="TriggerColorPicker" style="display:inline;">
-                    <button class="button-container">
-                        <div class="right-content absolute-position-center" style="box-shadow: 0 0 50px 20px @SelectedColor; background: @SelectedColor;" />
-                        <p class="string-md flex-all-center absolute-position-center content-blur name-plate;" />
-                    </button>
+<div class="magic-routine-page">
+    <!-- プリセットカルーセル -->
+    <section class="preset-carousel-section">
+        <div class="preset-carousel">
+            <!-- 新規作成ボタン -->
+            <button class="preset-card create-card" @onclick='() => Nav.NavigateTo("/app/magicroutine/create")'>
+                <div class="create-icon-wrapper">
+                    <span class="create-icon">+</span>
                 </div>
+                <span class="create-label">Create New</span>
+            </button>
+
+            <!-- プリセットリスト -->
+            @if (presetList == null)
+            {
+                <div class="preset-loading">
+                    <div class="loading-spinner"></div>
+                    <p class="loading-text">Loading presets...</p>
+                </div>
+            }
+            else if (presetList.Count == 0)
+            {
+                <div class="preset-empty">
+                    <div class="empty-icon">📋</div>
+                    <p class="empty-text">No presets found</p>
+                    <p class="empty-hint">Create your first preset</p>
+                </div>
+            }
+            else
+            {
+                @foreach (var preset in presetList)
+                {
+                    <button class="preset-card @(selectedPreset?.Id == preset.Id ? "selected" : "")"
+                            @onclick="() => OnPresetSelect(preset)">
+                        <img src="@preset.Img_url" alt="@preset.Name" class="preset-thumbnail" />
+                        <div class="preset-overlay"></div>
+                        <div class="preset-info">
+                            <h3 class="preset-name">@preset.Name</h3>
+                            @if (selectedPreset?.Id == preset.Id)
+                            {
+                                <span class="selected-badge">✓ Selected</span>
+                            }
+                        </div>
+                    </button>
+                }
+            }
+        </div>
+    </section>
+
+    <!-- コントロールモード選択 -->
+    <section class="mode-selector-section">
+        <div class="mode-buttons">
+            <FunctionButton Selected='controlMode == ControlMode.Normal'
+                            OnClick='() => SetControlMode(ControlMode.Normal)'
+                            Label="Control"
+                            Img="images/elements/spotlight.svg" />
+            <FunctionButton Selected='controlMode == ControlMode.Edit'
+                            OnClick='() => SetControlMode(ControlMode.Edit)'
+                            Label="Edit"
+                            Img="images/elements/square-pen.svg" />
+            <FunctionButton Selected='controlMode == ControlMode.Delete'
+                            OnClick='() => SetControlMode(ControlMode.Delete)'
+                            Label="Delete"
+                            Img="images/elements/badge-plus.svg" />
+        </div>
+    </section>
+
+    <!-- 編集モード時のコントロールパネル -->
+    @if (controlMode == ControlMode.Edit && selectedPreset != null)
+    {
+        <section class="edit-panel">
+            <div class="edit-header">
+                <h2 class="edit-title">Edit Mode</h2>
+                <span class="edit-preset-name">@selectedPreset.Name</span>
+            </div>
+
+            @if (controlDevice != null)
+            {
+                <div class="edit-controls">
+                    <!-- デバイス情報 -->
+                    <div class="device-info-compact">
+                        <h3 class="device-name">@controlDevice.Name</h3>
+                        <div class="device-meta">
+                            <span class="device-id">ID: @controlDevice.Id</span>
+                            <span class="device-series">Series: @GetPlatformName(controlDevice.Series)</span>
+                        </div>
+                    </div>
+
+                    <!-- コントロール -->
+                    <div class="edit-control-group">
+                        <!-- モード選択 -->
+                        <div class="control-item">
+                            <label class="control-label">Mode</label>
+                            <div class="select-wrapper">
+                                <select class="mode-select" @bind="selectedMode">
+                                    <option value="normal">Normal</option>
+                                    <option value="fadein">Fade In</option>
+                                    <option value="whitegradient">White Gradient</option>
+                                </select>
+                                <div class="select-icon">▼</div>
+                            </div>
+                        </div>
+
+                        <!-- カラーピッカー -->
+                        <div class="control-item">
+                            <label class="control-label">Color</label>
+                            <div class="color-picker-container">
+                                <input type="color"
+                                       class="color-input-hidden"
+                                       @bind="selectedColor"
+                                       @bind:after="OnColorPicked"
+                                       @ref="colorInput" />
+
+                                <button class="color-picker-button compact" @onclick="TriggerColorPicker">
+                                    <div class="color-preview"
+                                         style="background: @selectedColor; box-shadow: 0 0 20px @selectedColor;">
+                                    </div>
+                                    <span class="color-hex">@selectedColor</span>
+                                    <span class="picker-icon">🎨</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div class="edit-empty">
+                    <p class="edit-empty-text">デバイスを選択してください</p>
+                </div>
+            }
+
+            <!-- 保存ボタン -->
+            <div class="edit-actions">
+                <button class="save-button" @onclick="SaveRoutine">
+                    <span class="button-icon">💾</span>
+                    <span class="button-text">Save Routine</span>
+                </button>
             </div>
         </section>
-        <section class="routine-save-button">
-            <button @onclick="SaveRoutine">Save</button>
-        </section>
     }
-    <section class="device-list">
 
-        @if (devices == null)
-        {
-            <p>...loading</p>
-        }
-        else if (devices.Count == 0)
-        {
-            <p>No data found.</p>
-        }
-        else
-        {
-            @foreach (var platform in devices)
-            {
-                <p class="string-l series-label">@platform.PlatformName</p>
-                <div class="list-container">
-                    @foreach (var device in platform.Devices)
-                    {
-                        <DeviceButton Device=@device OnSelectDevice="ChangeControlDevice" />
-                    }
-                </div>
-            }
-        }
+    <!-- デバイスリスト -->
+    <section class="device-list-section">
+        <div class="panel device-list-panel">
+            <div class="panel-header">
+                <h2 class="panel-title">Devices</h2>
+                <span class="device-count">@GetDeviceCount()</span>
+            </div>
+
+            <div class="panel-content">
+                @if (devices == null)
+                {
+                    <div class="loading-state">
+                        <div class="loading-spinner"></div>
+                        <p class="loading-text">Loading devices...</p>
+                    </div>
+                }
+                else if (devices.Count == 0)
+                {
+                    <div class="empty-state">
+                        <div class="empty-icon">📱</div>
+                        <p class="empty-text">No devices found</p>
+                    </div>
+                }
+                else
+                {
+                    <div class="device-list">
+                        @foreach (var platform in devices)
+                        {
+                            <div class="platform-section">
+                                <h3 class="platform-name">@platform.PlatformName</h3>
+                                <div class="device-grid">
+                                    @foreach (var device in platform.Devices)
+                                    {
+                                        <DeviceButton Device="@device"
+                                                      OnSelectDevice="SelectDevice"
+                                                      IsSelected="@(controlDevice?.Id == device.Id)" />
+                                    }
+                                </div>
+                            </div>
+                        }
+                    </div>
+                }
+            </div>
+        </div>
     </section>
-    </div>
-@if (deleteDialog)
+</div>
+
+<!-- 削除確認ダイアログ -->
+@if (isDeleteDialogOpen)
 {
-    <div class="delete-dialog">
-        <div class="delete-container">
-            <img @onclick="()=>deleteDialog = false" class="cancel-button" src ="images/elements/x.svg"/>
-            <p class="string-big">Delete</p>
-            <p class="string-md">���̃v���Z�b�g�������S�ɍ폜���܂��B��낵���ł����H</p>
-            <button @onclick=OnDelete class="delete-button">�폜</button>
+    <div class="dialog-overlay" @onclick="() => isDeleteDialogOpen = false">
+        <div class="dialog-container delete" @onclick:stopPropagation="true">
+            <button class="dialog-close" @onclick="() => isDeleteDialogOpen = false">✕</button>
+
+            <div class="dialog-header">
+                <div class="dialog-icon danger">⚠️</div>
+                <h2 class="dialog-title">Delete Preset</h2>
+                <p class="dialog-subtitle">このプリセットを完全に削除します</p>
+            </div>
+
+            <div class="dialog-content">
+                <div class="confirmation-info">
+                    <div class="confirmation-item">
+                        <span class="confirmation-label">Preset:</span>
+                        <span class="confirmation-value">@selectedPreset?.Name</span>
+                    </div>
+                </div>
+                <p class="warning-text">この操作は取り消せません。よろしいですか？</p>
+            </div>
+
+            <div class="dialog-actions">
+                <button class="dialog-button secondary" @onclick="() => isDeleteDialogOpen = false">
+                    Cancel
+                </button>
+                <button class="dialog-button danger" @onclick="DeletePreset">
+                    Delete
+                </button>
+            </div>
         </div>
     </div>
 }
 
+<BgImg Src="images/photos/IMG_7116.jpg" />
+
 @code {
-    //�S�f�o�C�X����Platform�x�[�X�Ŋi�[���邽�߂̕ϐ�
     private List<PlatformWithDevicesDto>? devices;
     private List<Platform>? platforms;
     private List<Preset>? presetList;
     private Preset? selectedPreset;
-    private string SelectedColor { get; set; } = "#FFA200";
-    private string? RgbColor { get; set; }
+    private string selectedColor = "#FFA200";
+    private string selectedMode = "normal";
     private DeviceDto? controlDevice;
+    private ElementReference colorInput;
+    private bool isDeleteDialogOpen = false;
 
     private enum ControlMode
     {
-        normal,
-        edit,
-        delete
+        Normal,
+        Edit,
+        Delete
     }
-    private ControlMode state = ControlMode.normal;
+
+    private ControlMode controlMode = ControlMode.Normal;
 
     protected override async Task OnInitializedAsync()
     {
@@ -127,93 +262,103 @@
         presetList = await MrApi.GetPresetList();
         StateHasChanged();
     }
-    private void UpdateRgb(ChangeEventArgs e)
-    {
-        SelectedColor = e.Value.ToString();
-        if (SelectedColor.StartsWith("#") && SelectedColor.Length == 7)
-        {
-            var r = Convert.ToInt32(SelectedColor.Substring(1, 2), 16);
-            var g = Convert.ToInt32(SelectedColor.Substring(3, 2), 16);
-            var b = Convert.ToInt32(SelectedColor.Substring(5, 2), 16);
-            RgbColor = $"rgb({r},{g},{b})";
 
+    private void SetControlMode(ControlMode mode)
+    {
+        controlMode = mode;
+    }
+
+    private async Task OnPresetSelect(Preset preset)
+    {
+        if (preset == null) return;
+
+        selectedPreset = preset;
+
+        switch (controlMode)
+        {
+            case ControlMode.Normal:
+                await MrApi.ExeMagicRoutine(selectedPreset.Id, devices);
+                break;
+            case ControlMode.Edit:
+                // 編集モードでは選択のみ
+                break;
+            case ControlMode.Delete:
+                isDeleteDialogOpen = true;
+                break;
         }
+
         StateHasChanged();
     }
-    private Task ChangeControlDevice(DeviceDto device)
+
+    private void SelectDevice(DeviceDto device)
     {
         controlDevice = device;
         string hex = $"#{device.R:X2}{device.G:X2}{device.B:X2}";
-        SelectedColor = hex;
+        selectedColor = hex;
         StateHasChanged();
-        return Task.CompletedTask;
+    }
+
+    private async Task TriggerColorPicker()
+    {
+        await JS.InvokeVoidAsync("eval", "document.querySelector('input[type=color]').click()");
     }
 
     private async Task OnColorPicked()
     {
-        if (SelectedColor.StartsWith("#") && SelectedColor.Length == 7)
+        if (controlDevice != null && selectedColor.StartsWith("#") && selectedColor.Length == 7)
         {
-            var r = Convert.ToInt32(SelectedColor.Substring(1, 2), 16);
-            var g = Convert.ToInt32(SelectedColor.Substring(3, 2), 16);
-            var b = Convert.ToInt32(SelectedColor.Substring(5, 2), 16);
+            var r = Convert.ToInt32(selectedColor.Substring(1, 2), 16);
+            var g = Convert.ToInt32(selectedColor.Substring(3, 2), 16);
+            var b = Convert.ToInt32(selectedColor.Substring(5, 2), 16);
 
-            if (controlDevice != null)
-            {
-                controlDevice.R = r;
-                controlDevice.G = g;
-                controlDevice.B = b;
-                controlDevice.Brightness = 255;
-            }
+            controlDevice.R = r;
+            controlDevice.G = g;
+            controlDevice.B = b;
+            controlDevice.Brightness = 255;
+
+            await Api.TurnOnTheLightById(controlDevice);
+            StateHasChanged();
         }
-        await Api.TurnOnTheLightById(controlDevice);
-        StateHasChanged();
     }
-    private ElementReference colorInput;
-    private async Task TriggerColorPicker()
-    {
-        await JS.InvokeVoidAsync("clickTrigger", colorInput);
-    }
-
-
-    private bool deleteDialog = false;
-    //presetButton���������Ƃ��̏���
-    private async Task OnPreset(Preset preset)
-    {
-        if (preset == null) return;
-        selectedPreset = preset;
-        switch (state)
-        {
-            case ControlMode.normal:
-                await MrApi.ExeMagicRoutine(selectedPreset.Id,devices);
-                break;
-            case ControlMode.edit:
-                break;
-            case ControlMode.delete:
-                deleteDialog = true;
-                break;
-        }
-        StateHasChanged();
-    }
-    private async Task OnDelete()
-    {
-        if (selectedPreset==null) return;
-        bool isSuccess= await MrApi.DeletePresetAsync(selectedPreset.Id);
-        if (isSuccess)
-        {
-            //�Y����Preset�폜
-            var target = presetList!.FirstOrDefault(p => p.Id == selectedPreset.Id);
-            if(target != null)
-            {
-                presetList.Remove(target);
-            }
-        }
-        deleteDialog = false;
-
-    }
-
 
     private async Task SaveRoutine()
     {
-        bool isSuccess = await MrApi.PostRoutineSetting(devices, selectedPreset.Id);
+        if (selectedPreset != null)
+        {
+            bool isSuccess = await MrApi.PostRoutineSetting(devices, selectedPreset.Id);
+            if (isSuccess)
+            {
+                // 成功時の処理（トーストなど）
+            }
+        }
+    }
+
+    private async Task DeletePreset()
+    {
+        if (selectedPreset == null) return;
+
+        bool isSuccess = await MrApi.DeletePresetAsync(selectedPreset.Id);
+        if (isSuccess)
+        {
+            var target = presetList!.FirstOrDefault(p => p.Id == selectedPreset.Id);
+            if (target != null)
+            {
+                presetList.Remove(target);
+            }
+            selectedPreset = null;
+        }
+
+        isDeleteDialogOpen = false;
+        StateHasChanged();
+    }
+
+    private string GetPlatformName(int seriesId)
+    {
+        return platforms?.FirstOrDefault(p => p.Id == seriesId)?.Name ?? "不明";
+    }
+
+    private int GetDeviceCount()
+    {
+        return devices?.Sum(p => p.Devices.Count) ?? 0;
     }
 }

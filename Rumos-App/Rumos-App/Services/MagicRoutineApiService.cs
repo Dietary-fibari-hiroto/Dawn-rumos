@@ -26,17 +26,11 @@ namespace Rumos_App.Services
             _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
 
-            var apiKey = _configuration["ApiSettings:RumosApiKey"];
-            if (!string.IsNullOrEmpty(apiKey))
-            {
-                _httpClient.DefaultRequestHeaders.Add("X-API-Key", apiKey);
-            }
-            else
-            {
-                _logger.LogWarning("API Key not found in configuration");
-            }
-
             _baseApiUrl = _configuration["ApiSettings:BaseApiUrl"];
+
+            // デバッグログ追加
+            _logger.LogInformation("===== MagicRoutineApiService Initialization =====");
+            _logger.LogInformation("BaseApiUrl: {BaseApiUrl}", _baseApiUrl ?? "NULL");
 
             if (string.IsNullOrEmpty(_baseApiUrl))
             {
@@ -44,9 +38,27 @@ namespace Rumos_App.Services
                 throw new InvalidOperationException("BaseApiUrl must be configured in ApiSettings");
             }
 
-            _httpClient.Timeout = TimeSpan.FromSeconds(30);
-        }
+            var apiKey = _configuration["ApiSettings:RumosApiKey"];
 
+            // デバッグログ追加
+            if (string.IsNullOrEmpty(apiKey))
+            {
+                _logger.LogWarning("API Key not found in configuration");
+            }
+            else
+            {
+                _logger.LogInformation("API Key found (length: {Length})", apiKey.Length);
+                _httpClient.DefaultRequestHeaders.Add("X-API-Key", apiKey);
+                _logger.LogInformation("X-API-Key header added to HttpClient");
+
+                // ヘッダーが実際に追加されたか確認
+                var hasKey = _httpClient.DefaultRequestHeaders.Contains("X-API-Key");
+                _logger.LogInformation("X-API-Key header exists: {HasKey}", hasKey);
+            }
+
+            _logger.LogInformation("===== Initialization Complete =====");
+        }
+        
         public async Task<List<Preset>> GetPresetList()
         {
             if (_presetList == null)
@@ -61,7 +73,17 @@ namespace Rumos_App.Services
             try
             {
                 var url = $"{_baseApiUrl}/MagicRoutin";
-                _logger.LogInformation("Fetching presets from: {Url}", url);
+                _logger.LogInformation("===== Fetching Presets =====");
+                _logger.LogInformation("URL: {Url}", url);
+
+                // ヘッダーをログに出力
+                var headers = _httpClient.DefaultRequestHeaders;
+                foreach (var header in headers)
+                {
+                    _logger.LogInformation("Header: {Key} = {Value}",
+                        header.Key,
+                        string.Join(", ", header.Value));
+                }
 
                 var result = await _httpClient.GetFromJsonAsync<List<Preset>>(url);
                 _presetList = result ?? new List<Preset>();
@@ -70,12 +92,8 @@ namespace Rumos_App.Services
             }
             catch (HttpRequestException ex)
             {
-                _logger.LogError(ex, "HTTP request failed while fetching presets");
-                _presetList = new List<Preset>();
-            }
-            catch (TaskCanceledException ex)
-            {
-                _logger.LogError(ex, "Request timeout while fetching presets");
+                _logger.LogError(ex, "HTTP request failed while fetching presets. Status Code: {StatusCode}",
+                    ex.StatusCode);
                 _presetList = new List<Preset>();
             }
             catch (Exception ex)

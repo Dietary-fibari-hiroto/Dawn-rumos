@@ -1,12 +1,26 @@
-﻿<button class="option-button @(Selected ? "selected" : "")" @onclick="@OnClick">
-    <img src="@Img" />
-    <p class="string-md">@Label</p>
+﻿<button class="function-button @(Selected ? "selected" : "")"
+        @onclick="OnClick"
+        aria-label="@Label">
+    <span class="function-icon-wrapper">
+        <img src="@Img" alt="@Label" class="function-icon" />
+    </span>
+    <span class="function-label">@Label</span>
+    @if (Selected)
+    {
+        <span class="selection-indicator"></span>
+    }
 </button>
 
+@code {
+    [Parameter]
+    public string Img { get; set; } = string.Empty;
 
-@code{
-    [Parameter] public string Img { get; set; }
-    [Parameter] public string Label { get; set; }
-    [Parameter] public EventCallback OnClick {get;set;}
-    [Parameter] public bool Selected { get; set; } = false;
+    [Parameter]
+    public string Label { get; set; } = string.Empty;
+
+    [Parameter]
+    public EventCallback OnClick { get; set; }
+
+    [Parameter]
+    public bool Selected { get; set; } = false;
 }

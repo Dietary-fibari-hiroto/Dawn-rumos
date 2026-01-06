@@ -1,13 +1,154 @@
-.option-button {
-    width: 150px;
-    height: 60px;
-    border-radius: 10px;
-    border: 1px solid white;
+.function-button {
+    position: relative;
     display: flex;
     align-items: center;
-    justify-content: space-around;
-}
-.selected{
-    background:green;
+    gap: 12px;
+    padding: 12px 20px;
+    min-width: clamp(120px, 15vw, 160px);
+    height: clamp(50px, 6vh, 60px);
+    background: rgba(13, 8, 26, 0.5);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border: 1px solid rgba(31, 19, 64, 0.4);
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow: hidden;
 }
 
+    .function-button:hover {
+        border-color: rgba(31, 19, 64, 0.7);
+        background: rgba(13, 8, 26, 0.7);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    }
+
+    .function-button.selected {
+        background: linear-gradient( 135deg, rgba(31, 19, 64, 0.8) 0%, rgba(31, 19, 64, 0.6) 100% );
+        border-color: rgba(31, 19, 64, 0.9);
+        box-shadow: 0 0 20px rgba(31, 19, 64, 0.4);
+    }
+
+    .function-button:active {
+        transform: translateY(0) scale(0.98);
+    }
+
+/* アイコン */
+.function-icon-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    flex-shrink: 0;
+}
+
+.function-icon {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    filter: brightness(0) invert(1);
+    opacity: 0.8;
+    transition: opacity 0.3s ease;
+}
+
+.function-button.selected .function-icon {
+    opacity: 1;
+}
+
+.function-button:hover .function-icon {
+    opacity: 1;
+}
+
+/* ラベル */
+.function-label {
+    font-size: clamp(13px, 1.6vw, 15px);
+    font-weight: 500;
+    color: rgba(232, 230, 240, 0.8);
+    letter-spacing: 0.05em;
+    transition: color 0.3s ease;
+}
+
+.function-button.selected .function-label {
+    color: rgba(232, 230, 240, 0.95);
+}
+
+.function-button:hover .function-label {
+    color: rgba(232, 230, 240, 0.95);
+}
+
+/* 選択インジケーター */
+.selection-indicator {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: linear-gradient( 90deg, transparent 0%, rgba(31, 19, 64, 0.8) 50%, transparent 100% );
+    animation: slide-in 0.3s ease-out;
+}
+
+@keyframes slide-in {
+    from {
+        width: 0;
+        left: 50%;
+    }
+
+    to {
+        width: 100%;
+        left: 0;
+    }
+}
+
+/* タブレット */
+@media (max-width: 1024px) {
+    .function-button {
+        min-width: 140px;
+        padding: 10px 16px;
+    }
+}
+
+/* モバイル */
+@media (max-width: 768px) {
+    .function-button {
+        min-width: 110px;
+        height: 48px;
+        padding: 8px 14px;
+        gap: 8px;
+    }
+
+    .function-icon-wrapper {
+        width: 20px;
+        height: 20px;
+    }
+
+    .function-label {
+        font-size: 13px;
+    }
+}
+
+/* 小さいモバイル */
+@media (max-width: 480px) {
+    .function-button {
+        min-width: 100px;
+        height: 44px;
+        padding: 6px 12px;
+    }
+
+    .function-label {
+        font-size: 12px;
+    }
+}
+
+/* アクセシビリティ: モーション軽減 */
+@media (prefers-reduced-motion: reduce) {
+    .function-button,
+    .function-icon,
+    .function-label {
+        transition: none;
+    }
+
+    .selection-indicator {
+        animation: none;
+    }
+}

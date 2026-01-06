@@ -1,5 +1,44 @@
-<img class="bg-img" src="@Src" />
 
-@code{
-        [Parameter] public string Src { get; set; } = "";
+
+<div class="bg-image-container">
+    @if (!string.IsNullOrEmpty(Src))
+    {
+        <img class="bg-image" src="@Src" alt="Background" />
+        //<div class="bg-overlay"></div>
+    }
+</div>
+
+<style>
+    .bg-image-container {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        z-index: 0;
+        overflow: hidden;
+        pointer-events: none;
+    }
+
+    .bg-image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        filter: blur(2px) brightness(0.4);
+        transform: scale(1.1);
+    }
+
+    .bg-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient( 180deg, rgba(13, 8, 26, 0.7) 0%, rgba(31, 19, 64, 0.5) 50%, rgba(0, 0, 0, 0.8) 100% );
+    }
+</style>
+
+@code {
+    [Parameter]
+    public string Src { get; set; } = string.Empty;
 }

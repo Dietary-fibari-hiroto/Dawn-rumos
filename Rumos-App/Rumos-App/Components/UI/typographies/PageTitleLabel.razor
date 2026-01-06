@@ -1,9 +1,19 @@
-<div class="label-container">
-    <p class="title string-big">@Title</p>
-    <p class="title string-md">@SubTitle</p>
-</div>
 
-@code{
-    [Parameter] public string Title { get; set; } = "";
-    [Parameter] public string SubTitle { get; set; } = "";
+<header class="page-title-header">
+    <div class="title-content">
+        <h1 class="page-title">@Title</h1>
+        @if (!string.IsNullOrEmpty(SubTitle))
+        {
+            <p class="page-subtitle">@SubTitle</p>
+        }
+    </div>
+    <div class="title-underline"></div>
+</header>
+
+@code {
+    [Parameter]
+    public string Title { get; set; } = string.Empty;
+
+    [Parameter]
+    public string SubTitle { get; set; } = string.Empty;
 }
