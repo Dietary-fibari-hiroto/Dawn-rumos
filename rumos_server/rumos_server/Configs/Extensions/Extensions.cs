@@ -2,6 +2,7 @@
 using Grpc.Net.Client;
 using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.OpenApi.Models;
 using rumos_server.Data;
 using rumos_server.Externals.GrpcClients;
@@ -33,6 +34,7 @@ public static class ServiceExtensions
 
     public static IServiceCollection AddMqttServices(this IServiceCollection services)
     {
+        // 1. 設定を環境変数から読み込み
         services.Configure<MqttSettings>(o =>
         {
             o.Broker = Environment.GetEnvironmentVariable("MQTTBROKER_IP") ?? "127.0.0.1";
@@ -43,11 +45,27 @@ public static class ServiceExtensions
             o.CleanSession = false; // 永続セッション推奨
             o.KeepAliveSeconds = 60;
         });
+
+        // 2. MqttConnectionService を Singleton として登録
+        // → アプリ全体で1つの接続を共有
         services.AddSingleton<MqttConnectionService>();
+
+        // 3. MqttHostedService を BackgroundService として登録
+        // → アプリ起動時に自動で接続
         services.AddHostedService<MqttHostedService>();
+
+        // 4. MqttService を Scoped として登録
+        // → リクエストごとに新しいインスタンス
         services.AddScoped<MqttService>();
 
-        //Dos対策
+        // 5. ヘルスチェックを登録
+        services.AddHealthChecks()
+            .AddCheck<MqttHealthCheck>(
+                "mqtt",
+                failureStatus: HealthStatus.Unhealthy,
+                tags: new[] { "mqtt", "ready" });
+
+        // Dos対策（Rate Limiting）
         services.AddRateLimiter(options =>
         {
             options.AddFixedWindowLimiter("api", opt =>
@@ -57,6 +75,7 @@ public static class ServiceExtensions
             });
         });
 
+        // CORS設定
         services.AddCors(options =>
         {
             options.AddPolicy("MauiApp", policy =>
@@ -67,14 +86,45 @@ public static class ServiceExtensions
             });
         });
 
-
-        services.AddSwaggerGen(c =>
+        return services;
+    }
+    public static void MapHealthCheckEndpoints(this WebApplication app)
+    {
+        // 基本のヘルスチェック
+        app.MapHealthChecks("/health", new Microsoft.AspNetCore.Diagnostics.HealthChecks.HealthCheckOptions
         {
-            c.OperationFilter<AddHeaderOperationFilter>();
+            ResponseWriter = async (context, report) =>
+            {
+                context.Response.ContentType = "application/json";
+
+                var result = System.Text.Json.JsonSerializer.Serialize(new
+                {
+                    status = report.Status.ToString(),
+                    checks = report.Entries.Select(e => new
+                    {
+                        name = e.Key,
+                        status = e.Value.Status.ToString(),
+                        description = e.Value.Description,
+                        data = e.Value.Data
+                    }),
+                    totalDuration = report.TotalDuration
+                });
+
+                await context.Response.WriteAsync(result);
+            }
         });
 
+        // Readiness チェック（K8s/Container Apps用）
+        app.MapHealthChecks("/health/ready", new Microsoft.AspNetCore.Diagnostics.HealthChecks.HealthCheckOptions
+        {
+            Predicate = check => check.Tags.Contains("ready")
+        });
 
-        return services;
+        // Liveness チェック（K8s/Container Apps用）
+        app.MapHealthChecks("/health/live", new Microsoft.AspNetCore.Diagnostics.HealthChecks.HealthCheckOptions
+        {
+            Predicate = _ => false // 基本的なアプリ起動確認のみ
+        });
     }
 
     public static IServiceCollection AddGrpcClients(this IServiceCollection services)

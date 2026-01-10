@@ -1,4 +1,5 @@
 ---
+import { Sangria } from "../components/elements"
 import { ImagesRoute } from "../assets/images/ImagesRoute"
 ---
 
@@ -6,7 +7,7 @@ import { ImagesRoute } from "../assets/images/ImagesRoute"
 
 <div id="loading-screen" class="loading-screen flex-all-center">
   <div class="loader">
-    <div class="spinner"></div>
+    <Sangria/>
     <p>Loading...</p>
     <div class="progress-container">
       <div id="progress-bar" class="progress-bar"></div>
@@ -14,7 +15,6 @@ import { ImagesRoute } from "../assets/images/ImagesRoute"
     <p id="progress-text">0%</p>
   </div>
   <figure class="second-proccess">
-    <img src={ImagesRoute.Ellipse}/>
     <div class="second-proccess__concept">
         <p class="concept-text">変わらぬ日々に魔法をかけて。</p>
     </div>
@@ -44,13 +44,16 @@ import { ImagesRoute } from "../assets/images/ImagesRoute"
 
   .second-proccess {
     /* 最初は非表示（JSで制御） */
+    width:100%;
+    height: 100%;
     position:relative;
     &__concept{
         position: absolute;
+        width:100%;
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
-        color:black;
+        color:white;
         letter-spacing: 0.5rem;
     }
 
@@ -67,20 +70,11 @@ import { ImagesRoute } from "../assets/images/ImagesRoute"
 
   .progress-bar {
     height: 100%;
-    background: white;
+    background: #ff9900;
     transition: width 0.3s ease;
     width: 0%;
   }
 
-  .spinner {
-    width: 50px;
-    height: 50px;
-    border: 4px solid rgba(255, 255, 255, 0.3);
-    border-top-color: white;
-    border-radius: 50%;
-    animation: spin 1s linear infinite;
-    margin: 0 auto 1rem;
-  }
 
   @keyframes spin {
     to { transform: rotate(360deg); }

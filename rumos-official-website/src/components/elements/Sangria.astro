@@ -1,0 +1,286 @@
+
+    <div class="wine-bottle">
+        <!-- ボトルのネック部分 -->
+        <div class="bottle-neck">
+            <div class="bottle-lip"></div>
+        </div>
+        
+        <!-- ボトルの本体 -->
+        <div class="bottle-body">
+            <div class="glass-highlight"></div>
+            
+            <div class="inner-light"></div>
+            
+            <div class="light-glow"></div>
+            <div class="light-glow-outer"></div>
+        </div>
+        
+        <!-- ボトルの底 -->
+        <div class="bottle-bottom"></div>
+        
+        <!-- テーブルへの反射 -->
+        <div class="table-reflection"></div>
+    </div>
+
+<style lang="scss">
+.container {
+    background: linear-gradient(to bottom, #0a0e27 0%, #1a1e3e 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    overflow: hidden;
+    position: relative;
+}
+
+.wine-bottle {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    filter: drop-shadow(0 20px 40px rgba(0, 0, 0, 0.5));
+}
+
+.bottle-neck {
+    width: 14px;
+    height: 42px;
+    background: linear-gradient(to right, 
+        rgba(60, 55, 30, 0.9) 0%,
+        rgba(80, 75, 40, 0.85) 20%,
+        rgba(90, 85, 45, 0.8) 50%,
+        rgba(80, 75, 40, 0.85) 80%,
+        rgba(60, 55, 30, 0.9) 100%
+    );
+    border-radius: 7px 7px 0 0;
+    position: relative;
+    z-index: 2;
+    
+    &::before {
+        content: '';
+        position: absolute;
+        left: 3px;
+        top: 7px;
+        width: 3px;
+        height: 28px;
+        background: linear-gradient(to bottom,
+            rgba(255, 255, 255, 0.3) 0%,
+            rgba(255, 255, 255, 0.1) 50%,
+            transparent 100%
+        );
+        border-radius: 1.5px;
+        filter: blur(1px);
+    }
+}
+
+.bottle-lip {
+    width: 17.5px;
+    height: 5.6px;
+    background: linear-gradient(to bottom, 
+        rgba(50, 45, 25, 0.95) 0%,
+        rgba(70, 65, 35, 0.9) 100%
+    );
+    border-radius: 8.5px 8.5px 0 0;
+    position: absolute;
+    top: -3px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.bottle-body {
+    width: 42px;
+    height: 98px;
+    background: linear-gradient(to right,
+        rgba(60, 55, 30, 0.92) 0%,
+        rgba(75, 70, 38, 0.88) 15%,
+        rgba(85, 80, 42, 0.85) 30%,
+        rgba(95, 90, 48, 0.82) 50%,
+        rgba(85, 80, 42, 0.85) 70%,
+        rgba(75, 70, 38, 0.88) 85%,
+        rgba(60, 55, 30, 0.92) 100%
+    );
+    border-radius: 21px;
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+    
+    /* ボトル内部で光が反射 */
+    &::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(ellipse at 50% 50%,
+            rgba(255, 220, 100, 0.15) 0%,
+            transparent 60%
+        );
+        animation: bottle-inner-glow 4s ease-in-out infinite;
+    }
+}
+
+.glass-highlight {
+    position: absolute;
+    left: 5.6px;
+    top: 10.5px;
+    width: 7px;
+    height: 70px;
+    background: linear-gradient(to bottom,
+        rgba(255, 255, 255, 0.4) 0%,
+        rgba(255, 255, 255, 0.25) 30%,
+        rgba(255, 255, 255, 0.15) 60%,
+        transparent 100%
+    );
+    border-radius: 3.5px;
+    filter: blur(2px);
+    z-index: 3;
+}
+
+.inner-light {
+    position: absolute;
+    bottom: 14px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 21px;
+    height: 28px;
+    background: radial-gradient(ellipse at center,
+        #fff5d6 0%,
+        #ffd966 20%,
+        #ffcc33 40%,
+        #ff9900 70%,
+        transparent 100%
+    );
+    border-radius: 50%;
+    filter: blur(5.6px);
+    
+    /* 呼吸アニメーション */
+    animation: breathing-inner-light 4s ease-in-out infinite;
+    will-change: opacity, transform;
+}
+
+.light-glow {
+    position: absolute;
+    bottom: 7px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 35px;
+    height: 49px;
+    background: radial-gradient(ellipse at center,
+        rgba(255, 220, 100, 0.9) 0%,
+        rgba(255, 190, 70, 0.6) 25%,
+        rgba(255, 140, 40, 0.4) 50%,
+        rgba(255, 110, 20, 0.2) 70%,
+        transparent 90%
+    );
+    border-radius: 50%;
+    filter: blur(10.5px);
+    
+    animation: breathing-glow 4s ease-in-out infinite;
+    will-change: opacity, transform;
+}
+
+.light-glow-outer {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 45.5px;
+    height: 77px;
+    background: radial-gradient(ellipse at center,
+        rgba(255, 220, 100, 0.5) 0%,
+        rgba(255, 190, 70, 0.3) 30%,
+        rgba(255, 140, 40, 0.2) 50%,
+        rgba(255, 110, 20, 0.1) 70%,
+        transparent 90%
+    );
+    border-radius: 50%;
+    filter: blur(14px);
+    
+    animation: breathing-glow-outer 4s ease-in-out infinite;
+    will-change: opacity, transform;
+}
+
+.bottle-bottom {
+    width: 42px;
+    height: 7px;
+    background: linear-gradient(to bottom,
+        rgba(50, 45, 25, 0.95) 0%,
+        rgba(40, 35, 20, 0.98) 100%
+    );
+    border-radius: 0 0 21px 21px;
+    position: relative;
+    margin-top: -3.5px;
+    z-index: 2;
+}
+
+.table-reflection {
+    position: absolute;
+    bottom: -28px;
+    width: 63px;
+    height: 28px;
+    background: radial-gradient(ellipse at center top,
+        rgba(255, 220, 100, 0.3) 0%,
+        rgba(255, 190, 70, 0.2) 30%,
+        rgba(255, 140, 40, 0.1) 50%,
+        transparent 70%
+    );
+    border-radius: 50%;
+    filter: blur(10.5px);
+    
+    animation: breathing-reflection 4s ease-in-out infinite;
+    will-change: opacity;
+}
+
+/* ボトル内部の光の反射 */
+@keyframes bottle-inner-glow {
+    0%, 100% {
+        opacity: 0.2;
+    }
+    50% {
+        opacity: 0.7;
+    }
+}
+
+/* 内部光源の呼吸 */
+@keyframes breathing-inner-light {
+    0%, 100% {
+        opacity: 0.5;
+        transform: translateX(-50%) scale(0.85);
+    }
+    50% {
+        opacity: 1;
+        transform: translateX(-50%) scale(1.15);
+    }
+}
+
+/* 内側グローの呼吸 */
+@keyframes breathing-glow {
+    0%, 100% {
+        opacity: 0.4;
+        transform: translateX(-50%) scale(0.85);
+    }
+    50% {
+        opacity: 1;
+        transform: translateX(-50%) scale(1.2);
+    }
+}
+
+/* 外側グローの呼吸 */
+@keyframes breathing-glow-outer {
+    0%, 100% {
+        opacity: 0.25;
+        transform: translateX(-50%) scale(0.8);
+    }
+    50% {
+        opacity: 0.85;
+        transform: translateX(-50%) scale(1.25);
+    }
+}
+
+/* テーブル反射の呼吸 */
+@keyframes breathing-reflection {
+    0%, 100% {
+        opacity: 0.3;
+    }
+    50% {
+        opacity: 0.9;
+    }
+}
+</style>
