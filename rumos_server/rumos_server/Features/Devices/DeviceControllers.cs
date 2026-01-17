@@ -2,12 +2,12 @@
 using Microsoft.AspNetCore.RateLimiting;
 using rumos_server.Externals.GrpcClients;
 using rumos_server.Externals.MqttClients;
-    using rumos_server.Features.DTOs;
+using rumos_server.Features.DTOs;
 using rumos_server.Features.Interface;
 using rumos_server.Features.Models;
 using Sprache;
 using System.Drawing;
-namespace rumos_server.Features.Controller
+namespace rumos_server.Features.Devices
 {
     [ApiController]
     [Route("/api/[controller]")]

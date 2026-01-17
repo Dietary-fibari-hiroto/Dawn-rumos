@@ -17,7 +17,7 @@
         pointer-events: none;
     }
 
-/*星空効*/
+/*星空効果 - 大幅強化版*/
 .stars-container {
     position: absolute;
     top: 0;
@@ -34,6 +34,7 @@
     background: transparent;
 }
 
+    /* メイン星レイヤー - 大きめの明るい星 */
     .stars::before {
         content: '';
         position: absolute;
@@ -41,21 +42,54 @@
         left: 0;
         width: 100%;
         height: 100%;
-        background-image: radial-gradient(2px 2px at 20% 30%, rgba(232, 230, 240, 0.8), transparent), radial-gradient(2px 2px at 60% 70%, rgba(232, 230, 240, 0.6), transparent), radial-gradient(1px 1px at 50% 50%, rgba(232, 230, 240, 0.4), transparent), radial-gradient(1px 1px at 80% 10%, rgba(232, 230, 240, 0.7), transparent), radial-gradient(2px 2px at 90% 60%, rgba(232, 230, 240, 0.5), transparent), radial-gradient(1px 1px at 33% 80%, rgba(232, 230, 240, 0.3), transparent);
-        background-size: 200% 200%, 300% 300%, 250% 250%, 280% 280%, 220% 220%, 260% 260%;
-        background-position: 0% 0%, 40% 60%, 130% 270%, 70% 100%, 200% 50%, 340% 180%;
-        animation: sparkle 120s linear infinite;
+        background-image: radial-gradient(3px 3px at 10% 20%, rgba(255, 255, 255, 0.9), transparent), radial-gradient(2px 2px at 25% 15%, rgba(232, 230, 240, 0.8), transparent), radial-gradient(2px 2px at 40% 30%, rgba(232, 230, 240, 0.7), transparent), radial-gradient(3px 3px at 55% 10%, rgba(255, 255, 255, 0.85), transparent), radial-gradient(2px 2px at 70% 25%, rgba(232, 230, 240, 0.75), transparent), radial-gradient(2px 2px at 85% 35%, rgba(232, 230, 240, 0.8), transparent), radial-gradient(3px 3px at 15% 50%, rgba(255, 255, 255, 0.9), transparent), radial-gradient(2px 2px at 30% 60%, rgba(232, 230, 240, 0.7), transparent), radial-gradient(2px 2px at 45% 70%, rgba(232, 230, 240, 0.8), transparent), radial-gradient(3px 3px at 60% 55%, rgba(255, 255, 255, 0.85), transparent), radial-gradient(2px 2px at 75% 65%, rgba(232, 230, 240, 0.75), transparent), radial-gradient(2px 2px at 90% 75%, rgba(232, 230, 240, 0.8), transparent), radial-gradient(2px 2px at 20% 85%, rgba(232, 230, 240, 0.7), transparent), radial-gradient(3px 3px at 35% 90%, rgba(255, 255, 255, 0.9), transparent), radial-gradient(2px 2px at 50% 95%, rgba(232, 230, 240, 0.8), transparent), radial-gradient(2px 2px at 65% 80%, rgba(232, 230, 240, 0.75), transparent), radial-gradient(3px 3px at 80% 88%, rgba(255, 255, 255, 0.85), transparent), radial-gradient(2px 2px at 95% 92%, rgba(232, 230, 240, 0.8), transparent);
+        background-size: 200% 200%;
+        background-position: 0% 0%;
+        animation: sparkle 120s linear infinite, twinkle 3s ease-in-out infinite;
     }
 
+/* 第2レイヤー - 中くらいの星 */
 .stars-2::before {
+    background-image: radial-gradient(2px 2px at 12% 18%, rgba(232, 230, 240, 0.6), transparent), radial-gradient(1px 1px at 28% 22%, rgba(232, 230, 240, 0.5), transparent), radial-gradient(2px 2px at 42% 12%, rgba(232, 230, 240, 0.65), transparent), radial-gradient(1px 1px at 58% 28%, rgba(232, 230, 240, 0.55), transparent), radial-gradient(2px 2px at 72% 8%, rgba(232, 230, 240, 0.6), transparent), radial-gradient(1px 1px at 88% 32%, rgba(232, 230, 240, 0.5), transparent), radial-gradient(2px 2px at 18% 45%, rgba(232, 230, 240, 0.65), transparent), radial-gradient(1px 1px at 32% 58%, rgba(232, 230, 240, 0.55), transparent), radial-gradient(2px 2px at 48% 42%, rgba(232, 230, 240, 0.6), transparent), radial-gradient(1px 1px at 62% 62%, rgba(232, 230, 240, 0.5), transparent), radial-gradient(2px 2px at 78% 48%, rgba(232, 230, 240, 0.65), transparent), radial-gradient(1px 1px at 92% 72%, rgba(232, 230, 240, 0.55), transparent), radial-gradient(2px 2px at 22% 78%, rgba(232, 230, 240, 0.6), transparent), radial-gradient(1px 1px at 38% 88%, rgba(232, 230, 240, 0.5), transparent), radial-gradient(2px 2px at 52% 82%, rgba(232, 230, 240, 0.65), transparent), radial-gradient(1px 1px at 68% 92%, rgba(232, 230, 240, 0.55), transparent), radial-gradient(2px 2px at 82% 78%, rgba(232, 230, 240, 0.6), transparent);
     animation-delay: 1s;
     animation-duration: 150s;
 }
 
+/* 第3レイヤー - 小さな星 */
 .stars-3::before {
+    background-image: radial-gradient(1px 1px at 8% 25%, rgba(232, 230, 240, 0.4), transparent), radial-gradient(1px 1px at 22% 35%, rgba(232, 230, 240, 0.35), transparent), radial-gradient(1px 1px at 38% 15%, rgba(232, 230, 240, 0.4), transparent), radial-gradient(1px 1px at 52% 45%, rgba(232, 230, 240, 0.35), transparent), radial-gradient(1px 1px at 68% 25%, rgba(232, 230, 240, 0.4), transparent), radial-gradient(1px 1px at 82% 55%, rgba(232, 230, 240, 0.35), transparent), radial-gradient(1px 1px at 15% 65%, rgba(232, 230, 240, 0.4), transparent), radial-gradient(1px 1px at 28% 75%, rgba(232, 230, 240, 0.35), transparent), radial-gradient(1px 1px at 45% 55%, rgba(232, 230, 240, 0.4), transparent), radial-gradient(1px 1px at 58% 85%, rgba(232, 230, 240, 0.35), transparent), radial-gradient(1px 1px at 75% 65%, rgba(232, 230, 240, 0.4), transparent), radial-gradient(1px 1px at 88% 95%, rgba(232, 230, 240, 0.35), transparent);
     animation-delay: 2s;
     animation-duration: 180s;
-    opacity: 0.5;
+    opacity: 0.6;
+}
+
+/* 第4レイヤー - 遠くの微細な星 */
+.stars-4::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: radial-gradient(1px 1px at 5% 10%, rgba(232, 230, 240, 0.25), transparent), radial-gradient(1px 1px at 15% 30%, rgba(232, 230, 240, 0.2), transparent), radial-gradient(1px 1px at 25% 50%, rgba(232, 230, 240, 0.25), transparent), radial-gradient(1px 1px at 35% 70%, rgba(232, 230, 240, 0.2), transparent), radial-gradient(1px 1px at 45% 20%, rgba(232, 230, 240, 0.25), transparent), radial-gradient(1px 1px at 55% 40%, rgba(232, 230, 240, 0.2), transparent), radial-gradient(1px 1px at 65% 60%, rgba(232, 230, 240, 0.25), transparent), radial-gradient(1px 1px at 75% 80%, rgba(232, 230, 240, 0.2), transparent), radial-gradient(1px 1px at 85% 15%, rgba(232, 230, 240, 0.25), transparent), radial-gradient(1px 1px at 95% 35%, rgba(232, 230, 240, 0.2), transparent);
+    background-size: 250% 250%;
+    animation: sparkle 200s linear infinite;
+    animation-delay: 3s;
+    opacity: 0.4;
+}
+
+/* 第5レイヤー - キラキラ星（ランダムに光る）*/
+.stars-5::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: radial-gradient(2px 2px at 20% 20%, rgba(255, 255, 255, 0.9), transparent), radial-gradient(2px 2px at 50% 50%, rgba(255, 255, 255, 0.9), transparent), radial-gradient(2px 2px at 80% 30%, rgba(255, 255, 255, 0.9), transparent), radial-gradient(2px 2px at 30% 70%, rgba(255, 255, 255, 0.9), transparent), radial-gradient(2px 2px at 70% 80%, rgba(255, 255, 255, 0.9), transparent);
+    background-size: 300% 300%;
+    animation: sparkle 100s linear infinite, twinkle-bright 2s ease-in-out infinite;
+    animation-delay: 0.5s;
 }
 
 @keyframes sparkle {
@@ -65,6 +99,86 @@
 
     to {
         transform: translateY(-100%);
+    }
+}
+
+@keyframes twinkle {
+    0%, 100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.3;
+    }
+}
+
+@keyframes twinkle-bright {
+    0%, 100% {
+        opacity: 0;
+    }
+
+    50% {
+        opacity: 1;
+    }
+}
+
+/* 流れ星エフェクト */
+.shooting-star {
+    position: absolute;
+    width: 2px;
+    height: 2px;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 50%;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+    animation: shoot 3s ease-in-out infinite;
+    opacity: 0;
+}
+
+    .shooting-star::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 80px;
+        height: 2px;
+        background: linear-gradient(90deg, rgba(255, 255, 255, 0.8), transparent);
+    }
+
+    .shooting-star:nth-child(1) {
+        top: 20%;
+        left: 10%;
+        animation-delay: 2s;
+    }
+
+    .shooting-star:nth-child(2) {
+        top: 40%;
+        left: 60%;
+        animation-delay: 5s;
+    }
+
+    .shooting-star:nth-child(3) {
+        top: 70%;
+        left: 30%;
+        animation-delay: 8s;
+    }
+
+@keyframes shoot {
+    0% {
+        transform: translate(0, 0);
+        opacity: 0;
+    }
+
+    10% {
+        opacity: 1;
+    }
+
+    90% {
+        opacity: 1;
+    }
+
+    100% {
+        transform: translate(200px, 200px);
+        opacity: 0;
     }
 }
 
@@ -167,7 +281,7 @@
     }
 }
 
-/* おれのデザイン名 */
+/* デザイン名 */
 .company-name {
     margin: 0;
     font-size: clamp(20px, 3vw, 32px);
@@ -275,8 +389,6 @@
 }
 
 /* レスポンシブ対応 */
-
-/* タブレット */
 @media (max-width: 1024px) {
     .glow-circle {
         width: clamp(250px, 60vw, 500px);
@@ -292,7 +404,6 @@
     }
 }
 
-/* モバイル */
 @media (max-width: 768px) {
     .glow-circle {
         width: clamp(200px, 80vw, 400px);
@@ -316,7 +427,6 @@
     }
 }
 
-/* 小さいモバイル */
 @media (max-width: 480px) {
     .title-main {
         font-size: 36px;
@@ -339,7 +449,8 @@
     .stars::before,
     .glow-circle,
     .title-main,
-    .particle {
+    .particle,
+    .shooting-star {
         animation: none;
     }
 

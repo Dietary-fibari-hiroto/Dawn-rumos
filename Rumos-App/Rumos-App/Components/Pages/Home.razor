@@ -1,19 +1,21 @@
 ﻿@page "/"
 @inject NavigationManager Nav
 @inject IJSRuntime JS
-
 <div class="splash-screen @GetAnimationClass()">
-    <!--背景の星空効果-->
+    <!--背景の星空効果 - 5層に増強-->
     <div class="stars-container">
         <div class="stars"></div>
         <div class="stars stars-2"></div>
         <div class="stars stars-3"></div>
+        <div class="stars stars-4"></div>
+        <div class="stars stars-5"></div>
+        <!-- 流れ星 -->
     </div>
 
     <!--夜明けのグラデーション-->
     <div class="dawn-gradient @(showGradient ? "show" : "")"></div>
 
-    <!--メインコンテン-->
+    <!--メインコンテンツ-->
     <div class="splash-content">
         <!--ロゴとタイトル-->
         <div class="logo-group @(showLogo ? "show" : "")">
