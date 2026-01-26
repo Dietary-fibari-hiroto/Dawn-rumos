@@ -1,6 +1,7 @@
 ﻿using Devicecontrol;
 using Grpc.Net.Client;
 using Microsoft.AspNetCore.RateLimiting;
+using Microsoft.Azure.Cosmos;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.OpenApi.Models;
@@ -151,6 +152,8 @@ public static class ServiceExtensions
             options.UseSqlServer(
                 Environment.GetEnvironmentVariable("DEFAULTCONNECTION")
             ));
+
+
         return services;
     }
 }

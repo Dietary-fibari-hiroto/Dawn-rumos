@@ -53,7 +53,7 @@ export interface LoadingScreenWithProgressOptions extends LoadingScreenOptions {
 }
 
 export const initLoadingScreenWithProgress = (
-  options: LoadingScreenWithProgressOptions = {}
+  options: LoadingScreenWithProgressOptions = {},
 ) => {
   const {
     loadingScreenId = "loading-screen",
@@ -155,10 +155,8 @@ export const initLoadingScreenWithProgress = (
   }
 };
 
-
 //プログレスバー付き+段階的フェード版
-export interface LoadingScreenStageOptions
-  extends LoadingScreenWithProgressOptions {
+export interface LoadingScreenStageOptions extends LoadingScreenWithProgressOptions {
   loaderSelector?: string; //ローダー要素のセレクタ
   secondProcessSelector?: string; //2段階目の要素のセレクタ
   loaderFadeDuration?: number; //ローダーのフェード時間
@@ -169,7 +167,7 @@ export interface LoadingScreenStageOptions
 }
 
 export const initLoadingScreenWithStages = (
-  options: LoadingScreenStageOptions = {}
+  options: LoadingScreenStageOptions = {},
 ) => {
   const {
     loadingScreenId = "loading-screen",
@@ -208,7 +206,7 @@ export const initLoadingScreenWithStages = (
   const progressText = document.getElementById(progressTextId) as HTMLElement;
   const loader = document.querySelector(loaderSelector) as HTMLElement;
   const secondProcess = document.querySelector(
-    secondProcessSelector
+    secondProcessSelector,
   ) as HTMLElement;
 
   //2段階目を最初は非表示に

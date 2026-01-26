@@ -25,6 +25,7 @@ Env.Load();
 builder.Services.AddMqttServices();
 builder.Services.AddGrpcClients();
 builder.Services.AddDatabaseContext(builder.Configuration);
+builder.Services.AddCosmosDb();
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
@@ -67,6 +68,7 @@ builder.Services.RegisterServices();
 builder.Services.AddHttpContextAccessor();
 
 var app = builder.Build();
+await app.InitializeCosmosDbAsync();
 
 // パイプライン設定
 app.ConfigurePipeline()
