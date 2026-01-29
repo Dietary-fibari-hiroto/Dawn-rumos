@@ -1,12 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.RateLimiting;
 using rumos_server.Externals.GrpcClients;
-using rumos_server.Externals.MqttClients;
 using rumos_server.Features.DTOs;
 using rumos_server.Features.Interface;
 using rumos_server.Features.Logs;
 using rumos_server.Features.Models;
 using Sprache;
+using rumos_server.Externals.IoTHubClients;
 using System.Drawing;
 namespace rumos_server.Features.Devices
 {
@@ -129,23 +129,22 @@ namespace rumos_server.Features.Devices
 
 
     //Luminaエンドポイント
-    //Luminaエンドポイント
     [Route("/api/[controller]")]
     public class LuminaController : ControllerBase
     {
         private readonly IDeviceService _service;
-        private readonly MqttService _mqttService;
+        private readonly IoTHubService _iotHubService;
         private readonly IPresetService _presetService;
         private readonly ILogService _logService;
 
         public LuminaController(
             IDeviceService service,
-            MqttService mqttService,
+            IoTHubService iotHubService,
             IPresetService presetService,
             ILogService logService)
         {
             _service = service;
-            _mqttService = mqttService;
+            _iotHubService = iotHubService;
             _presetService = presetService;
             _logService = logService;
         }
@@ -160,9 +159,12 @@ namespace rumos_server.Features.Devices
         [HttpPost("all")]
         public async Task<IActionResult> SetColorForAll([FromBody] LedColor color, CancellationToken ct)
         {
-            await _mqttService.SendColorAsyncForAll(color, ct);
+            // IoT Hub では全デバイスのID一覧が必要
+            var allDevices = await _service.GetDeviceAsync();
+            var deviceNames = allDevices.Select(d => d.Name).ToList();
 
-            //ログ追加
+            await _iotHubService.SendColorToAllAsync(color, deviceNames, ct);
+
             await _logService.LogInfoAsync(
                 $"全デバイスの色を変更: R={color.R}, G={color.G}, B={color.B}, Brightness={color.Brightness}",
                 category: "lumina"
@@ -175,11 +177,9 @@ namespace rumos_server.Features.Devices
         [HttpPost("{id}")]
         public async Task<IActionResult> SetColor([FromBody] LedColor color, int id, CancellationToken ct)
         {
-            //DBから名前を取ってくる
             string? deviceName = await _service.GetDeviceNameAsync(id);
             if (deviceName == null)
             {
-                //エラーログ
                 await _logService.LogWarningAsync(
                     $"デバイスが見つかりません: ID={id}",
                     category: "lumina"
@@ -187,9 +187,9 @@ namespace rumos_server.Features.Devices
                 return NotFound();
             }
 
-            await _mqttService.SendColorAsync(color, deviceName);
+            // ← IoT Hub の deviceId = deviceName として送信
+            await _iotHubService.SendColorAsync(color, deviceName, ct);
 
-            //成功ログ
             await _logService.LogInfoAsync(
                 $"デバイスの色を変更: {deviceName}",
                 category: "lumina",
@@ -207,7 +207,6 @@ namespace rumos_server.Features.Devices
         }
 
         /*magicRoutin用エンドポイント*/
-        // MagicRoutine実行
         [HttpPost("magicroutin/execution/{id}")]
         public async Task<IActionResult> ExeMagicRoutin(int id, CancellationToken ct)
         {
@@ -215,18 +214,19 @@ namespace rumos_server.Features.Devices
             var allDevices = await _service.GetDeviceAsync();
 
             var presetIds = exeValue.Select(x => x.Device_id).ToHashSet();
-            //プリセットに含まれない＝今回は消灯
             var devicesToOff = allDevices.Where(d => !presetIds.Contains(d.Id));
 
+            // 消灯対象
             foreach (var dev in devicesToOff)
             {
-                await _mqttService.SendColorAsync(new LedColor(), dev.Name);
+                await _iotHubService.SendColorAsync(new LedColor(), dev.Name, ct);
             }
 
+            // 点灯対象
             foreach (Preset_device_map item in exeValue)
             {
-                Console.WriteLine($"PresetId: {item.Preset_id}, DeviceId: {item.Device_id},DeviceName:{item.Device.Name}");
-                //新しいcolorに格納
+                Console.WriteLine($"PresetId: {item.Preset_id}, DeviceId: {item.Device_id}, DeviceName:{item.Device.Name}");
+
                 LedColor color = new LedColor
                 {
                     R = item.R,
@@ -234,11 +234,10 @@ namespace rumos_server.Features.Devices
                     B = item.B,
                     Brightness = item.Brightness,
                 };
-                //colorを使ってMqttリクエスト
-                await _mqttService.SendColorAsync(color, item.Device.Name);
+
+                await _iotHubService.SendColorAsync(color, item.Device.Name, ct);
             }
 
-            //MagicRoutine実行ログ
             await _logService.LogInfoAsync(
                 $"MagicRoutine実行: PresetID={id}, 対象デバイス数={exeValue.Count}, 消灯デバイス数={devicesToOff.Count()}",
                 category: "lumina",

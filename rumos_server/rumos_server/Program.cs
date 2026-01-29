@@ -3,6 +3,7 @@ using Devicecontrol;
 using DotNetEnv;
 using Google.Protobuf.WellKnownTypes;
 using Grpc.Net.Client;
+using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
@@ -12,6 +13,7 @@ using rumos_server.Data;
 using rumos_server.Externals.GrpcClients;
 using rumos_server.Externals.MqttClients;
 using rumos_server.Features;
+using System.Threading.RateLimiting;
 
 
 
@@ -21,8 +23,18 @@ var builder = WebApplication.CreateBuilder(args);
 //env読み込み
 Env.Load();
 
+builder.Services.AddRateLimiter(options =>
+{
+    options.AddFixedWindowLimiter("api", opt =>
+    {
+        opt.PermitLimit = 60;
+        opt.Window = TimeSpan.FromMinutes(1);
+        opt.QueueLimit = 0;
+    });
+});
 
-builder.Services.AddMqttServices();
+//builder.Services.AddMqttServices();
+builder.Services.AddIoTHubServices();
 builder.Services.AddGrpcClients();
 builder.Services.AddDatabaseContext(builder.Configuration);
 builder.Services.AddCosmosDb();
